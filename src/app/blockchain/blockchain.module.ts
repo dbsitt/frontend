@@ -21,6 +21,7 @@ import { BlockTradeComponent } from './block-trade/block-trade.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccountSummaryComponent } from './account-summary/account-summary.component';
+import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -54,6 +55,7 @@ const blockchainRoutes: Routes = [
     BlockTradeComponent,
     MonitoringComponent,
     AccountSummaryComponent,
+    TradeSummaryComponent,
   ],
   imports: [
     CommonModule,

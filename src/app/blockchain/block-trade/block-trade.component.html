@@ -1,3 +1,6 @@
+<div class="summary-container">
+  <app-account-summary></app-account-summary>
+</div>
 <mat-card>
   <mat-card-title>
     Block Trade
@@ -19,4 +22,7 @@
       </button>
     </form>
   </mat-card-content>
+  <mat-card *ngIf="content">
+    <app-trade-summary [data]="content"></app-trade-summary>
+  </mat-card>
 </mat-card>
