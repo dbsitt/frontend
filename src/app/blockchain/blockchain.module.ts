@@ -20,6 +20,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { BlockTradeComponent } from './block-trade/block-trade.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { AccountSummaryComponent } from './account-summary/account-summary.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -52,6 +53,7 @@ const blockchainRoutes: Routes = [
     ConfirmationComponent,
     BlockTradeComponent,
     MonitoringComponent,
+    AccountSummaryComponent,
   ],
   imports: [
     CommonModule,
