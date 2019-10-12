@@ -1,0 +1,26 @@
+<div class="header">
+  <div
+    class="step"
+    (click)="navigateToUrl('transactions')"
+    [ngClass]="{ 'step--active': true }"
+  >
+    <div>
+      Block Trade
+    </div>
+  </div>
+  <div class="step" (click)="navigateToUrl('transactions/allocate')">
+    <div>
+      Allocate
+    </div>
+  </div>
+  <div class="step" (click)="navigateToUrl('transactions/affirm')">
+    <div>
+      Affirmation
+    </div>
+  </div>
+  <div class="step" (click)="navigateToUrl('transactions/confirmation')">
+    <div>
+      Confirmation
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+@import 'variables.scss';
+html {
+  font-size: 62.5%;
+}
+
+:root {
+  --color-primary: $color-primary;
+  --color-secondary: $color-secondary;
+  --light-gray-1: #eee;
+  --light-gray-2: #bbb;
+  --dark-gray-1: #111;
+  --dark-gray-2: #444;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font-size: 1.6rem;
+  @media #{$xs-device} {
+    font-size: 1.2rem;
+  }
+  @media #{$sm-device} {
+    font-size: 1.4rem;
+  }
+  @media #{$md-device} {
+    font-size: 1.4rem;
+  }
+  @media #{$lg-device} {
+    font-size: 1.6rem;
+  }
+  @media #{$xl-device} {
+    font-size: 1.8rem;
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: $margin-medium;
+  text-transform: uppercase;
+  @media #{$xs-device} {
+    font-size: 2.6rem;
+  }
+  @media #{$sm-device} {
+    font-size: 2.8rem;
+  }
+  @media #{$md-device} {
+    font-size: 2.8rem;
+  }
+  @media #{$lg-device} {
+    font-size: 3rem;
+  }
+  @media #{$xl-device} {
+    font-size: 3.2rem;
+  }
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: $margin-small;
+  @media #{$xs-device} {
+    font-size: 1.8rem;
+  }
+  @media #{$sm-device} {
+    font-size: 2rem;
+  }
+  @media #{$md-device} {
+    font-size: 2rem;
+  }
+  @media #{$lg-device} {
+    font-size: 2.2rem;
+  }
+  @media #{$xl-device} {
+    font-size: 2.4rem;
+  }
+}
+
+h3 {
+  font-size: 1.8rem;
+  @media #{$xs-device} {
+    font-size: 1.4rem;
+  }
+  @media #{$sm-device} {
+    font-size: 1.6rem;
+  }
+  @media #{$lg-device} {
+    font-size: 1.8rem;
+  }
+  @media #{$xl-device} {
+    font-size: 2rem;
+  }
+}
+
+body {
+  min-width: 32rem;
+  font-family: sans-serif;
+}
+
+p,
+div {
+  margin: 0;
+  padding: 0;
+}

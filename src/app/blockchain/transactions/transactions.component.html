@@ -1,0 +1,10 @@
+<p>transactions works!</p>
+
+<ng-container></ng-container>
+
+<div *ngFor="let item of transactions$ | async">
+  <div>ID: {{ item.linearId }}</div>
+  <div>Value: {{ item.amount }}</div>
+</div>
+
+<button (click)="onFetchAll()">Fetch</button>

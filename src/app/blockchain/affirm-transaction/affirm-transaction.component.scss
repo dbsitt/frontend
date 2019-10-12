@@ -1,0 +1,13 @@
+.uploader {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit,
+.file {
+  width: 20rem;
+}
+
+.file-chooser {
+  margin-bottom: 2rem;
+}

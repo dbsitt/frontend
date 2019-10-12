@@ -1,0 +1,21 @@
+a {
+  margin-right: 0.5rem;
+  text-decoration: none;
+
+  &:hover {
+    color: orangered;
+  }
+}
+
+.active-link {
+  color: red;
+  text-decoration: underline;
+  text-decoration-color: orangered;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+}

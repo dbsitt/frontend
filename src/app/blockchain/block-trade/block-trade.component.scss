@@ -1,0 +1,17 @@
+.uploader {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit,
+.file {
+  width: 20rem;
+}
+
+.file-chooser {
+  margin-bottom: 1rem;
+}
+
+.bold {
+  font-weight: bold;
+}

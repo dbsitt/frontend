@@ -1,0 +1,61 @@
+$xs-device: 'only screen and (min-width : 320px)';
+$sm-device: 'only screen and (min-width : 450px)';
+$md-device: 'only screen and (min-width : 768px)';
+$lg-device: 'only screen and (min-width : 900px)';
+$xl-device: 'only screen and (min-width : 1200px)';
+
+$color-primary: #55c57a;
+$color-primary-contrast: #fff;
+$color-primary-light: #aaff00;
+$color-primary-light-contrast: green;
+$color-primary-dark: green;
+$color-primary-dark-contrast: #fff;
+$color-primary-accent: #3ff000;
+$color-primary-accent-contrast: #d6dbd6;
+
+$color-secondary: blue;
+$color-secondary-contrast: rgb(255, 255, 255);
+$color-secondary-light: green;
+$color-secondary-light-contrast: green;
+$color-secondary-dark: green;
+$color-secondary-dark-contrast: green;
+$color-secondary-accent: green;
+$color-secondary-accent-contrast: green;
+
+$color-dark: #222;
+$color-dark-contrast: #fff;
+$color-dark-light: #555;
+$color-dark-light-contrast: green;
+$color-dark-dark: #000;
+$color-dark-dark-contrast: green;
+$color-dark-accent: green;
+$color-dark-accent-contrast: green;
+
+$color-light: #eee;
+$color-light-contrast: rgb(39, 38, 38);
+$color-light-light: #fff;
+$color-light-light-contrast: rgb(0, 0, 0);
+$color-light-dark: #aaa;
+$color-light-dark-contrast: green;
+$color-light-accent: #eee;
+$color-light-accent-contrast: green;
+
+$light-gray-1: #eee;
+$light-gray-2: #bbb;
+$dark-gray-1: #222;
+$dark-gray-2: #777;
+
+$font-primary-color: #444;
+
+$margin-big: 5rem;
+$margin-medium: 2.5rem;
+$margin-small: 1rem;
+
+$padding-big: 5rem;
+$padding-medium: 2.5rem;
+$padding-small: 1rem;
+
+:export {
+  colorPrimary: $color-primary;
+  colorSecondary: $color-secondary;
+}
