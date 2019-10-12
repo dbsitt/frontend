@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BlockTrade } from '../blockchain';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-data-upload',
@@ -12,7 +13,7 @@ export class BlockTradeComponent implements OnInit {
 
   content: BlockTrade;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit() {}
 
@@ -34,7 +35,11 @@ export class BlockTradeComponent implements OnInit {
 
   onSubmit() {
     if (this.content) {
-      console.log(this.content);
+      this.httpClient
+        .get('http://3.1.246.227:10050/execution-states')
+        .subscribe(() => {
+          console.log('test');
+        });
     } else {
       this.snackBar.open('Please select a file first', 'Close', {
         duration: 2000,
