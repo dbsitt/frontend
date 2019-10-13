@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import * as fromBlockchain from './blockchain.reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { BlockchainEffects } from './blockchain.effects';
 import { AffirmTransactionComponent } from './affirm-transaction/affirm-transaction.component';
 import { AllocateTransactionComponent } from './allocate-transaction/allocate-transaction.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -65,7 +64,6 @@ const blockchainRoutes: Routes = [
     StoreModule.forFeature('blockchain', fromBlockchain.blockchainReducer, {
       metaReducers: fromBlockchain.metaReducers,
     }),
-    EffectsModule.forFeature([BlockchainEffects]),
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
