@@ -54,6 +54,8 @@
     <router-outlet></router-outlet>
   </div>
   <div class="footer">
-    Copyright 2019
+    <i class="material-icons">copyright</i>
+    &nbsp; Copyright 2019
   </div>
+  <app-loading-mask *ngIf="isLoading$ | async"></app-loading-mask>
 </div>

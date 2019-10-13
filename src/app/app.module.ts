@@ -19,9 +19,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './interceptors';
+import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent, AuthComponent],
+  declarations: [AppComponent, NotFoundComponent, AuthComponent, LoadingMaskComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

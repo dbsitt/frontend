@@ -7,7 +7,9 @@ import { Store, select } from '@ngrx/store';
 import { UserState } from 'src/app/store/user.reducers';
 import { Account } from 'src/app/store/user';
 import { getCurrentUser } from 'src/app/store/user.selector';
-import { filter } from 'rxjs/operators';
+import { filter, finalize } from 'rxjs/operators';
+import { UiState } from 'src/app/store/ui.reducer';
+import { setLoading } from 'src/app/store/ui.actions';
 
 @Component({
   selector: 'app-block-trade',
@@ -27,7 +29,8 @@ export class BlockTradeComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
-    private userStore: Store<UserState>
+    private userStore: Store<UserState>,
+    private uiStore: Store<UiState>
   ) {}
 
   ngOnInit() {
@@ -42,11 +45,17 @@ export class BlockTradeComponent implements OnInit {
     if (e.target.files.length > 0) {
       this.file = e.target.files[0];
       fileReader.onload = (res: any) => {
-        const str = res.target.result.toString();
+        try {
+          const str = res.target.result.toString();
 
-        const parsed: BlockTrade = JSON.parse(str);
+          const parsed: BlockTrade = JSON.parse(str);
 
-        this.content = parsed;
+          this.content = parsed;
+        } catch (error) {
+          this.snackBar.open('File cannot be parsed to json', 'Close', {
+            duration: 2000,
+          });
+        }
       };
 
       fileReader.readAsText(this.file);
@@ -56,7 +65,12 @@ export class BlockTradeComponent implements OnInit {
   onSubmit() {
     if (this.content) {
       if (this.currentUserId === 'Broker1') {
-        this.tradeResponse$ = this.httpClient.get('execution-states');
+        this.uiStore.dispatch(setLoading({ value: true }));
+        this.tradeResponse$ = this.httpClient.get('execution-states').pipe(
+          finalize(() => {
+            this.uiStore.dispatch(setLoading({ value: false }));
+          })
+        );
       } else {
         this.snackBar.open('Behavior not allowed for this user', 'Close', {
           duration: 2000,
