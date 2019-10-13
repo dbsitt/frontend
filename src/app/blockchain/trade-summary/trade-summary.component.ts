@@ -62,6 +62,10 @@ export class TradeSummaryComponent implements OnInit {
   }
 
   get product() {
-    return 'Bond';
+    const { bond } = this.execution.product.security;
+    if (bond) {
+      return 'Bond';
+    }
+    return 'No Product';
   }
 }

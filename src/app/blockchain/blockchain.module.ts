@@ -15,13 +15,14 @@ import {
   MatSnackBarModule,
   MatCardModule,
 } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { BlockTradeComponent } from './block-trade/block-trade.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccountSummaryComponent } from './account-summary/account-summary.component';
 import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
+import { APIInterceptor } from '../interceptors';
 
 const blockchainRoutes: Routes = [
   {
@@ -72,6 +73,13 @@ const blockchainRoutes: Routes = [
     MatCardModule,
     HttpClientModule,
     NgxJsonViewerModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: APIInterceptor,
+      multi: true,
+    },
   ],
 })
 export class BlockchainModule {}

@@ -35,11 +35,7 @@ export class BlockTradeComponent implements OnInit {
 
   onSubmit() {
     if (this.content) {
-      this.httpClient
-        .get('http://3.1.246.227:10050/execution-states')
-        .subscribe(() => {
-          console.log('test');
-        });
+      this.httpClient.get('execution-states').subscribe(() => {});
     } else {
       this.snackBar.open('Please select a file first', 'Close', {
         duration: 2000,
