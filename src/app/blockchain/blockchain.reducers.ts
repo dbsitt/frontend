@@ -5,11 +5,17 @@ import { environment } from 'src/environments/environment.prod';
 
 export interface BlockchainState {
   transactions: Transaction[];
+  confirmation: string;
+  allocation: string;
+  affirmation: string;
   selected: string;
 }
 
 const initialBlockchainState: BlockchainState = {
   transactions: [],
+  confirmation: null,
+  allocation: null,
+  affirmation: null,
   selected: null,
 };
 

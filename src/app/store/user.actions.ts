@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Account } from './user';
 
 export enum UserAction {
   setUser = '[User] Set User',
@@ -6,5 +7,5 @@ export enum UserAction {
 
 export const setUser = createAction(
   UserAction.setUser,
-  props<{ user: string }>()
+  props<{ user: Account }>()
 );

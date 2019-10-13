@@ -5,5 +5,5 @@ export const userState = createFeatureSelector<UserState>('user');
 
 export const getCurrentUser = createSelector(
   userState,
-  (state: UserState) => state.user
+  (state: UserState) => state.currentUser
 );

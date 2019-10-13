@@ -1,18 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import { setUser } from './user.actions';
+import { Account } from './user';
 
 export interface UserState {
-  user: string;
+  currentUser: Account;
 }
 
 const initialState: UserState = {
-  user: 'Broker1',
+  currentUser: null,
 };
 
 export const userReducer = createReducer(
   initialState,
   on(setUser, (state, props) => ({
     ...state,
-    user: props.user,
+    currentUser: props.user,
   }))
 );

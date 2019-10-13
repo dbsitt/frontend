@@ -44,7 +44,6 @@ body {
   display: flex;
   flex-direction: column;
   width: 90%;
-  min-width: 800px;
 }
 
 .content-viewer {
@@ -58,4 +57,6 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+  min-width: 725px;
 }

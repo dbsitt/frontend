@@ -1,12 +1,13 @@
-<mat-card>
+<!-- Should only be visible for broker and client -->
+<mat-card *ngIf="(account$ | async) as account">
   <mat-card-title>
     <i class="material-icons">account_balance</i>
     Account Summary</mat-card-title
   >
   <mat-card-content>
     <div class="summary">
-      <div style="margin-right: 35%;">Cash Account: {{ cashAccount }}</div>
-      <div>Security Holdings: {{ securityHolding }}</div>
+      <div style="margin-right: 35%;">Cash Account: {{ account.cashAccount }}</div>
+      <div>Security Holdings: {{ account.securityHolding }}</div>
     </div>
   </mat-card-content>
 </mat-card>

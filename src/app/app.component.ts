@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UserState } from './store/user.reducers';
 import { setUser } from './store/user.actions';
-import { getCurrentUser } from './store/user.selector';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Account } from './store/user';
 
 @Component({
   selector: 'app-root',
@@ -13,16 +14,34 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   constructor(private userStore: Store<UserState>) {}
 
-  currentUser$: Observable<string>;
+  userIdChanged: Subject<string> = new Subject<string>();
+
+  userId: string;
 
   ngOnInit(): void {
-    this.currentUser$ = this.userStore.pipe(select(getCurrentUser));
+    this.userIdChanged
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(model => {
+        this.userId = model;
+        if (model === 'Broker1') {
+          // TODO change to api call
+          const user: Account = {
+            id: model,
+            cashAccount: 123,
+            securityHolding: '12345',
+            role: 'BROKER',
+          };
+          this.userStore.dispatch(setUser({ user }));
+        } else {
+          this.userStore.dispatch(setUser({ user: null }));
+        }
+      });
   }
 
   onKeyup(event) {
-    const { value } = event.target;
-    if (value) {
-      this.userStore.dispatch(setUser({ user: event.target.value }));
-    }
+    this.userIdChanged.next(event.target.value);
   }
 }

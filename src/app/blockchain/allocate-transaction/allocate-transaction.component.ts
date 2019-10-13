@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
+import { Account } from 'src/app/store/user';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-allocate-transaction',
@@ -15,7 +17,7 @@ export class AllocateTransactionComponent implements OnInit {
 
   content: any;
 
-  currentUser$: Observable<string>;
+  currentUser$: Observable<Account>;
   currentUser: string = null;
 
   constructor(
@@ -25,8 +27,8 @@ export class AllocateTransactionComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser$ = this.userStore.pipe(select(getCurrentUser));
-    this.currentUser$.subscribe(user => {
-      this.currentUser = user;
+    this.currentUser$.pipe(filter(user => user !== null)).subscribe(user => {
+      this.currentUser = user.id;
     });
   }
 
