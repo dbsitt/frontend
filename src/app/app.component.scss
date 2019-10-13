@@ -38,6 +38,8 @@
 .active-link {
   color: $color-primary-accent;
   text-decoration: none;
+  font-weight: bold;
+  background-color: white;
 }
 
 .footer {
@@ -92,6 +94,23 @@
 .logo {
   margin-right: 0.2rem;
   color: $color-primary-contrast;
+
+  &--animate {
+    &:hover {
+      animation: rotateClockwise 2s infinite;
+      box-shadow: $color-light-light 0px 0px 10px 1px;
+      border-radius: 50%;
+    }
+  }
+}
+
+@keyframes rotateClockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .user-label {

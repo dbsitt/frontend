@@ -1,3 +1,5 @@
+@import '../../shared/styles/variables.scss';
+
 .flow {
   display: flex;
   width: 96%;
@@ -24,11 +26,17 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  background-color: red;
+  background-color: $color-primary;
   color: white;
+  font-weight: bold;
   cursor: pointer;
+  font-size: 12px;
+  border: 2px solid white;
+  transition: all 0.5s ease-in-out;
   &--active {
     border: 2px solid orange;
   }
-  font-size: 12px;
+  &:hover {
+    border: 2px solid orange;
+  }
 }

@@ -1,3 +1,5 @@
+@import '../shared/styles/variables.scss';
+
 .mask {
   width: 100%;
   height: 100vh;
@@ -5,7 +7,7 @@
   top: 0;
   left: 0;
   background-color: rgba($color: #000000, $alpha: 0.5);
-  z-index: 100;
+  z-index: 1000;
 }
 
 :host {
@@ -21,4 +23,24 @@
 
 .message {
   position: absolute;
+  z-index: 1001;
+}
+
+.loading-logo {
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: $color-primary-light 0px 0px 10px 1px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 5rem;
+  animation: rotateClockwise 2s infinite;
+  color: $color-primary;
+}
+
+@keyframes rotateClockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
