@@ -40,8 +40,8 @@
       >
     </nav>
     <div class="user-wrapper">
-      <i class="material-icons">account_box</i>
-      <label for="active-user">Active User: &nbsp;</label>
+      <i class="material-icons logo">account_box</i>
+      <label for="active-user" class="user-label">Active User: &nbsp;</label>
       <input
         id="active-user"
         placeholder="Active User"
@@ -50,5 +50,10 @@
       />
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <div class="router-outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    Copyright 2019
+  </div>
 </div>

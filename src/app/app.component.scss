@@ -1,23 +1,41 @@
+@import 'shared/styles/variables.scss';
+
 #app-container {
   height: 100vh;
-  width: 96%;
-  margin-left: 2%;
-  margin-top: 1rem;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
   margin-right: 0.5rem;
+  color: $color-primary-contrast;
   text-decoration: none;
 
   &:hover {
-    color: orangered;
+    text-decoration: underline;
   }
 }
 
 .active-link {
-  color: red;
   text-decoration: underline;
-  text-decoration-color: orangered;
+  color: $color-dark;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 0;
+  color: $color-primary-contrast;
+  width: 100%;
+  height: 2rem;
+  min-height: 2rem;
+  margin-top: $margin-medium;
+  background-color: $color-primary;
+  margin-top: auto;
 }
 
 .header {
@@ -26,11 +44,21 @@ a {
   justify-content: space-between;
   width: 100%;
   margin-bottom: 2.5rem;
+  background-color: $color-primary;
+  height: 5rem;
+  min-height: 5rem;
+}
+
+.router-outlet {
+  width: 96%;
+  margin-left: 2%;
+  margin-bottom: $margin-medium;
 }
 
 .user-wrapper {
   display: flex;
   align-items: center;
+  margin-right: 1rem;
 }
 
 #active-user {
@@ -39,11 +67,17 @@ a {
 }
 
 .routes {
+  padding-left: 0.5rem;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .logo {
   margin-right: 0.2rem;
-  color: black;
+  color: $color-primary-contrast;
+}
+
+.user-label {
+  color: $color-primary-contrast;
 }

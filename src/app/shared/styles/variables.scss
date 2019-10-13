@@ -4,14 +4,14 @@ $md-device: 'only screen and (min-width : 768px)';
 $lg-device: 'only screen and (min-width : 900px)';
 $xl-device: 'only screen and (min-width : 1200px)';
 
-$color-primary: #55c57a;
+$color-primary: #f44336;
 $color-primary-contrast: #fff;
-$color-primary-light: #aaff00;
-$color-primary-light-contrast: green;
-$color-primary-dark: green;
+$color-primary-light: rgb(240, 87, 87);
+$color-primary-light-contrast: rgb(112, 83, 83);
+$color-primary-dark: rgb(126, 6, 6);
 $color-primary-dark-contrast: #fff;
-$color-primary-accent: #3ff000;
-$color-primary-accent-contrast: #d6dbd6;
+$color-primary-accent: rgb(223, 152, 22);
+$color-primary-accent-contrast: rgb(88, 80, 6);
 
 $color-secondary: blue;
 $color-secondary-contrast: rgb(255, 255, 255);
@@ -54,8 +54,3 @@ $margin-small: 1rem;
 $padding-big: 5rem;
 $padding-medium: 2.5rem;
 $padding-small: 1rem;
-
-:export {
-  colorPrimary: $color-primary;
-  colorSecondary: $color-secondary;
-}
