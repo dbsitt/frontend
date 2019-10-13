@@ -9,19 +9,35 @@
   flex-direction: column;
 }
 
-a {
-  margin-right: 0.5rem;
-  color: $color-primary-contrast;
+.link {
   text-decoration: none;
+  color: #fff;
+  transition: all 0.5s;
+  background-image: linear-gradient(
+    120deg,
+    transparent 0%,
+    transparent 50%,
+    #fff 50%
+  );
+  background-size: 230%;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
 
   &:hover {
     text-decoration: underline;
+    transition: all 0.5s;
+    color: $color-primary-light;
+    text-decoration-color: $color-primary-accent;
+    background-position-x: 100%;
+    color: $color-primary-accent;
+    transform: translateX(0.2rem);
   }
 }
 
 .active-link {
-  text-decoration: underline;
-  color: $color-dark;
+  color: $color-primary-accent;
+  text-decoration: none;
 }
 
 .footer {
