@@ -17,5 +17,16 @@ a {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 90%;
+  width: 94%;
+  margin-bottom: 2.5rem;
+}
+
+.user-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+#active-user {
+  // border-radius: 1px;
+  padding-left: 0.5rem;
 }
