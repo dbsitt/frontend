@@ -7,11 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./monitoring.component.scss'],
 })
 export class MonitoringComponent implements OnInit {
+  currentStep = null;
   constructor(private router: Router) {}
 
   ngOnInit() {}
 
-  navigateToUrl(url) {
-    this.router.navigateByUrl(url);
+  switchView(step) {
+    this.currentStep = step;
   }
 }

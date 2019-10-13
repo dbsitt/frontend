@@ -1,10 +1,22 @@
 .flow {
   display: flex;
+}
+
+.flow-diagram {
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 20%;
+}
+
+.current-step {
+  width: 80%;
 }
 
 .step {
-  width: 6em;
+  min-width: 6rem;
+  min-height: 6rem;
+  width: 6rem;
   height: 6rem;
   border-radius: 50%;
   display: flex;
@@ -17,4 +29,5 @@
   &--active {
     border: 2px solid orange;
   }
+  font-size: 12px;
 }

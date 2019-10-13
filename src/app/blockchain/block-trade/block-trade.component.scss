@@ -1,11 +1,10 @@
+:host {
+  width: 100%;
+}
+
 .uploader {
   display: flex;
   flex-direction: column;
-}
-
-.submit,
-.file {
-  width: 20rem;
 }
 
 .file-chooser {
@@ -18,4 +17,8 @@
 
 .summary-container {
   margin-bottom: 1rem;
+}
+
+.full-width {
+  width: 100%;
 }

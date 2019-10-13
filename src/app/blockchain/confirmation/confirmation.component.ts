@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
-  selector: 'app-confirmation',
+  selector: 'app-confirm-transaction',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
 })

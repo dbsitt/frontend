@@ -4,7 +4,7 @@ import { BlockTrade } from '../blockchain';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-data-upload',
+  selector: 'app-block-trade',
   templateUrl: './block-trade.component.html',
   styleUrls: ['./block-trade.component.scss'],
 })

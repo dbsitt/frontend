@@ -1,26 +1,54 @@
 <div class="flow">
-  <div
-    class="step"
-    (click)="navigateToUrl('transactions')"
-    [ngClass]="{ 'step--active': true }"
-  >
-    <div>
-      Block Trade
+  <div class="flow-diagram">
+    <div
+      class="step"
+      (click)="switchView('block-trade')"
+      [ngClass]="{ 'step--active': currentStep === 'block-trade' }"
+    >
+      <div>
+        Block Trade
+      </div>
+    </div>
+    <div class="material-icons">arrow_downward</div>
+    <div
+      class="step"
+      (click)="switchView('allocate')"
+      [ngClass]="{ 'step--active': currentStep === 'allocate' }"
+    >
+      <div>
+        Allocate
+      </div>
+    </div>
+    <div class="material-icons">arrow_downward</div>
+    <div
+      class="step"
+      (click)="switchView('affirm')"
+      [ngClass]="{ 'step--active': currentStep === 'affirm' }"
+    >
+      <div>
+        Affirmation
+      </div>
+    </div>
+    <div class="material-icons">arrow_downward</div>
+    <div
+      class="step"
+      (click)="switchView('confirm')"
+      [ngClass]="{ 'step--active': currentStep === 'confirm' }"
+    >
+      <div>
+        Confirmation
+      </div>
     </div>
   </div>
-  <div class="step" (click)="navigateToUrl('transactions/allocate')">
-    <div>
-      Allocate
-    </div>
-  </div>
-  <div class="step" (click)="navigateToUrl('transactions/affirm')">
-    <div>
-      Affirmation
-    </div>
-  </div>
-  <div class="step" (click)="navigateToUrl('transactions/confirm')">
-    <div>
-      Confirmation
-    </div>
+  <div class="current-step" [ngSwitch]="currentStep">
+    <app-block-trade *ngSwitchCase="'block-trade'"></app-block-trade>
+    <app-allocate-transaction
+      *ngSwitchCase="'allocate'"
+    ></app-allocate-transaction>
+    <app-affirm-transaction *ngSwitchCase="'affirm'"></app-affirm-transaction>
+    <app-confirm-transaction
+      *ngSwitchCase="'confirm'"
+    ></app-confirm-transaction>
+    <div *ngSwitchDefault></div>
   </div>
 </div>

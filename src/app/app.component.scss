@@ -27,6 +27,16 @@ a {
 }
 
 #active-user {
-  // border-radius: 1px;
   padding-left: 0.5rem;
+  width: 7rem;
+}
+
+.routes {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 0.2rem;
+  color: black;
 }
