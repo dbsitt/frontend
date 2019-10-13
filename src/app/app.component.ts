@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   userIdChanged: Subject<string> = new Subject<string>();
 
-  userId: string;
+  userId = '';
 
   ngOnInit(): void {
     this.userIdChanged
@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe(model => {
-        this.userId = model;
         if (model === 'Broker1') {
           // TODO change to api call
           const user: Account = {
@@ -42,6 +41,8 @@ export class AppComponent implements OnInit {
   }
 
   onKeyup(event) {
-    this.userIdChanged.next(event.target.value);
+    const { value } = event.target;
+    this.userId = value;
+    this.userIdChanged.next(value);
   }
 }

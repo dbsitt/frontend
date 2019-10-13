@@ -2,6 +2,12 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BlockTrade } from '../blockchain';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { UserState } from 'src/app/store/user.reducers';
+import { Account } from 'src/app/store/user';
+import { getCurrentUser } from 'src/app/store/user.selector';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-block-trade',
@@ -13,9 +19,23 @@ export class BlockTradeComponent implements OnInit {
 
   content: BlockTrade;
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {}
+  tradeResponse$: Observable<any>;
 
-  ngOnInit() {}
+  currentUser$: Observable<Account>;
+  currentUserId: string;
+
+  constructor(
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar,
+    private userStore: Store<UserState>
+  ) {}
+
+  ngOnInit() {
+    this.currentUser$ = this.userStore.pipe(select(getCurrentUser));
+    this.currentUser$.pipe(filter(user => user !== null)).subscribe(user => {
+      this.currentUserId = user.id;
+    });
+  }
 
   fileChanged(e) {
     const fileReader = new FileReader();
@@ -35,7 +55,13 @@ export class BlockTradeComponent implements OnInit {
 
   onSubmit() {
     if (this.content) {
-      this.httpClient.get('execution-states').subscribe(() => {});
+      if (this.currentUserId === 'Broker1') {
+        this.tradeResponse$ = this.httpClient.get('execution-states');
+      } else {
+        this.snackBar.open('Behavior not allowed for this user', 'Close', {
+          duration: 2000,
+        });
+      }
     } else {
       this.snackBar.open('Please select a file first', 'Close', {
         duration: 2000,

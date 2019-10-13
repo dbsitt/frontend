@@ -23,7 +23,7 @@
       </button>
     </form>
   </mat-card-content>
-  <mat-card *ngIf="content">
-    <app-trade-summary [data]="content"></app-trade-summary>
+  <mat-card *ngIf="tradeResponse$ | async">
+    <app-trade-summary [data]="tradeResponse$ | async"></app-trade-summary>
   </mat-card>
 </mat-card>
