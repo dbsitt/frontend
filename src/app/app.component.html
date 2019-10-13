@@ -1,52 +1,54 @@
-<div class="header">
-  <nav class="routes">
-    <a [routerLink]="['/']">
-      <span class="material-icons logo">monetization_on</span>
-    </a>
-    <a
-      [routerLink]="['/transactions']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Block Trade
-    </a>
-    <a
-      [routerLink]="['/transactions/allocate']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Allocate
-    </a>
-    <a
-      [routerLink]="['/transactions/affirm']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Affirmation
-    </a>
-    <a
-      [routerLink]="['/transactions/confirm']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Confirmation</a
-    >
-    <a
-      [routerLink]="['/transactions/monitor']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Monitor</a
-    >
-  </nav>
-  <div class="user-wrapper">
-    <i class="material-icons">account_box</i>
-    <label for="active-user">Active User: &nbsp;</label>
-    <input
-      id="active-user"
-      placeholder="Active User"
-      [value]="currentUser$ | async"
-      (keyup)="onKeyup($event)"
-    />
+<div id="app-container">
+  <div class="header">
+    <nav class="routes">
+      <a [routerLink]="['/']">
+        <span class="material-icons logo">monetization_on</span>
+      </a>
+      <a
+        [routerLink]="['/transactions']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Block Trade
+      </a>
+      <a
+        [routerLink]="['/transactions/allocate']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Allocate
+      </a>
+      <a
+        [routerLink]="['/transactions/affirm']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Affirmation
+      </a>
+      <a
+        [routerLink]="['/transactions/confirm']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Confirmation</a
+      >
+      <a
+        [routerLink]="['/transactions/monitor']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Monitor</a
+      >
+    </nav>
+    <div class="user-wrapper">
+      <i class="material-icons">account_box</i>
+      <label for="active-user">Active User: &nbsp;</label>
+      <input
+        id="active-user"
+        placeholder="Active User"
+        [value]="currentUser$ | async"
+        (keyup)="onKeyup($event)"
+      />
+    </div>
   </div>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>
