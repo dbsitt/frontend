@@ -47,6 +47,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
       )
       .subscribe(value => {
         this.userId = value;
+        this.setUser();
       });
 
     // Default

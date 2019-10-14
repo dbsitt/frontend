@@ -126,10 +126,31 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   getProductForRecord(execution: any) {
-    const { bond } = execution.execution.product.security;
+    const {
+      bond,
+      convertibleBond,
+      equity,
+      exchangeTradedFund,
+      mortgageBackedSecurity,
+      mutualFund,
+      warrant,
+    } = execution.execution.product.security;
     if (bond) {
       return 'Bond';
+    } else if (convertibleBond) {
+      return 'Convertible Bond';
+    } else if (equity) {
+      return 'Equity';
+    } else if (exchangeTradedFund) {
+      return 'Exchange Traded Fund';
+    } else if (mortgageBackedSecurity) {
+      return 'Mortgage Backed Security';
+    } else if (mutualFund) {
+      return 'Mutual Fund';
+    } else if (warrant) {
+      return 'Warrant';
     }
+
     return 'No Product';
   }
 }
