@@ -53,6 +53,10 @@ export class BlockTradeComponent implements OnInit {
   }
 
   get isVisible() {
+    return this.currentUserId === 'Broker1' || this.currentUserId === 'Client1';
+  }
+
+  get hasExecutionAccess() {
     return this.currentUserId === 'Broker1';
   }
 
@@ -81,12 +85,9 @@ export class BlockTradeComponent implements OnInit {
   onSubmit() {
     if (this.content) {
       if (this.currentUserId === 'Broker1') {
-        const json = JSON.stringify(this.content);
         this.uiStore.dispatch(setLoading({ value: true }));
         this.httpClient
-          .post(environment.brokerApi + '/execution', {
-            json,
-          })
+          .post(environment.brokerApi + '/execution', this.content)
           .pipe(
             finalize(() => {
               this.uiStore.dispatch(setLoading({ value: false }));

@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './interceptors';
 import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatSelectModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -39,6 +39,7 @@ import { MatSnackBarModule } from '@angular/material';
     BrowserAnimationsModule,
     MatSnackBarModule,
     FormsModule,
+    MatSelectModule,
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },

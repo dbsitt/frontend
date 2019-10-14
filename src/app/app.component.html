@@ -47,12 +47,15 @@
     <div class="user-wrapper">
       <i class="material-icons logo">account_box</i>
       <label for="active-user" class="user-label">Active User: &nbsp;</label>
-      <input
-        id="active-user"
-        placeholder="Active User"
+      <select
+        required
         [value]="userId"
-        (keyup)="onKeyup($event)"
-      />
+        class="user-select"
+        (change)="onUserChange($event)"
+      >
+        <option value="Broker1">Broker1</option>
+        <option value="Client1">Client1</option>
+      </select>
       <button (click)="setUser()">Set</button>
     </div>
   </div>

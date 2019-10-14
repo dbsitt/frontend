@@ -1,11 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap, finalize } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
 import { MatSnackBar } from '@angular/material';
 import { environment } from 'src/environments/environment';
+import { UserState } from 'src/app/store/user.reducers';
+import { getCurrentUser } from 'src/app/store/user.selector';
 
 @Component({
   selector: 'app-execution-states',
@@ -19,10 +21,28 @@ export class ExecutionStatesComponent implements OnInit {
 
   @Input() type: string;
 
+  checkedExecutionList: string[] = [];
+
+  tableData = [];
+
+  get displayedColumns() {
+    let columns = [];
+    this.userStore.pipe(select(getCurrentUser)).subscribe(user => {
+      if (user.role === 'BROKER') {
+        columns = ['id', 'status', 'type'];
+      } else if (user.role === 'CLIENT') {
+        columns = ['id', 'status', 'type', 'action'];
+      }
+    });
+
+    return columns;
+  }
+
   constructor(
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
-    private uiStore: Store<UiState>
+    private uiStore: Store<UiState>,
+    private userStore: Store<UserState>
   ) {}
 
   ngOnInit() {
@@ -43,9 +63,17 @@ export class ExecutionStatesComponent implements OnInit {
         })
       )
       .subscribe(
-        e => {
+        (e: any) => {
           if (e !== null) {
             this.data = e;
+
+            this.tableData = e.map(ex => {
+              return {
+                id: ex.execution.meta.globalKey,
+                status: ex.status,
+                type: this.getProductForRecord(ex),
+              };
+            });
           }
         },
         () => {
@@ -59,6 +87,10 @@ export class ExecutionStatesComponent implements OnInit {
           );
         }
       );
+  }
+
+  performAction(e) {
+    console.log(e);
   }
 
   getTradeDateForRecord(execution: any) {

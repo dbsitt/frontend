@@ -1,7 +1,7 @@
 <div class="summary-container main-card">
   <app-account-summary></app-account-summary>
 </div>
-<mat-card class="main-card">
+<mat-card class="main-card" *ngIf="hasExecutionAccess">
   <mat-card-title>
     <i class="material-icons">attach_money</i>
     Block Trade
@@ -24,12 +24,9 @@
     </form>
   </mat-card-content>
 </mat-card>
-<mat-card class="main-card">
+<mat-card class="main-card" *ngIf="isVisible">
   <mat-card-title>
     Execution States
   </mat-card-title>
-  <app-execution-states
-    [type]="'Broker'"
-    *ngIf="isVisible"
-  ></app-execution-states>
+  <app-execution-states [type]="'Broker'"></app-execution-states>
 </mat-card>

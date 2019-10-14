@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     this.setUser();
   }
 
-  onKeyup(event) {
+  onUserChange(event) {
     const { value } = event.target;
     this.userIdChanged$.next(value);
   }

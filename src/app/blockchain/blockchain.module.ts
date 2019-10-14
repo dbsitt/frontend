@@ -4,7 +4,6 @@ import { TransactionsComponent } from './transactions/transactions.component';
 import { Routes, RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import * as fromBlockchain from './blockchain.reducers';
-import { EffectsModule } from '@ngrx/effects';
 import { AffirmTransactionComponent } from './affirm-transaction/affirm-transaction.component';
 import { AllocateTransactionComponent } from './allocate-transaction/allocate-transaction.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import {
   MatButtonModule,
   MatSnackBarModule,
   MatCardModule,
+  MatTableModule,
 } from '@angular/material';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
@@ -73,6 +73,7 @@ const blockchainRoutes: Routes = [
     MatCardModule,
     HttpClientModule,
     NgxJsonViewerModule,
+    MatTableModule,
   ],
   providers: [
     {
