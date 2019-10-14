@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
+import { ApiService } from '../apiService';
 
 @Component({
   selector: 'app-execution-states',
@@ -15,8 +16,6 @@ import { getCurrentUser } from 'src/app/store/user.selector';
   styleUrls: ['./execution-states.component.scss'],
 })
 export class ExecutionStatesComponent implements OnInit {
-  rootHost = '';
-
   data: any = null;
 
   @Input() type: string;
@@ -42,50 +41,30 @@ export class ExecutionStatesComponent implements OnInit {
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
     private uiStore: Store<UiState>,
-    private userStore: Store<UserState>
+    private userStore: Store<UserState>,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {
-    if (this.type === 'Broker') {
-      this.rootHost = environment.brokerApi;
-    } else {
-      this.rootHost = environment.clientApi;
-    }
-    this.uiStore.dispatch(setLoading({ value: true }));
+    this.fetchExecutionStates();
+  }
 
+  fetchExecutionStates() {
+    this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .get(this.rootHost + '/execution-states')
+      .get(this.apiService.getBaseUrl() + '/execution-states')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })
       )
       .subscribe(
-        (e: any) => {
-          if (e !== null) {
-            this.data = e;
+        (response: any) => {
+          if (response !== null) {
+            this.data = response;
 
-            this.tableData = e.map(ex => {
-              let status: string;
-
-              const { closedState, meta } = ex.execution;
-              let type = closedState ? 'Closed' : 'Block';
-
-              if (closedState) {
-                status = closedState.state;
-              } else if (meta.globalKey === meta.externalKey) {
-                status = '-';
-                type = 'Closed';
-              } else {
-                status = ex.status;
-              }
-
-              return {
-                status,
-                type,
-                id: ex.execution.meta.globalKey,
-                underlying: this.getProductForRecord(ex),
-              };
+            this.tableData = this.mapBrokerExecutions(response).filter(exec => {
+              return exec.type.toLowerCase() === this.type.toLowerCase();
             });
           }
         },
@@ -100,6 +79,35 @@ export class ExecutionStatesComponent implements OnInit {
           );
         }
       );
+  }
+
+  mapBrokerExecutions(executions: any[]): any[] {
+    return executions.map(exec => {
+      let status: string;
+
+      const { closedState, meta } = exec.execution;
+
+      const isBlock = meta.globalKey === meta.externalKey;
+
+      const type = isBlock ? 'Block' : 'Allocation';
+
+      if (isBlock) {
+        if (closedState) {
+          status = closedState.state;
+        } else {
+          status = '-';
+        }
+      } else {
+        status = exec.status;
+      }
+
+      return {
+        status,
+        type,
+        id: exec.execution.meta.globalKey,
+        underlying: this.getProductForRecord(exec),
+      };
+    });
   }
 
   performAction(e) {
