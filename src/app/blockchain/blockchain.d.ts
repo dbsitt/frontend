@@ -44,3 +44,10 @@ export type Allocation = {
   };
   party: Party[];
 };
+
+export type ExecutionState = {
+  id: string;
+  type: string;
+  status: string;
+  underlying: string;
+};

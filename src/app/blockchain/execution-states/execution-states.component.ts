@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
 import { ApiService } from '../apiService';
+import { ExecutionState } from '../blockchain';
 
 @Component({
   selector: 'app-execution-states',
@@ -63,9 +64,13 @@ export class ExecutionStatesComponent implements OnInit {
           if (response !== null) {
             this.data = response;
 
-            this.tableData = this.mapBrokerExecutions(response).filter(exec => {
-              return exec.type.toLowerCase() === this.type.toLowerCase();
-            });
+            const filterFunction = this.allocationFilter.bind(this);
+            if (this.type === 'affirm') {
+            }
+
+            this.tableData = this.mapExecutions(response).filter(
+              filterFunction
+            );
           }
         },
         () => {
@@ -81,7 +86,11 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
-  mapBrokerExecutions(executions: any[]): any[] {
+  allocationFilter(exec) {
+    return exec.type.toLowerCase() === this.type.toLowerCase();
+  }
+
+  mapExecutions(executions: any[]): any[] {
     return executions.map(exec => {
       let status: string;
 
@@ -108,6 +117,13 @@ export class ExecutionStatesComponent implements OnInit {
         underlying: this.getProductForRecord(exec),
       };
     });
+  }
+
+  isActionEnabled(execution: ExecutionState): boolean {
+    if (this.type === 'allocation') {
+      return execution.status === 'UNAFFIRMED';
+    }
+    return true;
   }
 
   performAction(e) {
