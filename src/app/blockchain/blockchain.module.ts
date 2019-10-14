@@ -22,6 +22,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AccountSummaryComponent } from './account-summary/account-summary.component';
 import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 import { APIInterceptor } from '../interceptors';
+import { ExecutionStatesComponent } from './execution-states/execution-states.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -56,6 +57,7 @@ const blockchainRoutes: Routes = [
     MonitoringComponent,
     AccountSummaryComponent,
     TradeSummaryComponent,
+    ExecutionStatesComponent,
   ],
   imports: [
     CommonModule,

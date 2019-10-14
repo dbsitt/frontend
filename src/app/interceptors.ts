@@ -7,7 +7,6 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
@@ -19,13 +18,12 @@ export class APIInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const { api } = environment;
-    const apiReq = req.clone({ url: `${api}/${req.url}` });
+    const apiReq = req.clone();
     return next.handle(apiReq).pipe(
       catchError((err: HttpErrorResponse) => {
         let message = `Status ${err.status}. ${err.statusText}`;
         if (err.status === 0) {
-          message = `Endpoint '${api}/${req.url}' not found`;
+          message = `Endpoint '${req.url}' not found`;
         } else if (err.status === 404) {
           message = `404 Error`;
         } else if (err.status === 500) {
