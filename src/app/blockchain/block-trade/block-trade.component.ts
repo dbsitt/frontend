@@ -7,7 +7,12 @@ import { Store, select } from '@ngrx/store';
 import { UserState } from 'src/app/store/user.reducers';
 import { Account } from 'src/app/store/user';
 import { getCurrentUser } from 'src/app/store/user.selector';
-import { filter, finalize } from 'rxjs/operators';
+import {
+  filter,
+  finalize,
+  distinct,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
 import { environment } from 'src/environments/environment';
@@ -22,10 +27,12 @@ export class BlockTradeComponent implements OnInit {
 
   content: BlockTrade;
 
-  tradeResponse$: Observable<any>;
+  executionStates: any[];
 
   currentUser$: Observable<Account>;
   currentUserId: string;
+
+  executionStates$: Observable<any>;
 
   constructor(
     private httpClient: HttpClient,
@@ -36,9 +43,17 @@ export class BlockTradeComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser$ = this.userStore.pipe(select(getCurrentUser));
-    this.currentUser$.pipe(filter(user => user !== null)).subscribe(user => {
-      this.currentUserId = user.id;
+    this.currentUser$.pipe(distinctUntilChanged()).subscribe(user => {
+      if (user !== null) {
+        this.currentUserId = user.id;
+      } else {
+        this.currentUserId = null;
+      }
     });
+  }
+
+  get isVisible() {
+    return this.currentUserId === 'Broker1';
   }
 
   fileChanged(e) {
@@ -66,14 +81,20 @@ export class BlockTradeComponent implements OnInit {
   onSubmit() {
     if (this.content) {
       if (this.currentUserId === 'Broker1') {
+        const json = JSON.stringify(this.content);
         this.uiStore.dispatch(setLoading({ value: true }));
-        this.tradeResponse$ = this.httpClient
-          .get(environment.brokerApi + '/execution-states')
+        this.httpClient
+          .post(environment.brokerApi + '/execution', {
+            json,
+          })
           .pipe(
             finalize(() => {
               this.uiStore.dispatch(setLoading({ value: false }));
             })
-          );
+          )
+          .subscribe(res => {
+            console.log('DO SOMETHING', res);
+          });
       } else {
         this.snackBar.open('Behavior not allowed for this user', 'Close', {
           duration: 2000,

@@ -20,9 +20,15 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './interceptors';
 import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
+import { MatSnackBarModule } from '@angular/material';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent, AuthComponent, LoadingMaskComponent],
+  declarations: [
+    AppComponent,
+    NotFoundComponent,
+    AuthComponent,
+    LoadingMaskComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,6 +37,7 @@ import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     EffectsModule.forRoot([]),
     BrowserAnimationsModule,
+    MatSnackBarModule,
     FormsModule,
   ],
   providers: [

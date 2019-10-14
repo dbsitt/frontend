@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Account } from './store/user';
 import { UiState } from './store/ui.reducer';
 import { getIsLoading } from './store/ui.selector';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -16,14 +17,15 @@ import { getIsLoading } from './store/ui.selector';
 export class AppComponent implements OnInit {
   constructor(
     private userStore: Store<UserState>,
-    private uiStore: Store<UiState>
+    private uiStore: Store<UiState>,
+    private snackBar: MatSnackBar
   ) {}
 
   userIdChanged$: Subject<string> = new Subject<string>();
 
   isLoading$: Observable<boolean>;
 
-  userId = '';
+  userId = 'Broker1';
 
   ngOnInit(): void {
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
@@ -32,29 +34,46 @@ export class AppComponent implements OnInit {
         debounceTime(300),
         distinctUntilChanged()
       )
-      .subscribe(model => {
-        if (model === 'Broker1') {
-          // TODO change to api call
-          const user: Account = {
-            id: model,
-            cashAccount: 123,
-            securityHolding: '12345',
-            role: 'BROKER',
-          };
-          this.userStore.dispatch(setUser({ user }));
-          this.userId = model;
-        } else {
-          this.userStore.dispatch(setUser({ user: null }));
-        }
+      .subscribe(value => {
+        this.userId = value;
       });
 
     // Default
-    this.userIdChanged$.next('Broker1');
+    this.setUser();
   }
 
   onKeyup(event) {
     const { value } = event.target;
-    this.userId = value;
     this.userIdChanged$.next(value);
+  }
+
+  setUser() {
+    const username = this.userId;
+    if (username === 'Broker1') {
+      // TODO change to api call
+      const user: Account = {
+        id: username,
+        cashAccount: 123,
+        securityHolding: '12345',
+        role: 'BROKER',
+      };
+      this.userStore.dispatch(setUser({ user }));
+      this.userId = username;
+    } else if (username === 'Client1') {
+      const user: Account = {
+        id: username,
+        cashAccount: 123,
+        securityHolding: '12345',
+        role: 'CLIENT',
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      this.userId = username;
+    } else {
+      this.userStore.dispatch(setUser({ user: null }));
+      this.snackBar.open('User not found', 'Close', {
+        duration: 2000,
+      });
+    }
   }
 }

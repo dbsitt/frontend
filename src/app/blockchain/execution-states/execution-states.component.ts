@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
 import { MatSnackBar } from '@angular/material';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-execution-states',

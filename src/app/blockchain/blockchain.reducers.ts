@@ -1,7 +1,7 @@
 import { Transaction } from './blockchain';
 import { createReducer, on, MetaReducer } from '@ngrx/store';
 import { fetchAllSuccessful, setSelected } from './blockchain.actions';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 export interface BlockchainState {
   transactions: Transaction[];
