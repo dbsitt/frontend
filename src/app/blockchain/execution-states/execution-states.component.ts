@@ -29,9 +29,9 @@ export class ExecutionStatesComponent implements OnInit {
     let columns = [];
     this.userStore.pipe(select(getCurrentUser)).subscribe(user => {
       if (user.role === 'BROKER') {
-        columns = ['id', 'status', 'type'];
+        columns = ['id', 'type', 'status', 'underlying'];
       } else if (user.role === 'CLIENT') {
-        columns = ['id', 'status', 'type', 'action'];
+        columns = ['id', 'type', 'status', 'underlying', 'action'];
       }
     });
 
@@ -66,10 +66,25 @@ export class ExecutionStatesComponent implements OnInit {
             this.data = e;
 
             this.tableData = e.map(ex => {
+              let status: string;
+
+              const { closedState, meta } = ex.execution;
+              let type = closedState ? 'Closed' : 'Block';
+
+              if (closedState) {
+                status = closedState.state;
+              } else if (meta.globalKey === meta.externalKey) {
+                status = '-';
+                type = 'Closed';
+              } else {
+                status = ex.status;
+              }
+
               return {
+                status,
+                type,
                 id: ex.execution.meta.globalKey,
-                status: ex.status,
-                type: this.getProductForRecord(ex),
+                underlying: this.getProductForRecord(ex),
               };
             });
           }
