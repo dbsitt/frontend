@@ -23,7 +23,7 @@ import { AccountSummaryComponent } from './account-summary/account-summary.compo
 import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 import { APIInterceptor } from '../interceptors';
 import { ExecutionStatesComponent } from './execution-states/execution-states.component';
-import { ApiService } from './apiService';
+import { HelperService } from './helperService';
 
 const blockchainRoutes: Routes = [
   {
@@ -77,7 +77,7 @@ const blockchainRoutes: Routes = [
     MatTableModule,
   ],
   providers: [
-    ApiService,
+    HelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: APIInterceptor,

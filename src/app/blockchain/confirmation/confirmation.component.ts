@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { HelperService } from '../helperService';
+import { TradeFlow } from '../TradeFlow';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -6,38 +8,16 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
 })
-export class ConfirmationComponent implements OnInit {
-  file: any;
+export class ConfirmationComponent extends TradeFlow {
+  hasActionAccess = ['Broker1'];
 
-  content: any;
+  hasViewAccess = ['Broker1, Client1'];
 
-  constructor(private snackBar: MatSnackBar) {}
-
-  ngOnInit() {}
-
-  fileChanged(e) {
-    const fileReader = new FileReader();
-    if (e.target.files.length > 0) {
-      this.file = e.target.files[0];
-      fileReader.onload = (res: any) => {
-        const str = res.target.result.toString();
-
-        const parsed = JSON.parse(str);
-
-        this.content = parsed;
-      };
-
-      fileReader.readAsText(this.file);
-    }
+  constructor(helperService: HelperService, snackBar: MatSnackBar) {
+    super(helperService, snackBar);
   }
 
   onSubmit() {
-    if (this.content) {
-      console.log(this.content);
-    } else {
-      this.snackBar.open('Please select a file first', 'Close', {
-        duration: 2000,
-      });
-    }
+    this.helperService.postJson(this.content, this.hasActionAccess, '/confirm');
   }
 }

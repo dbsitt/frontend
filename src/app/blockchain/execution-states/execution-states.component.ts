@@ -1,14 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap, finalize, filter } from 'rxjs/operators';
+import { finalize, filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
 import { MatSnackBar } from '@angular/material';
-import { environment } from 'src/environments/environment';
 import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
-import { ApiService } from '../apiService';
+import { HelperService } from '../helperService';
 import { ExecutionState } from '../blockchain';
 
 @Component({
@@ -43,7 +42,7 @@ export class ExecutionStatesComponent implements OnInit {
     private snackBar: MatSnackBar,
     private uiStore: Store<UiState>,
     private userStore: Store<UserState>,
-    private apiService: ApiService
+    private apiService: HelperService
   ) {}
 
   ngOnInit() {
