@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { filter } from 'rxjs/operators';
+import { tap, finalize } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { UiState } from 'src/app/store/ui.reducer';
+import { setLoading } from 'src/app/store/ui.actions';
+import { MatSnackBar } from '@angular/material';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-execution-states',
@@ -8,19 +13,52 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./execution-states.component.scss'],
 })
 export class ExecutionStatesComponent implements OnInit {
-  url = 'http://3.1.246.227:10060/execution-states';
+  rootHost = '';
 
-  data: any;
+  data: any = null;
 
-  constructor(private httpClient: HttpClient) {}
+  @Input() type: string;
+
+  constructor(
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar,
+    private uiStore: Store<UiState>
+  ) {}
 
   ngOnInit() {
+    if (this.type === 'Broker') {
+      this.rootHost = environment.brokerApi;
+    } else {
+      this.rootHost = environment.clientApi;
+    }
+
     this.httpClient
-      .get(this.url)
-      .pipe(filter(res => res !== null))
-      .subscribe(e => {
-        this.data = e;
-      });
+      .get(this.rootHost + '/execution-states')
+      .pipe(
+        tap(() => {
+          this.uiStore.dispatch(setLoading({ value: true }));
+        }),
+        finalize(() => {
+          this.uiStore.dispatch(setLoading({ value: false }));
+        })
+      )
+      .subscribe(
+        e => {
+          if (e !== null) {
+            this.data = e;
+          }
+        },
+        () => {
+          this.data = null;
+          this.snackBar.open(
+            'Error occur when fetching execution-states',
+            'Close',
+            {
+              duration: 2000,
+            }
+          );
+        }
+      );
   }
 
   getTradeDateForRecord(execution: any) {

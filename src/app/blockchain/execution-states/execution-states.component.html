@@ -1,5 +1,5 @@
 <ng-container *ngIf="data">
-  <div *ngFor="let item of data">
+  <mat-card *ngFor="let item of data">
     <div>Event Ref: {{ item.eventRef }}</div>
     <div>Trade Date: {{ getTradeDateForRecord(item) }}</div>
     <div>Linear Id: {{ item.linearId }}</div>
@@ -13,32 +13,5 @@
     <div>Settlement Amount: {{ getSettlementAmountForRecord(item) }}</div>
     <div>Settlement Date: {{ getSettlementDateForRecord(item) }}</div>
     <br />
-  </div>
+  </mat-card>
 </ng-container>
-
-<!-- <div *ngIf="data">
-    <div>Event Date: {{ eventDate }}</div>
-    <div>Event Identifier: {{ eventIdentifier }}</div>
-    <div>
-      Parties
-      <div *ngFor="let party of parties">
-        <div style="margin-left: 1rem;">
-          Account Name: {{ party.account.accountName.value }}
-        </div>
-      </div>
-    </div>
-    <div>
-      Net Price: {{ priceObject.netPrice.amount }}
-      {{ priceObject.netPrice.currency.value }}
-    </div>
-    <div>Quantity: {{ quantity }}</div>
-    <products>Products: {{ productSecurity }}</products> -->
-<!-- <div>
-      Settlement Amount: {{ settlementTerms.settlementAmount.amount }}
-      {{ settlementTerms.settlementAmount.currency.value }}
-    </div>
-    <div>Settlement Date: {{ settlementDate }}</div>
-    <div>Trade Date: {{ tradeDate }}</div>
-    <div>Product: {{ product }}</div>
-  </div>
-   -->

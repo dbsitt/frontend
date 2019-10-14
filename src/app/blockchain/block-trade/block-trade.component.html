@@ -26,4 +26,8 @@
   <mat-card *ngIf="tradeResponse$ | async">
     <app-trade-summary [data]="tradeResponse$ | async"></app-trade-summary>
   </mat-card>
+  <!-- <app-execution-states
+    *ngIf="tradeResponse$ | async"
+    [type]="'Broker'"
+  ></app-execution-states> -->
 </mat-card>

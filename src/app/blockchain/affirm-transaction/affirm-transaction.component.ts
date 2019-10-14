@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { environment } from 'src/environments/environment';
+import { UiState } from 'src/app/store/ui.reducer';
+import { Store } from '@ngrx/store';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-affirm-transaction',
@@ -11,7 +15,11 @@ export class AffirmTransactionComponent implements OnInit {
 
   content: any;
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private uiStore: Store<UiState>,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit() {}
 
@@ -33,7 +41,7 @@ export class AffirmTransactionComponent implements OnInit {
 
   onSubmit() {
     if (this.content) {
-      console.log(this.content);
+      this.httpClient.get(environment.clientApi + '/affirmation');
     } else {
       this.snackBar.open('Please select a file first', 'Close', {
         duration: 2000,

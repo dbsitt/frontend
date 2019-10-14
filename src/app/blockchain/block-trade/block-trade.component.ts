@@ -10,6 +10,7 @@ import { getCurrentUser } from 'src/app/store/user.selector';
 import { filter, finalize } from 'rxjs/operators';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-block-trade',
@@ -66,11 +67,13 @@ export class BlockTradeComponent implements OnInit {
     if (this.content) {
       if (this.currentUserId === 'Broker1') {
         this.uiStore.dispatch(setLoading({ value: true }));
-        this.tradeResponse$ = this.httpClient.get('execution-states').pipe(
-          finalize(() => {
-            this.uiStore.dispatch(setLoading({ value: false }));
-          })
-        );
+        this.tradeResponse$ = this.httpClient
+          .get(environment.brokerApi + '/execution-states')
+          .pipe(
+            finalize(() => {
+              this.uiStore.dispatch(setLoading({ value: false }));
+            })
+          );
       } else {
         this.snackBar.open('Behavior not allowed for this user', 'Close', {
           duration: 2000,

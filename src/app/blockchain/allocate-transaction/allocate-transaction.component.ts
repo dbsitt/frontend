@@ -5,7 +5,11 @@ import { Store, select } from '@ngrx/store';
 import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
 import { Account } from 'src/app/store/user';
-import { filter } from 'rxjs/operators';
+import { filter, finalize, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { UiState } from 'src/app/store/ui.reducer';
+import { HttpClient } from '@angular/common/http';
+import { setLoading } from 'src/app/store/ui.actions';
 
 @Component({
   selector: 'app-allocate-transaction',
@@ -14,15 +18,18 @@ import { filter } from 'rxjs/operators';
 })
 export class AllocateTransactionComponent implements OnInit {
   file: any;
-
   content: any;
 
   currentUser$: Observable<Account>;
   currentUser: string = null;
 
+  allocateResponse$: Observable<any>;
+
   constructor(
     private snackBar: MatSnackBar,
-    private userStore: Store<UserState>
+    private userStore: Store<UserState>,
+    private uiStore: Store<UiState>,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {
@@ -51,9 +58,14 @@ export class AllocateTransactionComponent implements OnInit {
   onSubmit() {
     if (this.content) {
       if (this.currentUser === 'Broker1') {
-        this.snackBar.open('Successfully Uploaded', 'Close', {
-          duration: 2000,
-        });
+        this.uiStore.dispatch(setLoading({ value: true }));
+        this.allocateResponse$ = this.httpClient
+          .get(environment.brokerApi + '/allocation')
+          .pipe(
+            finalize(() => {
+              this.uiStore.dispatch(setLoading({ value: false }));
+            })
+          );
       } else {
         this.snackBar.open(
           'Only Broker1 is allowed for this actions',

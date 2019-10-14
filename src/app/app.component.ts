@@ -42,10 +42,14 @@ export class AppComponent implements OnInit {
             role: 'BROKER',
           };
           this.userStore.dispatch(setUser({ user }));
+          this.userId = model;
         } else {
           this.userStore.dispatch(setUser({ user: null }));
         }
       });
+
+    // Default
+    this.userIdChanged$.next('Broker1');
   }
 
   onKeyup(event) {
