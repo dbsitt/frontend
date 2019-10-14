@@ -1,3 +1,5 @@
+@import '../../shared/styles/variables.scss';
+
 .list-container {
   display: flex;
   justify-content: space-between;
@@ -20,5 +22,16 @@
   &__button {
     margin-top: 1rem;
     width: 20rem;
+  }
+}
+
+.refresh {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    color: $color-primary;
   }
 }

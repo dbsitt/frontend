@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap, finalize } from 'rxjs/operators';
+import { tap, finalize, filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
@@ -48,6 +48,13 @@ export class ExecutionStatesComponent implements OnInit {
 
   ngOnInit() {
     this.fetchExecutionStates();
+
+    this.userStore
+      .pipe(select(getCurrentUser))
+      .pipe(filter(user => user !== null))
+      .subscribe(() => {
+        this.fetchExecutionStates();
+      });
   }
 
   fetchExecutionStates() {
