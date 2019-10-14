@@ -1,4 +1,4 @@
-<ng-container *ngIf="data">
+<ng-container *ngIf="tableData.length > 0; else emptyState">
   <table
     mat-table
     [dataSource]="tableData"
@@ -39,3 +39,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </ng-container>
+<ng-template #emptyState>
+  <div>Empty Execution States</div>
+</ng-template>

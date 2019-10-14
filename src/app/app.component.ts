@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterContentChecked,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { UserState } from './store/user.reducers';
 import { setUser } from './store/user.actions';
@@ -14,11 +19,13 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterContentChecked {
   constructor(
     private userStore: Store<UserState>,
     private uiStore: Store<UiState>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   userIdChanged$: Subject<string> = new Subject<string>();
@@ -26,6 +33,10 @@ export class AppComponent implements OnInit {
   isLoading$: Observable<boolean>;
 
   userId = 'Broker1';
+
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
+  }
 
   ngOnInit(): void {
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));

@@ -51,13 +51,11 @@ export class ExecutionStatesComponent implements OnInit {
     } else {
       this.rootHost = environment.clientApi;
     }
+    this.uiStore.dispatch(setLoading({ value: true }));
 
     this.httpClient
       .get(this.rootHost + '/execution-states')
       .pipe(
-        tap(() => {
-          this.uiStore.dispatch(setLoading({ value: true }));
-        }),
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })
