@@ -1,13 +1,51 @@
-<!-- Should only be visible for broker and client -->
-<mat-card *ngIf="(account$ | async) as account">
-  <mat-card-title>
-    <i class="material-icons">account_balance</i>
-    Account Summary</mat-card-title
+<div class="material-icons refresh" (click)="fetchAccountSummary()">
+  refresh
+</div>
+<ng-container *ngIf="tableData.length > 0; else emptyState">
+  <table
+    mat-table
+    [dataSource]="tableData"
+    class="mat-elevation-z8 execution-table"
   >
-  <mat-card-content>
-    <div class="summary">
-      <div style="margin-right: 35%;">Cash Account: {{ account.cashAccount }}</div>
-      <div>Security Holdings: {{ account.securityHolding }}</div>
-    </div>
-  </mat-card-content>
-</mat-card>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Account Reference</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.walletRef }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="account">
+      <th mat-header-cell *matHeaderCellDef>Account Number</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.accountNumber }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Account Name</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.accountName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currency">
+      <th mat-header-cell *matHeaderCellDef>Currency</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.currency }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Amount</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.amount }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>
+<ng-template #emptyState>
+  <div>Empty Execution States</div>
+</ng-template>

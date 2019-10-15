@@ -1,0 +1,11 @@
+{
+  "accounts": [
+    {
+      "id": "1111111",
+      "account": "DBS_123456",
+      "name": "Saving Account 2",
+      "currency": "SGD",
+      "amount": "100,000"
+    }
+  ]
+}

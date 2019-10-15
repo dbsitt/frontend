@@ -5,6 +5,14 @@
         <span class="material-icons logo logo--animate">monetization_on</span>
       </a>
       <a
+        [routerLink]="['/transactions/account']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="currentUserRole === 'BROKER' || currentUserRole === 'CLIENT'"
+        class="link"
+        >Account Summary
+      </a>
+      <a
         [routerLink]="['/transactions']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"

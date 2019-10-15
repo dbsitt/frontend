@@ -45,6 +45,7 @@ const blockchainRoutes: Routes = [
   },
   { path: 'confirm', component: ConfirmationComponent },
   { path: 'admin', component: AdminPageComponent },
+  { path: 'account', component: AccountSummaryComponent },
 ];
 
 @NgModule({
