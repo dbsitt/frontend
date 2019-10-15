@@ -21,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './interceptors';
 import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
 import { MatSnackBarModule, MatSelectModule } from '@angular/material';
+import { SharedModule } from './shared/SharedModule';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MatSnackBarModule, MatSelectModule } from '@angular/material';
     MatSnackBarModule,
     FormsModule,
     MatSelectModule,
+    SharedModule,
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },

@@ -8,6 +8,7 @@
         [routerLink]="['/transactions']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="currentUserRole === 'BROKER' || currentUserRole === 'CLIENT'"
         class="link"
       >
         Block Trade
@@ -16,6 +17,7 @@
         [routerLink]="['/transactions/allocate']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="currentUserRole === 'BROKER' || currentUserRole === 'CLIENT'"
         class="link"
         >Allocation
       </a>

@@ -23,8 +23,8 @@ import { AccountSummaryComponent } from './account-summary/account-summary.compo
 import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 import { APIInterceptor } from '../interceptors';
 import { ExecutionStatesComponent } from './execution-states/execution-states.component';
-import { HelperService } from './helperService';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { SharedModule } from '../shared/SharedModule';
 
 const blockchainRoutes: Routes = [
   {
@@ -75,9 +75,9 @@ const blockchainRoutes: Routes = [
     HttpClientModule,
     NgxJsonViewerModule,
     MatTableModule,
+    SharedModule,
   ],
   providers: [
-    HelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: APIInterceptor,

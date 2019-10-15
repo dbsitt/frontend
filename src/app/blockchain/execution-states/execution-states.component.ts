@@ -15,6 +15,11 @@ import {
   BROKER_ALLOCATION_TRADE,
   CLIENT_ALLOCATION_TRADE,
 } from './columns';
+import {
+  ALLOCATION_TRADE_STATUS,
+  BLOCK_TRADE_STATUS,
+  ROLES,
+} from '../blockchain.constants';
 
 @Component({
   selector: 'app-execution-states',
@@ -60,14 +65,10 @@ export class ExecutionStatesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchExecutionStates();
-
     this.userStore
       .pipe(select(getCurrentUser))
       .pipe(filter(user => user !== null))
-      .subscribe(() => {
-        this.fetchExecutionStates();
-      });
+      .subscribe(this.fetchExecutionStates.bind(this));
   }
 
   get currentUserRole() {
@@ -107,15 +108,15 @@ export class ExecutionStatesComponent implements OnInit {
   mapExecutions(executions: any[]): any[] {
     return executions.map(exec => {
       if (this.type === 'block-trade') {
-        if (this.currentUserRole === 'BROKER') {
+        if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerBlockTrade();
-        } else if (this.currentUserRole === 'CLIENT') {
+        } else if (this.currentUserRole === ROLES.CLIENT) {
           return this.mapClientBlockTrade();
         }
       } else if (this.type === 'allocation-trade') {
-        if (this.currentUserRole === 'BROKER') {
+        if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerAllocationTrade();
-        } else if (this.currentUserRole === 'CLIENT') {
+        } else if (this.currentUserRole === ROLES.CLIENT) {
           return this.mapClientAllocationTrade();
         }
       }
@@ -163,17 +164,17 @@ export class ExecutionStatesComponent implements OnInit {
 
   isActionEnabled(execution: ExecutionState): string {
     if (this.type === 'block-trade') {
-      if (execution.status === '') {
+      if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
         return 'Allocate';
       }
     } else if (this.type === 'allocation-trade') {
-      if (this.currentUserRole === 'BROKER') {
+      if (this.currentUserRole === ROLES.BROKER) {
         switch (execution.status) {
-          case 'UNAFFIRMED':
+          case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
             return null;
-          case 'AFFIRMED':
+          case ALLOCATION_TRADE_STATUS.AFFIRMED:
             return 'Confirm';
-          case 'CONFIRMED':
+          case ALLOCATION_TRADE_STATUS.CONFIRMED:
             return null;
         }
       }

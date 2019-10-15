@@ -13,6 +13,7 @@ import { Account } from './store/user';
 import { UiState } from './store/ui.reducer';
 import { getIsLoading } from './store/ui.selector';
 import { MatSnackBar } from '@angular/material';
+import { HelperService } from './blockchain/helperService';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private userStore: Store<UserState>,
     private uiStore: Store<UiState>,
     private snackBar: MatSnackBar,
-
+    private helperService: HelperService,
     private changeDetector: ChangeDetectorRef
   ) {}
 
@@ -36,6 +37,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
+  }
+
+  get currentUserRole() {
+    return this.helperService.getCurrentUserRole();
   }
 
   ngOnInit(): void {
