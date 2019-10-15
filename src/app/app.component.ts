@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   setUser() {
     const username = this.userId;
-    if (username === 'Broker1') {
+    if (username === 'Broker1' || username === 'Broker2') {
       // TODO change to api call
       const user: Account = {
         id: username,

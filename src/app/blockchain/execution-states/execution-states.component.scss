@@ -13,6 +13,10 @@
   width: 100%;
 }
 
+.long-id {
+  font-size: 11px;
+}
+
 .action {
   display: flex;
   justify-content: center;
@@ -34,4 +38,9 @@
   &:hover {
     color: $color-primary;
   }
+}
+
+.no-event {
+  cursor: not-allowed;
+  pointer-events: none;
 }

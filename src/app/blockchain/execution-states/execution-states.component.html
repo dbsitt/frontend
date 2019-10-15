@@ -9,15 +9,36 @@
   >
     <ng-container matColumnDef="blockNumber">
       <th mat-header-cell *matHeaderCellDef>Block#</th>
-      <td mat-cell *matCellDef="let element">{{ element.blockNumber }}</td>
+      <td mat-cell *matCellDef="let element" class="long-id">
+        {{ element.blockNumber }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="tradeNumber">
       <th mat-header-cell *matHeaderCellDef>Trade#</th>
-      <td mat-cell *matCellDef="let element">{{ element.tradeNumber }}</td>
+      <td mat-cell *matCellDef="let element" class="long-id">
+        {{ element.tradeNumber }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="allocationNumber">
       <th mat-header-cell *matHeaderCellDef>Allocation#</th>
-      <td mat-cell *matCellDef="let element">{{ element.allocationNumber }}</td>
+      <td mat-cell *matCellDef="let element" class="long-id">
+        {{ element.allocationNumber }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeAndAllocationNumber">
+      <th mat-header-cell *matHeaderCellDef>Trade# and Allocation#</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        style="display: flex; flex-direction: column;"
+      >
+        <div>
+          {{ element.ids.tradeNumber }}
+        </div>
+        <div>
+          {{ element.ids.allocationNumber }}
+        </div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="broker">
       <th mat-header-cell *matHeaderCellDef>Broker</th>
@@ -71,7 +92,15 @@
           [disabled]="!availableAction(element)"
           (click)="performAction(element)"
         >
-          {{ availableAction(element) }}
+          <div
+            class="material-icons no-event"
+            *ngIf="!availableAction(element)"
+          >
+            not_interested
+          </div>
+          <div *ngIf="availableAction(element)">
+            {{ availableAction(element) }}
+          </div>
         </button>
       </td>
     </ng-container>

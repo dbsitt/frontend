@@ -78,6 +78,10 @@ export class ExecutionStatesComponent implements OnInit {
     return this.helperService.getCurrentUserRole();
   }
 
+  get currentUserId() {
+    return this.helperService.getCurrentUserId();
+  }
+
   fetchExecutionStates() {
     let url: string;
 
@@ -106,8 +110,9 @@ export class ExecutionStatesComponent implements OnInit {
           }
         },
         () => {
+          this.tableData = [];
           this.snackBar.open(
-            'Error occur when fetching execution-states',
+            `Error occur when fetching execution-states for ${this.currentUserId}`,
             'Close',
             {
               duration: 2000,
@@ -118,27 +123,27 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   mapExecutions(executions: any[]): any[] {
-    return executions.map(exec => {
+    return executions.map(response => {
       if (this.type === 'block-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerBlockTrade(exec);
+          return this.mapBrokerBlockTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientBlockTrade(exec);
+          return this.mapClientBlockTrade(response);
         }
       } else if (this.type === 'allocation-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerAllocationTrade(exec);
+          return this.mapBrokerAllocationTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientAllocationTrade(exec);
+          return this.mapClientAllocationTrade(response);
         } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
-          return this.mapSettlementAgentAllocationTrade(exec);
+          return this.mapSettlementAgentAllocationTrade(response);
         }
       }
     });
   }
 
-  mapClientBlockTrade(exec) {
-    const { data } = exec;
+  mapClientBlockTrade(response: any) {
+    const { data } = response;
     return {
       ...data,
       tradeNumber: data.blockTradeNum,
@@ -146,8 +151,8 @@ export class ExecutionStatesComponent implements OnInit {
     };
   }
 
-  mapBrokerBlockTrade(exec) {
-    const { data } = exec;
+  mapBrokerBlockTrade(response: any) {
+    const { data } = response;
     return {
       ...data,
       tradeNumber: data.blockTradeNum,
@@ -155,35 +160,39 @@ export class ExecutionStatesComponent implements OnInit {
     };
   }
 
-  mapBrokerAllocationTrade(exec) {
-    const { data } = exec;
+  mapBrokerAllocationTrade(response: any) {
+    const { data } = response;
     return {
       ...data,
-      blockNumber: exec.execution.meta.externalKey,
-      allocationNumber: exec.execution.meta.globalKey,
-      status: exec.status,
+      blockNumber: response.execution.meta.externalKey,
+      allocationNumber: response.execution.meta.globalKey,
+      status: response.status,
       prodType: data.productType,
     };
   }
 
-  mapClientAllocationTrade(exec) {
-    const { data } = exec;
+  mapClientAllocationTrade(response: any) {
+    const { data } = response;
     return {
       ...data,
-      blockNumber: exec.execution.meta.externalKey,
-      allocationNumber: exec.execution.meta.globalKey,
-      status: exec.status,
+      blockNumber: response.execution.meta.externalKey,
+      allocationNumber: response.execution.meta.globalKey,
+      tradeAndAllocationNumber: {
+        blockNumber: response.execution.meta.externalKey,
+        allocationNumber: response.execution.meta.globalKey,
+      },
+      status: response.status,
       prodType: data.productType,
     };
   }
 
-  mapSettlementAgentAllocationTrade(exec) {
-    const { data } = exec;
+  mapSettlementAgentAllocationTrade(response) {
+    const { data } = response;
     return {
       ...data,
-      tradeNumber: exec.execution.meta.globalKey,
+      tradeNumber: response.execution.meta.globalKey,
       broker: 'hardcoded',
-      status: exec.status,
+      status: response.status,
       prodType: data.productType,
     };
   }
@@ -192,6 +201,8 @@ export class ExecutionStatesComponent implements OnInit {
     if (this.type === 'block-trade') {
       if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
         return ACTIONS.ALLOCATE;
+      } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
+        return null;
       }
     } else if (this.type === 'allocation-trade') {
       if (this.currentUserRole === ROLES.BROKER) {
@@ -225,22 +236,20 @@ export class ExecutionStatesComponent implements OnInit {
     }
   }
 
-  sendRequest(url) {
+  sendRequest(url, body) {
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .post(this.helperService.getBaseUrl() + url, {})
+      .post(this.helperService.getBaseUrl() + url, body)
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
+          this.fetchExecutionStates();
         })
       )
       .subscribe(e => {
-        this.fetchExecutionStates();
         this.snackBar.open('Successful', 'Close', {
           duration: 2000,
         });
-
-        // TODO Auto refresh
       });
   }
 
@@ -248,19 +257,27 @@ export class ExecutionStatesComponent implements OnInit {
     const action = this.availableAction(e);
     switch (action) {
       case ACTIONS.ALLOCATE:
-        this.sendRequest('/allocate');
+        this.sendRequest('/allocate', {});
         break;
       case ACTIONS.TRANSFER:
-        this.sendRequest(`/transfer?reference=${e.allocationNumber}`);
+        this.sendRequest(`/transfer`, {
+          executionRef: e.allocationNumber,
+        });
         break;
       case ACTIONS.SETTLE:
-        this.sendRequest(`/settlement?reference=${e.allocationNumber}`);
+        this.sendRequest(`/settlement`, {
+          executionRef: e.blockTradeNum,
+        });
         break;
       case ACTIONS.AFFIRM:
-        this.sendRequest(`/affirmation?executionRef=${e.allocationNumber}`);
+        this.sendRequest(`/affirmation`, {
+          executionRef: e.allocationNumber,
+        });
         break;
       case ACTIONS.CONFIRM:
-        this.sendRequest(`/confirmation?executionRef=${e.allocationNumber}`);
+        this.sendRequest(`/confirmation`, {
+          executionRef: e.allocationNumber,
+        });
         break;
       default:
         this.snackBar.open('Should not be executed', 'Close', {

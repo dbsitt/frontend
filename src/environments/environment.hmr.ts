@@ -8,4 +8,5 @@ export const environment = {
   brokerApi: 'http://3.1.246.227:10050/api',
   obseverApi: 'http://3.1.246.227:10060/api',
   settlementAgentAPi: 'http://3.1.246.227:10070/api',
+  broker2Api: 'http://3.1.246.227:10080/api',
 };

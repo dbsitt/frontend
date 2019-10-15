@@ -21,13 +21,25 @@ export class APIInterceptor implements HttpInterceptor {
     const apiReq = req.clone();
     return next.handle(apiReq).pipe(
       catchError((err: any) => {
-        let message = `Status ${err.status}. ${err.statusText}`;
+        let message;
         if (err.status === 0) {
           message = `Endpoint '${req.url}' not found`;
         } else if (err.status === 201) {
-          message = err.text;
+          if (err.text) {
+            message = err.text;
+          } else if (err.error.text) {
+            message = err.error.text;
+          } else {
+            message = err;
+          }
         } else if (err.status === 400) {
-          message = err.error;
+          if (err.message) {
+            message = err.message;
+          } else if (err.error) {
+            message = err.error;
+          } else {
+            message = err;
+          }
         } else if (err.status === 404) {
           message = err.error;
         } else if (err.status === 500) {

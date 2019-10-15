@@ -31,6 +31,8 @@ export class HelperService {
         map(user => {
           if (user.id === 'Broker1') {
             return environment.brokerApi;
+          } else if (user.id === 'Broker2') {
+            return environment.broker2Api;
           } else if (user.id === 'Client1') {
             return environment.clientApi1;
           } else if (user.id === 'Client2') {
