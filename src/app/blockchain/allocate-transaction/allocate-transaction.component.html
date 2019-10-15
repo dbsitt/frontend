@@ -2,22 +2,6 @@
   <mat-card-title>
     Allocate
   </mat-card-title>
-  <mat-card-content>
-    <form class="uploader">
-      <input type="file" (change)="fileChanged($event)" class="file-chooser" />
-      <mat-card class="content-viewer" *ngIf="content">
-        <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
-      </mat-card>
-      <button
-        color="primary"
-        mat-raised-button
-        (click)="onSubmit()"
-        class="submit"
-      >
-        Upload
-      </button>
-    </form>
-  </mat-card-content>
 </mat-card>
 
 <mat-card class="main-card">

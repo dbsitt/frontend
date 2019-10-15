@@ -1,0 +1,67 @@
+<mat-card class="main-card">
+  <mat-card-title>
+    Upload
+  </mat-card-title>
+  <mat-card-content>
+    <form class="uploader">
+      <input type="file" (change)="fileChanged($event)" class="file-chooser" />
+      <mat-card class="content-viewer" *ngIf="content">
+        <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
+      </mat-card>
+
+      <ng-container *ngIf="content">
+        <ng-container [ngSwitch]="currentUserRole">
+          <div *ngSwitchCase="'BROKER'" class="upload-button-container">
+            <button
+              color="primary"
+              mat-raised-button
+              (click)="onSubmit()"
+              class="submit"
+            >
+              Block Trade
+            </button>
+            <button
+              color="primary"
+              mat-raised-button
+              (click)="onSubmit()"
+              class="submit"
+            >
+              Alocation Trade
+            </button>
+            <button
+              color="primary"
+              mat-raised-button
+              (click)="onSubmit()"
+              class="submit"
+            >
+              Confirmation
+            </button>
+          </div>
+          <div *ngSwitchCase="'CLIENT'" class="upload-button-container">
+            <button
+              color="primary"
+              mat-raised-button
+              (click)="onSubmit()"
+              class="submit"
+            >
+              Affirmation
+            </button>
+          </div>
+          <div
+            *ngSwitchCase="'SETTLEMENT_AGENT'"
+            class="upload-button-container"
+          >
+            <button
+              color="primary"
+              mat-raised-button
+              (click)="onSubmit()"
+              class="submit"
+            >
+              Add Money
+            </button>
+          </div>
+        </ng-container>
+      </ng-container>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -81,6 +81,16 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
+    } else if (username === 'SA1') {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: 'SETTLEMENT_AGENT',
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      this.userId = username;
     } else {
       this.userStore.dispatch(setUser({ user: null }));
       this.snackBar.open('User not found', 'Close', {

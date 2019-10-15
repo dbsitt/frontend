@@ -43,6 +43,14 @@
       >
         Work Flow</a
       >
+      <a
+        [routerLink]="['/transactions/admin']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="link"
+      >
+        Admin</a
+      >
     </nav>
     <div class="user-wrapper">
       <i class="material-icons logo">account_box</i>
@@ -55,6 +63,7 @@
       >
         <option value="Broker1">Broker1</option>
         <option value="Client1">Client1</option>
+        <option value="SA1">SA1</option>
       </select>
     </div>
   </div>

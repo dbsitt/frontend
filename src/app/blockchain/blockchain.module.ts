@@ -24,6 +24,7 @@ import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 import { APIInterceptor } from '../interceptors';
 import { ExecutionStatesComponent } from './execution-states/execution-states.component';
 import { HelperService } from './helperService';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -42,10 +43,8 @@ const blockchainRoutes: Routes = [
     path: 'allocate',
     component: AllocateTransactionComponent,
   },
-  {
-    path: 'confirm',
-    component: ConfirmationComponent,
-  },
+  { path: 'confirm', component: ConfirmationComponent },
+  { path: 'admin', component: AdminPageComponent },
 ];
 
 @NgModule({
@@ -59,6 +58,7 @@ const blockchainRoutes: Routes = [
     AccountSummaryComponent,
     TradeSummaryComponent,
     ExecutionStatesComponent,
+    AdminPageComponent,
   ],
   imports: [
     CommonModule,

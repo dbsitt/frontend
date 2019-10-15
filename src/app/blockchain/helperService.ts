@@ -33,14 +33,14 @@ export class HelperService {
             return environment.brokerApi;
           } else if (user.role === 'CLIENT') {
             return environment.clientApi;
+          } else if (user.role === 'SETTLEMENT_AGENT') {
+            return environment.settlementAgentAPi;
           }
         })
       )
       .subscribe(res => {
         url = res;
       });
-
-    console.log(url);
     return url;
   }
 
@@ -50,6 +50,14 @@ export class HelperService {
       user = res.id;
     });
     return user;
+  }
+
+  getCurrentUserRole(): string {
+    let role: string = null;
+    this.currentUser$.subscribe(res => {
+      role = res.role;
+    });
+    return role;
   }
 
   postJson(
