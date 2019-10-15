@@ -9,6 +9,8 @@ export const ACTIONS = {
   CONFIRM: 'Confirm',
   AFFIRM: 'Affirm',
   ALLOCATE: 'Allocate',
+  SETTLE: 'Settle',
+  TRANSFER: 'Transer',
 };
 
 export const CONFIRMED_ALLOCATION_TRADES_STATUS = {

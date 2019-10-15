@@ -58,9 +58,12 @@ export const SETTLEMENT_AGENT_COLUMNS = [
   'broker',
   'client',
   'prodType',
+  'product',
   'quantity',
   'price',
+  'currency',
   'cash',
   'valueDate',
   'status',
+  'action',
 ];
