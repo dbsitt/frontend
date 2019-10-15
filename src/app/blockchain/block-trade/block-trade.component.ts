@@ -26,8 +26,6 @@ export class BlockTradeComponent extends TradeFlow implements OnInit {
   ngOnInit() {
     this.helperService.currentUser$.subscribe(e => {
       if (e.role === ROLES.SETTLEMENT_AGENT) {
-        console.log(e);
-        console.log(ROLES);
         this.router.navigateByUrl('transactions/admin');
       }
     });
