@@ -20,12 +20,16 @@ export class APIInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const apiReq = req.clone();
     return next.handle(apiReq).pipe(
-      catchError((err: HttpErrorResponse) => {
+      catchError((err: any) => {
         let message = `Status ${err.status}. ${err.statusText}`;
         if (err.status === 0) {
           message = `Endpoint '${req.url}' not found`;
+        } else if (err.status === 201) {
+          message = err.text;
+        } else if (err.status === 400) {
+          message = err.error;
         } else if (err.status === 404) {
-          message = `404 Error`;
+          message = err.error;
         } else if (err.status === 500) {
           message = '500 Server Error';
         }

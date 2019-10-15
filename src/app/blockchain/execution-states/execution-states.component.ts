@@ -54,7 +54,6 @@ export class ExecutionStatesComponent implements OnInit {
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
         columns = SETTLEMENT_AGENT_COLUMNS;
       }
-      // TODO check this
     }
 
     return columns;
@@ -104,11 +103,9 @@ export class ExecutionStatesComponent implements OnInit {
         (response: any) => {
           if (response !== null) {
             this.tableData = this.mapExecutions(response);
-            console.log(this.tableData);
           }
         },
         () => {
-          console.log('err');
           this.snackBar.open(
             'Error occur when fetching execution-states',
             'Close',
@@ -191,29 +188,6 @@ export class ExecutionStatesComponent implements OnInit {
     };
   }
 
-  dummyJson() {
-    const str = 'string';
-    const num = 123;
-    const date = '15-10-2019';
-    const status = '-';
-    const currency = '$';
-    return {
-      status,
-      currency,
-      tradeNumber: str,
-      blockNumber: str,
-      allocationNumber: str,
-      client: 'Client',
-      broker: 'Broker',
-      prodType: str,
-      product: str,
-      quantity: str,
-      price: num,
-      cash: num,
-      valueDate: date,
-    };
-  }
-
   availableAction(execution: ExecutionState): string {
     if (this.type === 'block-trade') {
       if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
@@ -261,9 +235,12 @@ export class ExecutionStatesComponent implements OnInit {
         })
       )
       .subscribe(e => {
+        this.fetchExecutionStates();
         this.snackBar.open('Successful', 'Close', {
           duration: 2000,
         });
+
+        // TODO Auto refresh
       });
   }
 

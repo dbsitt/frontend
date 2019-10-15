@@ -88,6 +88,9 @@ export class HelperService {
             if (callback) {
               callback(res);
             }
+            this.snackBar.open('Succesfully uploaded', 'Close', {
+              duration: 2000,
+            });
           });
       } else {
         this.snackBar.open('Behavior not allowed for this user', 'Close', {

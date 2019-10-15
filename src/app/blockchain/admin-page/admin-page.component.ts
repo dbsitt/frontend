@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HelperService } from '../helperService';
 import { MatSnackBar } from '@angular/material';
 
@@ -18,10 +18,14 @@ export class AdminPageComponent implements OnInit {
 
   ngOnInit() {
     this.helperService.currentUser$.subscribe(() => {
-      this.file = null;
-      this.content = null;
-      (document.getElementsByClassName('file-chooser')[0] as any).value = '';
+      this.resetData();
     });
+  }
+
+  resetData() {
+    this.file = null;
+    this.content = null;
+    (document.getElementsByClassName('file-chooser')[0] as any).value = '';
   }
 
   get currentUserRole() {
@@ -55,6 +59,14 @@ export class AdminPageComponent implements OnInit {
   }
 
   onSubmit(url) {
-    this.helperService.postJson(this.content, [this.currentUserId], `/${url}`);
+    const callback = () => {
+      this.resetData();
+    };
+    this.helperService.postJson(
+      this.content,
+      [this.currentUserId],
+      `/${url}`,
+      callback.bind(this)
+    );
   }
 }
