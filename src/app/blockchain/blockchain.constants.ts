@@ -2,6 +2,7 @@ export const ROLES = {
   BROKER: 'BROKER',
   CLIENT: 'CLIENT',
   SETTLEMENT_AGENT: 'SETTLEMENT_AGENT',
+  OBSERVER: 'OBSERVER',
 };
 
 export const ACTIONS = {

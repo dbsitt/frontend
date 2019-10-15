@@ -14,6 +14,7 @@ import { UiState } from './store/ui.reducer';
 import { getIsLoading } from './store/ui.selector';
 import { MatSnackBar } from '@angular/material';
 import { HelperService } from './blockchain/helperService';
+import { ROLES } from './blockchain/blockchain.constants';
 
 @Component({
   selector: 'app-root',
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
         id: username,
         cashAccount: 123,
         securityHolding: '12345',
-        role: 'BROKER',
+        role: ROLES.BROKER,
       };
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
         id: username,
         cashAccount: 123,
         securityHolding: '12345',
-        role: 'CLIENT',
+        role: ROLES.CLIENT,
       };
 
       this.userStore.dispatch(setUser({ user }));
@@ -95,7 +96,17 @@ export class AppComponent implements OnInit, AfterContentChecked {
         id: username,
         cashAccount: 456,
         securityHolding: '12345',
-        role: 'SETTLEMENT_AGENT',
+        role: ROLES.SETTLEMENT_AGENT,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      this.userId = username;
+    } else if (username === 'Observer') {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: ROLES.OBSERVER,
       };
 
       this.userStore.dispatch(setUser({ user }));
