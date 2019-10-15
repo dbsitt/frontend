@@ -35,10 +35,10 @@ export class HelperService {
             return environment.clientApi1;
           } else if (user.id === 'Client2') {
             return environment.clientApi2;
-          } else if (user.id === 'Clien3') {
+          } else if (user.id === 'Client3') {
             return environment.clientApi3;
           } else if (user.id === 'Observer') {
-            return environment.clientApi3;
+            return environment.obseverApi;
           } else if (user.id === 'SA1') {
             return environment.settlementAgentAPi;
           } else {
