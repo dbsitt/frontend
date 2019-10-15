@@ -29,12 +29,20 @@ export class HelperService {
     this.currentUser$
       .pipe(
         map(user => {
-          if (user.role === 'BROKER') {
+          if (user.id === 'Broker1') {
             return environment.brokerApi;
-          } else if (user.role === 'CLIENT') {
-            return environment.clientApi;
-          } else if (user.role === 'SETTLEMENT_AGENT') {
+          } else if (user.id === 'Client1') {
+            return environment.clientApi1;
+          } else if (user.id === 'Client2') {
+            return environment.clientApi2;
+          } else if (user.id === 'Clien3') {
+            return environment.clientApi3;
+          } else if (user.id === 'Observer') {
+            return environment.clientApi3;
+          } else if (user.id === 'SA1') {
             return environment.settlementAgentAPi;
+          } else {
+            throw Error('should not come to this point');
           }
         })
       )

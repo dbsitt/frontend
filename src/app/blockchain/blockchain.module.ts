@@ -25,7 +25,6 @@ import { APIInterceptor } from '../interceptors';
 import { ExecutionStatesComponent } from './execution-states/execution-states.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { SharedModule } from '../shared/SharedModule';
-import { SettlementAgentComponent } from './settlement-agent/settlement-agent.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -60,7 +59,6 @@ const blockchainRoutes: Routes = [
     TradeSummaryComponent,
     ExecutionStatesComponent,
     AdminPageComponent,
-    SettlementAgentComponent,
   ],
   imports: [
     CommonModule,

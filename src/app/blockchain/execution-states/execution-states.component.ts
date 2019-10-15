@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize, filter } from 'rxjs/operators';
+import { finalize, filter, takeLast, throttleTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
@@ -50,6 +50,7 @@ export class ExecutionStatesComponent implements OnInit {
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       }
+      // TODO check this
     } else if (this.type === 'settlement-agent') {
       columns = SETTLEMENT_AGENT_COLUMNS;
     }
@@ -79,11 +80,11 @@ export class ExecutionStatesComponent implements OnInit {
   fetchExecutionStates() {
     let url: string;
 
-    switch (this.currentUserRole) {
-      case ROLES.BROKER:
+    switch (this.type) {
+      case 'block-trade':
         url = '/blocktrades';
         break;
-      case ROLES.CLIENT:
+      case 'allocation-trade':
         url = '/allocations';
         break;
     }
@@ -92,6 +93,7 @@ export class ExecutionStatesComponent implements OnInit {
     this.httpClient
       .get(this.helperService.getBaseUrl() + url)
       .pipe(
+        throttleTime(10),
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })

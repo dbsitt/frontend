@@ -17,7 +17,11 @@
         [routerLink]="['/transactions/allocate']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
-        *ngIf="currentUserRole === 'BROKER' || currentUserRole === 'CLIENT'"
+        *ngIf="
+          currentUserRole === 'BROKER' ||
+          currentUserRole === 'CLIENT' ||
+          currentUserRole === 'SETTLEMENT_AGENT'
+        "
         class="link"
         >Allocation
       </a>
@@ -41,6 +45,9 @@
       >
         <option value="Broker1">Broker1</option>
         <option value="Client1">Client1</option>
+        <option value="Client2">Client2</option>
+        <option value="Client3">Client3</option>
+        <option value="Observer">Observer</option>
         <option value="SA1">SA1</option>
       </select>
     </div>

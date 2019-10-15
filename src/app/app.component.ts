@@ -76,7 +76,11 @@ export class AppComponent implements OnInit, AfterContentChecked {
       };
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
-    } else if (username === 'Client1') {
+    } else if (
+      username === 'Client1' ||
+      username === 'Client2' ||
+      username === 'Client3'
+    ) {
       const user: Account = {
         id: username,
         cashAccount: 123,
