@@ -50,6 +50,7 @@ export const CLIENT_ALLOCATION_TRADE_COLUMNS = [
   'cash',
   'valueDate',
   'status',
+  'action',
 ];
 
 export const SETTLEMENT_AGENT_COLUMNS = [

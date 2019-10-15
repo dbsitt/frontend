@@ -22,6 +22,7 @@ import {
   ROLES,
   ACTIONS,
 } from '../blockchain.constants';
+import { exec } from 'child_process';
 
 @Component({
   selector: 'app-execution-states',
@@ -213,18 +214,49 @@ export class ExecutionStatesComponent implements OnInit {
           case ALLOCATION_TRADE_STATUS.CONFIRMED:
             return null;
         }
+      } else if (this.currentUserRole === ROLES.CLIENT) {
+        switch (execution.status) {
+          case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
+            return ACTIONS.AFFIRM;
+          case ALLOCATION_TRADE_STATUS.AFFIRMED:
+            return null;
+          case ALLOCATION_TRADE_STATUS.CONFIRMED:
+            return null;
+        }
       }
     }
   }
 
   performAction(e) {
     const action = this.availableAction(e);
+    console.log(e);
     switch (action) {
       case ACTIONS.ALLOCATE:
-        this.httpClient.post(this.helperService.getBaseUrl() + '/allocate', {});
+        this.httpClient
+          .post(this.helperService.getBaseUrl() + '/allocate', {})
+          .subscribe(e => console.log(e));
+        break;
+      case ACTIONS.AFFIRM:
+        this.httpClient
+          .post(
+            this.helperService.getBaseUrl() +
+              `/affirm?executionRef=${e.allocationNumber}`,
+            {}
+          )
+          .subscribe(e => {
+            console.log(e);
+          });
         break;
       case ACTIONS.CONFIRM:
-        this.httpClient.post(this.helperService.getBaseUrl() + '/confirm', {});
+        this.httpClient
+          .post(
+            this.helperService.getBaseUrl() +
+              `/confirmation?executionRef=${e.allocationNumber}`,
+            {}
+          )
+          .subscribe(e => {
+            console.log(e);
+          });
         break;
       default:
         this.snackBar.open('Should not be executed', 'Close', {

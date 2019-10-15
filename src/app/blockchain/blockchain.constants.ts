@@ -7,22 +7,23 @@ export const ROLES = {
 
 export const ACTIONS = {
   CONFIRM: 'Confirm',
+  AFFIRM: 'Affirm',
   ALLOCATE: 'Allocate',
 };
 
 export const CONFIRMED_ALLOCATION_TRADES_STATUS = {
-  CONFIRMED: 'Confirmed',
-  SETTLED: 'Settled',
-  TRANSFERRED: 'Transferred',
+  CONFIRMED: 'CONFIRMED',
+  SETTLED: 'SETTLED',
+  TRANSFERRED: 'TRANSFERRED',
 };
 
 export const BLOCK_TRADE_STATUS = {
   EMPTY: '',
-  ALLOCATED: 'Allocated',
+  ALLOCATED: 'ALLOCATED',
 };
 
 export const ALLOCATION_TRADE_STATUS = {
-  UNAFFIRMED: 'Unaffirmed',
-  AFFIRMED: 'Affirmed',
-  CONFIRMED: 'COnfirmed',
+  UNAFFIRMED: 'UNAFFIRMED',
+  AFFIRMED: 'AFFIRMED',
+  CONFIRMED: 'CONFIRMED',
 };
