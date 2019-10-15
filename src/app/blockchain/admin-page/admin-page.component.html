@@ -9,12 +9,13 @@
         <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
       </mat-card>
 
-      <ng-container *ngIf="content">
+      <ng-container>
         <ng-container [ngSwitch]="currentUserRole">
           <div *ngSwitchCase="'BROKER'" class="upload-button-container">
             <button
               color="primary"
               mat-raised-button
+              [disabled]="!content"
               (click)="onSubmit('execution')"
               class="submit"
             >
@@ -23,6 +24,7 @@
             <button
               color="primary"
               mat-raised-button
+              [disabled]="!content"
               (click)="onSubmit('allocation')"
               class="submit"
             >
@@ -31,6 +33,7 @@
             <button
               color="primary"
               mat-raised-button
+              [disabled]="!content"
               (click)="onSubmit('confirmation')"
               class="submit"
             >
@@ -41,6 +44,7 @@
             <button
               color="primary"
               mat-raised-button
+              [disabled]="!content"
               (click)="onSubmit('affirmation')"
               class="submit"
             >
@@ -54,7 +58,8 @@
             <button
               color="primary"
               mat-raised-button
-              (click)="onSubmit('add-money')"
+              [disabled]="!content"
+              (click)="onSubmit('loadWallet')"
               class="submit"
             >
               Add Money

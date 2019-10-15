@@ -7,6 +7,10 @@
   margin-top: 0.5rem;
   width: 10rem;
   margin-right: 0.5rem;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .file-chooser {

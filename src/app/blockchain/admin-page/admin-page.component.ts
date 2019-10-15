@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../helperService';
 import { MatSnackBar } from '@angular/material';
 
@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.scss'],
 })
-export class AdminPageComponent {
+export class AdminPageComponent implements OnInit {
   file: any = null;
   content: any = null;
 
@@ -15,6 +15,14 @@ export class AdminPageComponent {
     private helperService: HelperService,
     private snackBar: MatSnackBar
   ) {}
+
+  ngOnInit() {
+    this.helperService.currentUser$.subscribe(() => {
+      this.file = null;
+      this.content = null;
+      (document.getElementsByClassName('file-chooser')[0] as any).value = '';
+    });
+  }
 
   get currentUserRole() {
     return this.helperService.getCurrentUserRole();
@@ -46,8 +54,7 @@ export class AdminPageComponent {
     }
   }
 
-  onSubmit() {
-    // update api
-    this.helperService.postJson(this.content, [this.currentUserId], 'test');
+  onSubmit(url) {
+    this.helperService.postJson(this.content, [this.currentUserId], `/${url}`);
   }
 }

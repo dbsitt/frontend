@@ -27,8 +27,6 @@ import {
   styleUrls: ['./execution-states.component.scss'],
 })
 export class ExecutionStatesComponent implements OnInit {
-  data: any = null;
-
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
@@ -37,21 +35,20 @@ export class ExecutionStatesComponent implements OnInit {
 
   get displayedColumns() {
     let columns = [];
-    this.userStore.pipe(select(getCurrentUser)).subscribe(user => {
-      if (this.type === 'block-trade') {
-        if (user.role === 'BROKER') {
-          columns = BROKER_BLOCKTRADE;
-        } else if (user.role === 'CLIENT') {
-          columns = CLIENT_BLOCKTRADE;
-        }
-      } else if (this.type === 'allocation-trade') {
-        if (user.role === 'BROKER') {
-          columns = BROKER_ALLOCATION_TRADE;
-        } else if (user.role === 'CLIENT') {
-          columns = CLIENT_ALLOCATION_TRADE;
-        }
+    const userRole = this.helperService.getCurrentUserRole();
+    if (this.type === 'block-trade') {
+      if (userRole === ROLES.BROKER) {
+        columns = BROKER_BLOCKTRADE;
+      } else if (userRole === ROLES.CLIENT) {
+        columns = CLIENT_BLOCKTRADE;
       }
-    });
+    } else if (this.type === 'allocation-trade') {
+      if (userRole === ROLES.BROKER) {
+        columns = BROKER_ALLOCATION_TRADE;
+      } else if (userRole === ROLES.CLIENT) {
+        columns = CLIENT_ALLOCATION_TRADE;
+      }
+    }
 
     return columns;
   }
@@ -76,9 +73,20 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   fetchExecutionStates() {
+    let url: string;
+
+    switch (this.currentUserRole) {
+      case ROLES.BROKER:
+        url = '/blocktrades';
+        break;
+      case ROLES.BROKER:
+        url = '/allocations';
+        break;
+    }
+
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .get(this.helperService.getBaseUrl() + '/execution-states')
+      .get(this.helperService.getBaseUrl() + url)
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
@@ -87,13 +95,11 @@ export class ExecutionStatesComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response !== null) {
-            this.data = response;
-            this.tableData = this.mapExecutions(response);
+            this.tableData = this.mapExecutions(response.entity);
           }
         },
         () => {
           console.log('err');
-          this.data = null;
           this.snackBar.open(
             'Error occur when fetching execution-states',
             'Close',
@@ -109,33 +115,51 @@ export class ExecutionStatesComponent implements OnInit {
     return executions.map(exec => {
       if (this.type === 'block-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerBlockTrade();
+          return this.mapBrokerBlockTrade(exec);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientBlockTrade();
+          return this.mapClientBlockTrade(exec);
         }
       } else if (this.type === 'allocation-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerAllocationTrade();
+          return this.mapBrokerAllocationTrade(exec);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientAllocationTrade();
+          return this.mapClientAllocationTrade(exec);
         }
       }
     });
   }
 
-  mapClientBlockTrade() {
-    return this.dummyJson();
+  mapClientBlockTrade(exec) {
+    const { data } = exec;
+    return {
+      ...data,
+      tradeNumber: data.blockTradeNum,
+      prodType: data.productType,
+    };
   }
 
-  mapBrokerBlockTrade() {
-    return this.dummyJson();
+  mapBrokerBlockTrade(exec) {
+    const { data } = exec;
+    return {
+      ...data,
+      tradeNumber: data.blockTradeNum,
+      prodType: data.productType,
+    };
   }
 
-  mapBrokerAllocationTrade() {
-    return this.dummyJson();
+  mapBrokerAllocationTrade(exec) {
+    const { data } = exec;
+    console.log(data);
+    return {
+      ...data,
+      blockNumber: data.blockTradeNum,
+
+      prodType: data.productType,
+    };
   }
 
-  mapClientAllocationTrade() {
+  mapClientAllocationTrade(exec) {
+    const { data } = exec;
     return this.dummyJson();
   }
 

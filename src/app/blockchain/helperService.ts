@@ -70,7 +70,7 @@ export class HelperService {
       if (hasActionAccess.includes(this.getCurrentUserId())) {
         this.uiStore.dispatch(setLoading({ value: true }));
         this.httpClient
-          .post(environment.brokerApi + endpoint, content)
+          .post(this.getBaseUrl() + endpoint, content)
           .pipe(
             finalize(() => {
               this.uiStore.dispatch(setLoading({ value: false }));
