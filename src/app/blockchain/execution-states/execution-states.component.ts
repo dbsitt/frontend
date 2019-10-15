@@ -261,7 +261,7 @@ export class ExecutionStatesComponent implements OnInit {
         break;
       case ACTIONS.TRANSFER:
         this.sendRequest(`/transfer`, {
-          executionRef: e.allocationNumber,
+          executionRef: e.blockTradeNum,
         });
         break;
       case ACTIONS.SETTLE:
