@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelperService } from '../helperService';
-import { TradeFlow } from '../TradeFlow';
 import { Router } from '@angular/router';
 import { ROLES } from '../blockchain.constants';
 
@@ -10,18 +8,12 @@ import { ROLES } from '../blockchain.constants';
   templateUrl: './block-trade.component.html',
   styleUrls: ['./block-trade.component.scss'],
 })
-export class BlockTradeComponent extends TradeFlow implements OnInit {
+export class BlockTradeComponent implements OnInit {
   hasActionAccess = ['Broker1'];
 
   hasViewAccess = ['Broker1', 'Client1'];
 
-  constructor(
-    snackBar: MatSnackBar,
-    helperService: HelperService,
-    private router: Router
-  ) {
-    super(helperService, snackBar);
-  }
+  constructor(private helperService: HelperService, private router: Router) {}
 
   ngOnInit() {
     this.helperService.currentUser$.subscribe(e => {
@@ -29,17 +21,5 @@ export class BlockTradeComponent extends TradeFlow implements OnInit {
         this.router.navigateByUrl('transactions/admin');
       }
     });
-  }
-
-  get currentUserId() {
-    return this.helperService.getCurrentUserId();
-  }
-
-  onSubmit() {
-    this.helperService.postJson(
-      this.content,
-      this.hasActionAccess,
-      '/execution'
-    );
   }
 }

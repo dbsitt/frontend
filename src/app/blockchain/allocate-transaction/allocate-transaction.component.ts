@@ -9,20 +9,11 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './allocate-transaction.component.html',
   styleUrls: ['./allocate-transaction.component.scss'],
 })
-export class AllocateTransactionComponent extends TradeFlow {
+export class AllocateTransactionComponent {
   allocateResponse$: Observable<any>;
-  hasActionAccess = ['Broker1'];
-  hasViewAccess = ['Broker1', 'Client1'];
 
-  constructor(helperService: HelperService, snackBar: MatSnackBar) {
-    super(helperService, snackBar);
-  }
-
-  onSubmit() {
-    this.helperService.postJson(
-      this.content,
-      this.hasActionAccess,
-      '/allocation'
-    );
-  }
+  constructor(
+    private helperService: HelperService,
+    private snackBar: MatSnackBar
+  ) {}
 }

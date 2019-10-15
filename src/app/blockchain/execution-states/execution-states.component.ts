@@ -10,15 +10,17 @@ import { getCurrentUser } from 'src/app/store/user.selector';
 import { HelperService } from '../helperService';
 import { ExecutionState } from '../blockchain';
 import {
-  BROKER_BLOCKTRADE,
-  CLIENT_BLOCKTRADE,
-  BROKER_ALLOCATION_TRADE,
-  CLIENT_ALLOCATION_TRADE,
+  BROKER_BLOCKTRADE_COLUMNS,
+  CLIENT_BLOCKTRADE_COLUMNS,
+  BROKER_ALLOCATION_TRADE_COLUMNS,
+  CLIENT_ALLOCATION_TRADE_COLUMNS,
+  SETTLEMENT_AGENT_COLUMNS,
 } from './columns';
 import {
   ALLOCATION_TRADE_STATUS,
   BLOCK_TRADE_STATUS,
   ROLES,
+  ACTIONS,
 } from '../blockchain.constants';
 
 @Component({
@@ -38,16 +40,18 @@ export class ExecutionStatesComponent implements OnInit {
     const userRole = this.helperService.getCurrentUserRole();
     if (this.type === 'block-trade') {
       if (userRole === ROLES.BROKER) {
-        columns = BROKER_BLOCKTRADE;
+        columns = BROKER_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
-        columns = CLIENT_BLOCKTRADE;
+        columns = CLIENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
-        columns = BROKER_ALLOCATION_TRADE;
+        columns = BROKER_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
-        columns = CLIENT_ALLOCATION_TRADE;
+        columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       }
+    } else if (this.type === 'settlement-agent') {
+      columns = SETTLEMENT_AGENT_COLUMNS;
     }
 
     return columns;
@@ -79,7 +83,7 @@ export class ExecutionStatesComponent implements OnInit {
       case ROLES.BROKER:
         url = '/blocktrades';
         break;
-      case ROLES.BROKER:
+      case ROLES.CLIENT:
         url = '/allocations';
         break;
     }
@@ -149,7 +153,6 @@ export class ExecutionStatesComponent implements OnInit {
 
   mapBrokerAllocationTrade(exec) {
     const { data } = exec;
-    console.log(data);
     return {
       ...data,
       blockNumber: data.blockTradeNum,
@@ -186,10 +189,10 @@ export class ExecutionStatesComponent implements OnInit {
     };
   }
 
-  isActionEnabled(execution: ExecutionState): string {
+  availableAction(execution: ExecutionState): string {
     if (this.type === 'block-trade') {
       if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
-        return 'Allocate';
+        return ACTIONS.ALLOCATE;
       }
     } else if (this.type === 'allocation-trade') {
       if (this.currentUserRole === ROLES.BROKER) {
@@ -197,7 +200,7 @@ export class ExecutionStatesComponent implements OnInit {
           case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
             return null;
           case ALLOCATION_TRADE_STATUS.AFFIRMED:
-            return 'Confirm';
+            return ACTIONS.CONFIRM;
           case ALLOCATION_TRADE_STATUS.CONFIRMED:
             return null;
         }
@@ -206,6 +209,19 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   performAction(e) {
+    const action = this.availableAction(e);
+    switch (action) {
+      case ACTIONS.ALLOCATE:
+        this.httpClient.post(this.helperService.getBaseUrl() + '/allocate', {});
+        break;
+      case ACTIONS.CONFIRM:
+        this.httpClient.post(this.helperService.getBaseUrl() + '/confirm', {});
+        break;
+      default:
+        this.snackBar.open('Should not be executed', 'Close', {
+          duration: 2000,
+        });
+    }
     console.log(e);
   }
 }

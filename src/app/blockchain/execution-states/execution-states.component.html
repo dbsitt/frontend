@@ -68,7 +68,7 @@
         <button
           mat-raised-button
           color="primary"
-          [disabled]="!isActionEnabled(element)"
+          [disabled]="!availableAction(element)"
           (click)="performAction(element)"
         >
           Action

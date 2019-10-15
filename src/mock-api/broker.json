@@ -1,5 +1,5 @@
 {
-  "execution-states": [ {
+  "blocktrades": [ {
     "linearId" : "acb22516-b07f-4ed6-b20b-f12e2502ed0f",
     "parties" : [ "O=Broker1, L=New York, C=US", "O=Broker2, L=New York, C=US" ],
     "execution" : {
