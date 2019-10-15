@@ -6,6 +6,7 @@ export const BROKER_BLOCKTRADE = [
   'quantity',
   'price',
   'cash',
+  'currency',
   'valueDate',
   'status',
   'action',
@@ -19,6 +20,7 @@ export const CLIENT_BLOCKTRADE = [
   'quantity',
   'price',
   'cash',
+  'currency',
   'valueDate',
   'status',
 ];
