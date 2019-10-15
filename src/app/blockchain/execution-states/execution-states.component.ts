@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize, filter } from 'rxjs/operators';
+import { finalize, filter, takeLast, throttleTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
@@ -10,15 +10,17 @@ import { getCurrentUser } from 'src/app/store/user.selector';
 import { HelperService } from '../helperService';
 import { ExecutionState } from '../blockchain';
 import {
-  BROKER_BLOCKTRADE,
-  CLIENT_BLOCKTRADE,
-  BROKER_ALLOCATION_TRADE,
-  CLIENT_ALLOCATION_TRADE,
+  BROKER_BLOCKTRADE_COLUMNS,
+  CLIENT_BLOCKTRADE_COLUMNS,
+  BROKER_ALLOCATION_TRADE_COLUMNS,
+  CLIENT_ALLOCATION_TRADE_COLUMNS,
+  SETTLEMENT_AGENT_COLUMNS,
 } from './columns';
 import {
   ALLOCATION_TRADE_STATUS,
   BLOCK_TRADE_STATUS,
   ROLES,
+  ACTIONS,
 } from '../blockchain.constants';
 
 @Component({
@@ -38,16 +40,19 @@ export class ExecutionStatesComponent implements OnInit {
     const userRole = this.helperService.getCurrentUserRole();
     if (this.type === 'block-trade') {
       if (userRole === ROLES.BROKER) {
-        columns = BROKER_BLOCKTRADE;
+        columns = BROKER_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
-        columns = CLIENT_BLOCKTRADE;
+        columns = CLIENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
-        columns = BROKER_ALLOCATION_TRADE;
+        columns = BROKER_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
-        columns = CLIENT_ALLOCATION_TRADE;
+        columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       }
+      // TODO check this
+    } else if (this.type === 'settlement-agent') {
+      columns = SETTLEMENT_AGENT_COLUMNS;
     }
 
     return columns;
@@ -75,11 +80,11 @@ export class ExecutionStatesComponent implements OnInit {
   fetchExecutionStates() {
     let url: string;
 
-    switch (this.currentUserRole) {
-      case ROLES.BROKER:
+    switch (this.type) {
+      case 'block-trade':
         url = '/blocktrades';
         break;
-      case ROLES.BROKER:
+      case 'allocation-trade':
         url = '/allocations';
         break;
     }
@@ -88,6 +93,7 @@ export class ExecutionStatesComponent implements OnInit {
     this.httpClient
       .get(this.helperService.getBaseUrl() + url)
       .pipe(
+        throttleTime(10),
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })
@@ -149,7 +155,6 @@ export class ExecutionStatesComponent implements OnInit {
 
   mapBrokerAllocationTrade(exec) {
     const { data } = exec;
-    console.log(data);
     return {
       ...data,
       blockNumber: data.blockTradeNum,
@@ -186,10 +191,10 @@ export class ExecutionStatesComponent implements OnInit {
     };
   }
 
-  isActionEnabled(execution: ExecutionState): string {
+  availableAction(execution: ExecutionState): string {
     if (this.type === 'block-trade') {
       if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
-        return 'Allocate';
+        return ACTIONS.ALLOCATE;
       }
     } else if (this.type === 'allocation-trade') {
       if (this.currentUserRole === ROLES.BROKER) {
@@ -197,7 +202,7 @@ export class ExecutionStatesComponent implements OnInit {
           case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
             return null;
           case ALLOCATION_TRADE_STATUS.AFFIRMED:
-            return 'Confirm';
+            return ACTIONS.CONFIRM;
           case ALLOCATION_TRADE_STATUS.CONFIRMED:
             return null;
         }
@@ -206,6 +211,19 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   performAction(e) {
+    const action = this.availableAction(e);
+    switch (action) {
+      case ACTIONS.ALLOCATE:
+        this.httpClient.post(this.helperService.getBaseUrl() + '/allocate', {});
+        break;
+      case ACTIONS.CONFIRM:
+        this.httpClient.post(this.helperService.getBaseUrl() + '/confirm', {});
+        break;
+      default:
+        this.snackBar.open('Should not be executed', 'Close', {
+          duration: 2000,
+        });
+    }
     console.log(e);
   }
 }

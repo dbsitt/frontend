@@ -1,4 +1,4 @@
-export const BROKER_BLOCKTRADE = [
+export const BROKER_BLOCKTRADE_COLUMNS = [
   'tradeNumber',
   'client',
   'prodType',
@@ -12,7 +12,7 @@ export const BROKER_BLOCKTRADE = [
   'action',
 ];
 
-export const CLIENT_BLOCKTRADE = [
+export const CLIENT_BLOCKTRADE_COLUMNS = [
   'tradeNumber',
   'broker',
   'prodType',
@@ -25,7 +25,7 @@ export const CLIENT_BLOCKTRADE = [
   'status',
 ];
 
-export const BROKER_ALLOCATION_TRADE = [
+export const BROKER_ALLOCATION_TRADE_COLUMNS = [
   'blockNumber',
   'allocationNumber',
   'client',
@@ -39,12 +39,24 @@ export const BROKER_ALLOCATION_TRADE = [
   'action',
 ];
 
-export const CLIENT_ALLOCATION_TRADE = [
+export const CLIENT_ALLOCATION_TRADE_COLUMNS = [
   'blockNumber',
   'allocationNumber',
   'client',
   'prodType',
   'product',
+  'quantity',
+  'price',
+  'cash',
+  'valueDate',
+  'status',
+];
+
+export const SETTLEMENT_AGENT_COLUMNS = [
+  'tradeNumber',
+  'broker',
+  'client',
+  'prodType',
   'quantity',
   'price',
   'cash',
