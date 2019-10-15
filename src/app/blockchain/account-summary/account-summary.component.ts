@@ -42,7 +42,7 @@ export class AccountSummaryComponent implements OnInit {
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
       .get(this.apiService.getBaseUrl() + '/getAccounts')
-      //.get('http://3.1.246.227:10050/getTestAccounts')
+      // .get('http://3.1.246.227:10050/getTestAccounts')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));

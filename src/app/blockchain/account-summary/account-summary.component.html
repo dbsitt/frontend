@@ -7,21 +7,21 @@
     [dataSource]="tableData"
     class="mat-elevation-z8 execution-table"
   >
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="walletRef">
       <th mat-header-cell *matHeaderCellDef>Account Reference</th>
       <td class="table-cell" mat-cell *matCellDef="let element">
         {{ element.walletRef }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="account">
+    <ng-container matColumnDef="accountNumber">
       <th mat-header-cell *matHeaderCellDef>Account Number</th>
       <td class="table-cell" mat-cell *matCellDef="let element">
         {{ element.accountNumber }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="accountName">
       <th mat-header-cell *matHeaderCellDef>Account Name</th>
       <td class="table-cell" mat-cell *matCellDef="let element">
         {{ element.accountName }}
