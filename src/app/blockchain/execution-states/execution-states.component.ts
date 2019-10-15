@@ -157,15 +157,22 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = exec;
     return {
       ...data,
-      blockNumber: data.blockTradeNum,
-
+      blockNumber: exec.execution.meta.externalKey,
+      allocationNumber: exec.execution.meta.globalKey,
+      status: exec.status,
       prodType: data.productType,
     };
   }
 
   mapClientAllocationTrade(exec) {
     const { data } = exec;
-    return this.dummyJson();
+    return {
+      ...data,
+      blockNumber: exec.execution.meta.externalKey,
+      allocationNumber: exec.execution.meta.globalKey,
+      status: exec.status,
+      prodType: data.productType,
+    };
   }
 
   dummyJson() {

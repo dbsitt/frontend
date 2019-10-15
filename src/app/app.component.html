@@ -16,7 +16,11 @@
         [routerLink]="['/transactions']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
-        *ngIf="currentUserRole === 'BROKER' || currentUserRole === 'CLIENT'"
+        *ngIf="
+          currentUserRole === 'BROKER' ||
+          currentUserRole === 'CLIENT' ||
+          currentUserRole === 'OBSERVER'
+        "
         class="link"
       >
         Block Trade
@@ -28,6 +32,7 @@
         *ngIf="
           currentUserRole === 'BROKER' ||
           currentUserRole === 'CLIENT' ||
+          currentUserRole === 'OBSERVER' ||
           currentUserRole === 'SETTLEMENT_AGENT'
         "
         class="link"
@@ -37,6 +42,11 @@
         [routerLink]="['/transactions/admin']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="
+          currentUserRole === 'BROKER' ||
+          currentUserRole === 'CLIENT' ||
+          currentUserRole === 'SETTLEMENT_AGENT'
+        "
         class="link"
       >
         Admin</a

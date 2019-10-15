@@ -71,7 +71,7 @@
           [disabled]="!availableAction(element)"
           (click)="performAction(element)"
         >
-          Action
+          {{ availableAction(element) }}
         </button>
       </td>
     </ng-container>
