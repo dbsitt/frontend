@@ -9,6 +9,12 @@ import { UserState } from 'src/app/store/user.reducers';
 import { getCurrentUser } from 'src/app/store/user.selector';
 import { HelperService } from '../helperService';
 import { ExecutionState } from '../blockchain';
+import {
+  BROKER_BLOCKTRADE,
+  CLIENT_BLOCKTRADE,
+  BROKER_ALLOCATION_TRADE,
+  CLIENT_ALLOCATION_TRADE,
+} from './columns';
 
 @Component({
   selector: 'app-execution-states',
@@ -27,10 +33,18 @@ export class ExecutionStatesComponent implements OnInit {
   get displayedColumns() {
     let columns = [];
     this.userStore.pipe(select(getCurrentUser)).subscribe(user => {
-      if (user.role === 'BROKER') {
-        columns = ['id', 'type', 'status', 'underlying'];
-      } else if (user.role === 'CLIENT') {
-        columns = ['id', 'type', 'status', 'underlying', 'action'];
+      if (this.type === 'block-trade') {
+        if (user.role === 'BROKER') {
+          columns = BROKER_BLOCKTRADE;
+        } else if (user.role === 'CLIENT') {
+          columns = CLIENT_BLOCKTRADE;
+        }
+      } else if (this.type === 'allocation-trade') {
+        if (user.role === 'BROKER') {
+          columns = BROKER_ALLOCATION_TRADE;
+        } else if (user.role === 'CLIENT') {
+          columns = CLIENT_ALLOCATION_TRADE;
+        }
       }
     });
 
@@ -42,7 +56,7 @@ export class ExecutionStatesComponent implements OnInit {
     private snackBar: MatSnackBar,
     private uiStore: Store<UiState>,
     private userStore: Store<UserState>,
-    private apiService: HelperService
+    private helperService: HelperService
   ) {}
 
   ngOnInit() {
@@ -56,10 +70,14 @@ export class ExecutionStatesComponent implements OnInit {
       });
   }
 
+  get currentUserRole() {
+    return this.helperService.getCurrentUserRole();
+  }
+
   fetchExecutionStates() {
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .get(this.apiService.getBaseUrl() + '/execution-states')
+      .get(this.helperService.getBaseUrl() + '/execution-states')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
@@ -69,17 +87,11 @@ export class ExecutionStatesComponent implements OnInit {
         (response: any) => {
           if (response !== null) {
             this.data = response;
-
-            const filterFunction = this.allocationFilter.bind(this);
-            if (this.type === 'affirm') {
-            }
-
-            this.tableData = this.mapExecutions(response).filter(
-              filterFunction
-            );
+            this.tableData = this.mapExecutions(response);
           }
         },
         () => {
+          console.log('err');
           this.data = null;
           this.snackBar.open(
             'Error occur when fetching execution-states',
@@ -92,110 +104,83 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
-  allocationFilter(exec) {
-    return exec.type.toLowerCase() === this.type.toLowerCase();
-  }
-
   mapExecutions(executions: any[]): any[] {
     return executions.map(exec => {
-      let status: string;
-
-      const { closedState, meta } = exec.execution;
-
-      const isBlock = meta.globalKey === meta.externalKey;
-
-      const type = isBlock ? 'Block' : 'Allocation';
-
-      if (isBlock) {
-        if (closedState) {
-          status = closedState.state;
-        } else {
-          status = '-';
+      if (this.type === 'block-trade') {
+        if (this.currentUserRole === 'BROKER') {
+          return this.mapBrokerBlockTrade();
+        } else if (this.currentUserRole === 'CLIENT') {
+          return this.mapClientBlockTrade();
         }
-      } else {
-        status = exec.status;
+      } else if (this.type === 'allocation-trade') {
+        if (this.currentUserRole === 'BROKER') {
+          return this.mapBrokerAllocationTrade();
+        } else if (this.currentUserRole === 'CLIENT') {
+          return this.mapClientAllocationTrade();
+        }
       }
-
-      return {
-        status,
-        type,
-        id: exec.execution.meta.globalKey,
-        underlying: this.getProductForRecord(exec),
-      };
     });
   }
 
-  isActionEnabled(execution: ExecutionState): boolean {
-    if (this.type === 'allocation') {
-      return execution.status === 'UNAFFIRMED';
+  mapClientBlockTrade() {
+    return this.dummyJson();
+  }
+
+  mapBrokerBlockTrade() {
+    return this.dummyJson();
+  }
+
+  mapBrokerAllocationTrade() {
+    return this.dummyJson();
+  }
+
+  mapClientAllocationTrade() {
+    return this.dummyJson();
+  }
+
+  dummyJson() {
+    const str = 'string';
+    const num = 123;
+    const date = '15-10-2019';
+    const status = '-';
+    const currency = '$';
+    return {
+      status,
+      currency,
+      tradeNumber: str,
+      blockNumber: str,
+      allocationNumber: str,
+      client: 'Client',
+      broker: 'Broker',
+      prodType: str,
+      product: str,
+      quantity: str,
+      price: num,
+      cash: num,
+      valueDate: date,
+    };
+  }
+
+  isActionEnabled(execution: ExecutionState): string {
+    if (this.type === 'block-trade') {
+      if (execution.status === '') {
+        return 'Allocate';
+      }
+    } else if (this.type === 'allocation-trade') {
+      if (this.currentUserRole === 'BROKER') {
+        switch (execution.status) {
+          case 'UNAFFIRMED':
+            return null;
+          case 'AFFIRMED':
+            return 'Confirm';
+          case 'CONFIRMED':
+            return null;
+        }
+      }
     }
-    return true;
   }
 
   performAction(e) {
     console.log(e);
-  }
-
-  getTradeDateForRecord(execution: any) {
-    const { day, month, year } = execution.execution.tradeDate.value;
-
-    return `${day}-${month}-${year}`;
-  }
-
-  getNetPriceForRecord(execution: any) {
-    const { amount, currency } = execution.execution.price.netPrice;
-    return `${amount}${currency.value}`;
-  }
-
-  getQuantityForRecord(execution: any) {
-    const { amount } = execution.execution.quantity;
-    return amount;
-  }
-
-  getSettlementAmountForRecord(execution: any) {
-    const {
-      amount,
-      currency,
-    } = execution.execution.settlementTerms.settlementAmount;
-
-    return `${amount}${currency.value}`;
-  }
-
-  getSettlementDateForRecord(execution: any) {
-    const {
-      day,
-      month,
-      year,
-    } = execution.execution.settlementTerms.settlementDate.adjustableDate.unadjustedDate;
-    return `${day}-${month}-${year}`;
-  }
-
-  getProductForRecord(execution: any) {
-    const {
-      bond,
-      convertibleBond,
-      equity,
-      exchangeTradedFund,
-      mortgageBackedSecurity,
-      mutualFund,
-      warrant,
-    } = execution.execution.product.security;
-    if (bond) {
-      return 'Bond';
-    } else if (convertibleBond) {
-      return 'Convertible Bond';
-    } else if (equity) {
-      return 'Equity';
-    } else if (exchangeTradedFund) {
-      return 'Exchange Traded Fund';
-    } else if (mortgageBackedSecurity) {
-      return 'Mortgage Backed Security';
-    } else if (mutualFund) {
-      return 'Mutual Fund';
-    } else if (warrant) {
-      return 'Warrant';
-    }
-
-    return 'No Product';
   }
 }
