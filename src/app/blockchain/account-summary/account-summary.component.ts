@@ -76,9 +76,7 @@ export class AccountSummaryComponent implements OnInit {
 
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      //.get(this.helperService.getBaseUrl() + '/getAccounts')
-
-      .get('http://localhost:4000/getAccounts')
+      .get(this.helperService.getBaseUrl() + '/getAccounts')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
