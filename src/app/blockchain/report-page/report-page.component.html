@@ -1,34 +1,7 @@
-<!-- <mat-card class="main-card">
-  <mat-card-title>
-    Upload
-  </mat-card-title>
-  <mat-card-content>
-    <form class="uploader">
-      <input type="file" (change)="fileChanged($event)" class="file-chooser" />
-      <mat-card class="content-viewer" *ngIf="content">
-        <ngx-json-viewer [json]="content" [expanded]="false"></ngx-json-viewer>
-      </mat-card>
-
-      <ng-container>
-        <ng-container [ngSwitch]="currentUserRole">
-          <div  class="upload-button-container">
-            <button
-              color="primary"
-              mat-raised-button
-              (click)="onSubmit('execution')"
-              class="submit"
-            >
-              Get Report
-            </button>
-          </div>
-        </ng-container>
-      </ng-container>
-    </form>
-  </mat-card-content>
-</mat-card> -->
 <div class="material-icons refresh" (click)="fetchAccountSummary()">
   refresh
 </div>
+
 <div>
   <label>Client </label>
   <select (change)="filterAccountBalance($event.target.value)">
@@ -163,5 +136,5 @@
   </table>
 </ng-container>
 <ng-template #emptyState>
-  <div>Empty Report Data</div>
+  <div>Empty Report</div>
 </ng-template>

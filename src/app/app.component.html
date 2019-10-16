@@ -64,6 +64,7 @@
         [routerLink]="['/transactions/position-report']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="currentUserRole === 'BROKER'"
         class="link"
       >
         Position Report</a
