@@ -9,15 +9,21 @@ mat-card {
 }
 
 .table-cell {
-  width: 23%;
+  width: 18%;
   word-break: break-all;
   padding-right: 30px;
 }
 
 .table-cell-sm {
-  width: 5%;
+  width: 10%;
   word-break: break-all;
   padding-right: 30px;
+}
+
+.table-cell-md {
+  width: 10%;
+  word-break: break-all;
+  padding-right: 10px;
 }
 
 .refresh {

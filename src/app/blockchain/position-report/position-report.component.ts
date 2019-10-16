@@ -132,7 +132,7 @@ export class PositionReportComponent implements OnInit {
         () => {
           this.tableData = [];
           this.snackBar.open(
-            `Error occur when fetching execution-states for ${this.currentUserId}`,
+            `Error occur when fetching position report for ${this.currentUserId}`,
             'Close',
             {
               duration: 2000,
