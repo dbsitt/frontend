@@ -183,12 +183,12 @@ export class ExecutionStatesComponent implements OnInit {
       price,
       quantity,
       product,
-      prodType,
+      productType,
     } = data;
     return {
       productRelated: {
         product,
-        prodType,
+        prodType: productType,
         quantity,
       },
       valueRelated: {
