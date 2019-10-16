@@ -7,7 +7,7 @@
   <span class="label">Executing Party: </span
   >{{ data.executingEntity.name }} ({{ data.executingEntity.buyOrSell }})
 </div>
-<div>
+<div *ngIf="data.counterparty">
   <span class="label">Counterparty: </span>{{ data.counterparty.name }} ({{
     data.counterparty.buyOrSell
   }})

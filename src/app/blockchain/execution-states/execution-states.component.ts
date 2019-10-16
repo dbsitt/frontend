@@ -162,8 +162,13 @@ export class ExecutionStatesComponent implements OnInit {
   mapTransferParty(role: string, respose: any) {
     const { party, partyRole } = respose.execution;
 
-    const partyReferenceId = partyRole.find(o => o.role === role).partyReference
-      .globalReference;
+    const partyRoleReference = partyRole.find(o => o.role === role);
+
+    if (!partyRoleReference) {
+      return null;
+    }
+
+    const partyReferenceId = partyRoleReference.partyReference.globalReference;
 
     const name = party.find(o => o.globalReference === partyReferenceId).value
       .name.value;
