@@ -7,6 +7,13 @@
   margin-top: 0.5rem;
   width: 10rem;
   margin-right: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+
+  &:not(:disabled) {
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 
   &:disabled {
     cursor: not-allowed;
