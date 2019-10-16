@@ -34,15 +34,24 @@ export class AccountSummaryComponent implements OnInit {
   ) {}
 
   get displayedColumns() {
-    return ['walletRef', 'accountNumber', 'accountName', 'currency', 'amount'];
+    return [
+      'walletRef',
+      'accountNumber',
+      'accountName',
+      'currency',
+      'amount',
+      'holder',
+    ];
   }
-
+  get currentUserRole() {
+    return this.helperService.getCurrentUserRole();
+  }
   fetchAccountSummary() {
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      //.get(this.helperService.getBaseUrl() + '/getAccounts')
+      .get(this.helperService.getBaseUrl() + '/getAccounts')
       //.get('http://3.1.246.227:10050/api/getAccounts')
-      .get('http://localhost:4000/getAccounts')
+      //.get('http://localhost:4000/getAccounts')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
@@ -57,7 +66,7 @@ export class AccountSummaryComponent implements OnInit {
         () => {
           this.data = null;
           this.snackBar.open(
-            'Error occur when fetching execution-states',
+            'Error occur when fetching account summary',
             'Close',
             {
               duration: 2000,

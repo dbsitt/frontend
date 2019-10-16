@@ -7,6 +7,13 @@
     [dataSource]="tableData"
     class="mat-elevation-z8 execution-table"
   >
+    <ng-container matColumnDef="holder">
+      <th mat-header-cell *matHeaderCellDef>Holder</th>
+      <td class="table-cell-sm" mat-cell *matCellDef="let element">
+        {{ element.amount }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="walletRef">
       <th class="table-cell" mat-header-cell *matHeaderCellDef>
         Account Reference
