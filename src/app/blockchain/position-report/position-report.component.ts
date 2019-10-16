@@ -81,16 +81,6 @@ export class PositionReportComponent implements OnInit {
     this.tableDataCache = this.tableData.filter(function(item) {
       return item.client === filterVal;
     });
-
-    //this.tableDataCache = this.tableData
-    // this.tableData.filter(e)
-    // for (var i = 0; i < this.tableDataCache.length; i++) {
-    //   if (this.tableData[i].client === filterVal) {
-    //     result.push(this.tableData[i]);
-    //   }
-    // }
-
-    /// this.tableData = result;
   }
 
   ngOnInit() {

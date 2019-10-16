@@ -63,17 +63,6 @@ export class AccountSummaryComponent implements OnInit {
       'currency',
       'amount',
     ];
-    if (
-      this.currentUserRole === 'CLIENT' ||
-      this.currentUserRole === 'BROKER'
-    ) {
-      let test = this.columns.filter(function(item) {
-        return item !== 'holder';
-      });
-
-      this.columns = test;
-    }
-
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
       .get(this.helperService.getBaseUrl() + '/getAccounts')
@@ -102,7 +91,6 @@ export class AccountSummaryComponent implements OnInit {
   }
   ngOnInit() {
     this.account$ = this.store.pipe(select(getCurrentUser));
-    // this.fetchAccountSummary();
     this.helperService.currentUser$.subscribe(e => {
       console.log('calling fetch account summary');
       this.fetchAccountSummary();
