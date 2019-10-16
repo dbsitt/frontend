@@ -11,7 +11,7 @@
     <ng-container matColumnDef="tradeAndBroker">
       <th mat-header-cell *matHeaderCellDef class="header-label">Block#</th>
       <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
+        <div class="cell-wrapper" *ngIf="element.tradeAndBroker">
           <app-transfer-info
             [data]="element.tradeAndBroker"
           ></app-transfer-info>
@@ -27,7 +27,7 @@
         Transaction
       </th>
       <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
+        <div class="cell-wrapper" *ngIf="element.tradeAndClient">
           <app-transfer-info
             [data]="element.tradeAndClient"
           ></app-transfer-info>
@@ -43,7 +43,7 @@
         Transaction
       </th>
       <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
+        <div class="cell-wrapper" *ngIf="element.tradeAndBrokerAndClient">
           <app-transfer-info
             [data]="element.tradeAndBrokerAndClient"
           ></app-transfer-info>
@@ -59,7 +59,7 @@
         Transaction
       </th>
       <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
+        <div class="cell-wrapper" *ngIf="element.blockAndAllocationAndClient">
           <app-transfer-info
             [data]="element.blockAndAllocationAndClient"
           ></app-transfer-info>
