@@ -49,6 +49,8 @@ export class ExecutionStatesComponent implements OnInit {
         columns = BROKER_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_BLOCKTRADE_COLUMNS;
+      } else if (userRole === ROLES.SETTLEMENT_AGENT) {
+        columns = CLIENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
@@ -130,41 +132,20 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
-  mockData() {
-    const response = [
-      {
-        execution: {
-          meta: {
-            globalKey: 'GLOBAL-akshdfkahsdkfjhasdfkjasdhfkjdsaasdf',
-            externalKey: 'EXTERNAL-akshdfjashdfkjhjsadhfjkasdjfjkasd',
-          },
-          status: 'STATUS',
-        },
-        data: {
-          valueDate: '02-12-2019',
-          cash: '123',
-          currency: 'USD',
-          price: '12132',
-          quantity: '45',
-          product: 'PROD',
-          prodType: 'Bond',
-          client: 'CLIENT',
-          broker: 'BROKER',
-          blockTradeNum: 'TRADENUM=asdfhjkashdfjksdkfjds',
-        },
-      },
-    ];
-    this.tableData = this.mapExecutions(response);
-  }
-
   mapTransferParty(role: string, respose: any) {
     const { party, partyRole } = respose.execution;
 
-    const partyReferenceId = partyRole.find(o => o.role === role).partyReference
-      .globalReference;
+    const partyRoleReference = partyRole.find(o => o.role === role);
 
-    const name = party.find(o => o.globalReference === partyReferenceId).value
-      .name.value;
+    if (!partyRoleReference) {
+      return null;
+    }
+
+    const partyReferenceId = partyRoleReference.partyReference.globalReference;
+
+    const nameRef = party.find(o => o.globalReference === partyReferenceId);
+
+    const name = nameRef.value.name.value;
 
     const buyOrSell = partyRole.find(
       o =>
@@ -183,6 +164,8 @@ export class ExecutionStatesComponent implements OnInit {
         if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerBlockTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
+          return this.mapClientBlockTrade(response);
+        } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
           return this.mapClientBlockTrade(response);
         }
       } else if (this.type === 'allocation-trade') {
