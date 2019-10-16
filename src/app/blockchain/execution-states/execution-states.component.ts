@@ -306,10 +306,24 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   actionsForBlockTrade(execution: ExecutionState): string {
-    if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
-      return ACTIONS.ALLOCATE;
-    } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
-      return null;
+    if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
+      switch (execution.status) {
+        case BLOCK_TRADE_STATUS.EXECUTED:
+        case BLOCK_TRADE_STATUS.EMPTY:
+          return null;
+        case BLOCK_TRADE_STATUS.ALLOCATED:
+          return ACTIONS.SETTLE;
+        case BLOCK_TRADE_STATUS.INSTRUCTED:
+          return ACTIONS.TRANSFER;
+        case BLOCK_TRADE_STATUS.SETTLED:
+          return null;
+      }
+    } else {
+      if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
+        return ACTIONS.ALLOCATE;
+      } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
+        return null;
+      }
     }
   }
 
@@ -336,10 +350,10 @@ export class ExecutionStatesComponent implements OnInit {
       switch (execution.status) {
         case CONFIRMED_ALLOCATION_TRADES_STATUS.CONFIRMED:
           return ACTIONS.SETTLE;
-        case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
-          return ACTIONS.TRANSFER;
         case CONFIRMED_ALLOCATION_TRADES_STATUS.INSTRUCTED:
           return ACTIONS.TRANSFER;
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
+          return null;
         case CONFIRMED_ALLOCATION_TRADES_STATUS.TRANSFERRED:
           return null;
       }
