@@ -28,7 +28,12 @@ export class AdminPageComponent implements OnInit {
   resetData() {
     this.file = null;
     this.content = null;
-    (document.getElementsByClassName('file-chooser')[0] as any).value = '';
+    const fileChooser = document.getElementsByClassName(
+      'file-chooser'
+    )[0] as any;
+    if (fileChooser) {
+      fileChooser.value = '';
+    }
   }
 
   get currentUserRole() {
