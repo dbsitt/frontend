@@ -220,7 +220,7 @@ export class ExecutionStatesComponent implements OnInit {
       ...data,
       tradeAndBroker: {
         tradeNumber: data.blockTradeNum,
-        broker: data.broker,
+        broker: data.client,
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
