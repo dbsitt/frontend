@@ -50,7 +50,7 @@ export class ExecutionStatesComponent implements OnInit {
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
-        columns = BROKER_BLOCKTRADE_COLUMNS;
+        columns = CLIENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
