@@ -25,18 +25,18 @@ export class APIInterceptor implements HttpInterceptor {
         if (err.status === 0) {
           message = `Endpoint '${req.url}' not found`;
         } else if (err.status === 201) {
-          if (err.text) {
+          if (typeof err.text === 'string') {
             message = err.text;
-          } else if (err.error.text) {
+          } else if (typeof err.error.text === 'string') {
             message = err.error.text;
           } else {
             message = err;
           }
         } else if (err.status === 400) {
-          if (err.message) {
-            message = err.message;
-          } else if (err.error) {
+          if (typeof err.error === 'string') {
             message = err.error;
+          } else if (typeof err.message === 'string') {
+            message = err.message;
           } else {
             message = err;
           }

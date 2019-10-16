@@ -17,8 +17,11 @@ export class BlockTradeComponent implements OnInit {
 
   ngOnInit() {
     this.helperService.currentUser$.subscribe(e => {
-      if (e.role === ROLES.SETTLEMENT_AGENT) {
-        this.router.navigateByUrl('transactions/account');
+      if (
+        e.role === ROLES.SETTLEMENT_AGENT ||
+        e.role === ROLES.COLLATERAL_AGENT
+      ) {
+        this.router.navigateByUrl('transactions/allocate');
       }
     });
   }
