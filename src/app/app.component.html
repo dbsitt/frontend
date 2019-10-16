@@ -65,13 +65,18 @@
         class="user-select"
         (change)="onUserChange($event)"
       >
-        <option value="Broker1">Broker1</option>
-        <option value="Broker2">Broker2</option>
-        <option value="Client1">Client1</option>
-        <option value="Client2">Client2</option>
-        <option value="Client3">Client3</option>
-        <option value="Observer">Observer</option>
-        <option value="SA1">SA1</option>
+        <option [value]="USERNAMES.BROKER1">{{ USERNAMES.BROKER1 }}</option>
+        <option [value]="USERNAMES.BROKER2">{{ USERNAMES.BROKER2 }}</option>
+        <option [value]="USERNAMES.CLIENT1">{{ USERNAMES.CLIENT1 }}</option>
+        <option [value]="USERNAMES.CLIENT2">{{ USERNAMES.CLIENT2 }}</option>
+        <option [value]="USERNAMES.CLIENT3">{{ USERNAMES.CLIENT3 }}</option>
+        <option [value]="USERNAMES.OBSERVER1">{{ USERNAMES.OBSERVER1 }}</option>
+        <option [value]="USERNAMES.SETTLEMENT_AGENT1">{{
+          USERNAMES.SETTLEMENT_AGENT1
+        }}</option>
+        <option [value]="USERNAMES.COLLATERAL_AGENT1">{{
+          USERNAMES.COLLATERAL_AGENT1
+        }}</option>
       </select>
     </div>
   </div>

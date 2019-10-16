@@ -10,6 +10,7 @@ import { UiState } from '../store/ui.reducer';
 import { HttpClient } from '@angular/common/http';
 import { setLoading } from '../store/ui.actions';
 import { MatSnackBar } from '@angular/material';
+import { USERNAMES } from './blockchain.constants';
 
 @Injectable()
 export class HelperService {
@@ -29,20 +30,22 @@ export class HelperService {
     this.currentUser$
       .pipe(
         map(user => {
-          if (user.id === 'Broker1') {
+          if (user.id === USERNAMES.BROKER1) {
             return environment.brokerApi;
-          } else if (user.id === 'Broker2') {
+          } else if (user.id === USERNAMES.BROKER2) {
             return environment.broker2Api;
-          } else if (user.id === 'Client1') {
+          } else if (user.id === USERNAMES.CLIENT1) {
             return environment.clientApi1;
-          } else if (user.id === 'Client2') {
+          } else if (user.id === USERNAMES.CLIENT2) {
             return environment.clientApi2;
-          } else if (user.id === 'Client3') {
+          } else if (user.id === USERNAMES.CLIENT3) {
             return environment.clientApi3;
-          } else if (user.id === 'Observer') {
-            return environment.obseverApi;
-          } else if (user.id === 'SA1') {
-            return environment.settlementAgentAPi;
+          } else if (user.id === USERNAMES.OBSERVER1) {
+            return environment.obseverApi1;
+          } else if (user.id === USERNAMES.SETTLEMENT_AGENT1) {
+            return environment.settlementAgentAPi1;
+          } else if (user.id === USERNAMES.COLLATERAL_AGENT1) {
+            return environment.collateralAgentApi1;
           } else {
             throw Error('should not come to this point');
           }
