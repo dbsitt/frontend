@@ -76,8 +76,9 @@ export class AccountSummaryComponent implements OnInit {
 
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .get(this.helperService.getBaseUrl() + '/getAccounts')
-      //.get('http://localhost:4000/getAccounts')
+      //.get(this.helperService.getBaseUrl() + '/getAccounts')
+
+      .get('http://localhost:4000/getAccounts')
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
@@ -103,7 +104,7 @@ export class AccountSummaryComponent implements OnInit {
   }
   ngOnInit() {
     this.account$ = this.store.pipe(select(getCurrentUser));
-    this.fetchAccountSummary();
+    // this.fetchAccountSummary();
     this.helperService.currentUser$.subscribe(e => {
       console.log('calling fetch account summary');
       this.fetchAccountSummary();
