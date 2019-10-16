@@ -11,7 +11,7 @@
 
       <ng-container>
         <ng-container [ngSwitch]="currentUserRole">
-          <div *ngSwitchCase="'BROKER'" class="upload-button-container">
+          <div *ngSwitchCase="ROLES.BROKER" class="upload-button-container">
             <button
               color="primary"
               mat-raised-button
@@ -40,7 +40,7 @@
               Confirmation
             </button>
           </div>
-          <div *ngSwitchCase="'CLIENT'" class="upload-button-container">
+          <div *ngSwitchCase="ROLES.CLIENT" class="upload-button-container">
             <button
               color="primary"
               mat-raised-button
@@ -52,7 +52,21 @@
             </button>
           </div>
           <div
-            *ngSwitchCase="'SETTLEMENT_AGENT'"
+            *ngSwitchCase="ROLES.SETTLEMENT_AGENT"
+            class="upload-button-container"
+          >
+            <button
+              color="primary"
+              mat-raised-button
+              [disabled]="!content"
+              (click)="onSubmit('loadWallet')"
+              class="submit"
+            >
+              Add Money
+            </button>
+          </div>
+          <div
+            *ngSwitchCase="ROLES.COLLATERAL_AGENT"
             class="upload-button-container"
           >
             <button

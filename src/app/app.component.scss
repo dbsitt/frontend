@@ -108,6 +108,10 @@
       border-radius: 50%;
     }
   }
+
+  &__account {
+    font-size: 30px;
+  }
 }
 
 @keyframes rotateClockwise {
@@ -125,4 +129,6 @@
 
 .user-select {
   height: 1.4rem;
+  width: 10rem;
+  position: relative;
 }

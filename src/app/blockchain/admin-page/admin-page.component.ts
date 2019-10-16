@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HelperService } from '../helperService';
 import { MatSnackBar } from '@angular/material';
+import { ROLES } from '../blockchain.constants';
 
 @Component({
   selector: 'app-admin-page',
@@ -10,6 +11,8 @@ import { MatSnackBar } from '@angular/material';
 export class AdminPageComponent implements OnInit {
   file: any = null;
   content: any = null;
+
+  ROLES = ROLES;
 
   constructor(
     private helperService: HelperService,

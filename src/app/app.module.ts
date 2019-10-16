@@ -20,7 +20,11 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './interceptors';
 import { LoadingMaskComponent } from './loading-mask/loading-mask.component';
-import { MatSnackBarModule, MatSelectModule } from '@angular/material';
+import {
+  MatSnackBarModule,
+  MatSelectModule,
+  MatCardModule,
+} from '@angular/material';
 import { SharedModule } from './shared/SharedModule';
 
 @NgModule({
@@ -41,6 +45,7 @@ import { SharedModule } from './shared/SharedModule';
     MatSnackBarModule,
     FormsModule,
     MatSelectModule,
+    MatCardModule,
     SharedModule,
   ],
   providers: [

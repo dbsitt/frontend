@@ -157,7 +157,7 @@ export class ExecutionStatesComponent implements OnInit {
     this.tableData = this.mapExecutions(response);
   }
 
-  mapINFO(role: string, respose: any) {
+  mapTransferParty(role: string, respose: any) {
     const { party, partyRole } = respose.execution;
 
     const partyReferenceId = partyRole.find(o => o.role === role).partyReference
@@ -171,10 +171,6 @@ export class ExecutionStatesComponent implements OnInit {
         o.partyReference.globalReference === partyReferenceId && o.role !== role
     ).role;
 
-    console.log(partyReferenceId);
-    console.log(name);
-    console.log(buyOrSell);
-
     return {
       name,
       buyOrSell,
@@ -183,9 +179,6 @@ export class ExecutionStatesComponent implements OnInit {
 
   mapExecutions(executions: any[]): any[] {
     return executions.map(response => {
-      this.mapINFO('CLIENT', response);
-      this.mapINFO('EXECUTING_ENTITY', response);
-      this.mapINFO('COUNTERPARTY', response);
       if (this.type === 'block-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerBlockTrade(response);
@@ -235,9 +228,9 @@ export class ExecutionStatesComponent implements OnInit {
       ...data,
       tradeAndClient: {
         tradeNumber: data.blockTradeNum,
-        client: this.mapINFO('CLIENT', response),
-        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
-        counterparty: this.mapINFO('COUNTERPARTY', response),
+        client: this.mapTransferParty('CLIENT', response),
+        executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
+        counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
@@ -251,9 +244,9 @@ export class ExecutionStatesComponent implements OnInit {
       ...data,
       tradeAndBroker: {
         tradeNumber: data.blockTradeNum,
-        client: this.mapINFO('CLIENT', response),
-        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
-        counterparty: this.mapINFO('COUNTERPARTY', response),
+        client: this.mapTransferParty('CLIENT', response),
+        executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
+        counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
@@ -271,9 +264,9 @@ export class ExecutionStatesComponent implements OnInit {
       prodType: data.productType,
       ...this.commonFieldMapping(data),
       blockAndAllocationAndClient: {
-        client: this.mapINFO('CLIENT', response),
-        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
-        counterparty: this.mapINFO('COUNTERPARTY', response),
+        client: this.mapTransferParty('CLIENT', response),
+        executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
+        counterparty: this.mapTransferParty('COUNTERPARTY', response),
         blockNumber: response.execution.meta.externalKey,
         allocationNumber: response.execution.meta.globalKey,
       },
@@ -287,9 +280,9 @@ export class ExecutionStatesComponent implements OnInit {
       blockAndAllocationAndClient: {
         blockNumber: response.execution.meta.externalKey,
         allocationNumber: response.execution.meta.globalKey,
-        client: this.mapINFO('CLIENT', response),
-        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
-        counterparty: this.mapINFO('COUNTERPARTY', response),
+        client: this.mapTransferParty('CLIENT', response),
+        executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
+        counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
@@ -310,11 +303,9 @@ export class ExecutionStatesComponent implements OnInit {
       ...this.commonFieldMapping(data),
       tradeAndBrokerAndClient: {
         tradeNumber: response.execution.meta.globalKey,
-        // broker: 'hardcoded',
-        // client: data.client,
-        client: this.mapINFO('CLIENT', response),
-        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
-        counterparty: this.mapINFO('COUNTERPARTY', response),
+        client: this.mapTransferParty('CLIENT', response),
+        executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
+        counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
     };
   }
@@ -391,7 +382,15 @@ export class ExecutionStatesComponent implements OnInit {
     const action = this.availableAction(e);
     switch (action) {
       case ACTIONS.ALLOCATE:
-        this.sendRequest('/allocate', {});
+        // Just in case
+        // this.sendRequest('/allocate', {});
+        this.snackBar.open(
+          'Allocate should be performed in Admin tab',
+          'Close',
+          {
+            duration: 2000,
+          }
+        );
         break;
       case ACTIONS.TRANSFER:
         this.sendRequest(`/transfer`, {
