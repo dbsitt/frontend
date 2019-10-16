@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, filter, debounceTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -33,7 +33,7 @@ import { getIsLoading } from 'src/app/store/ui.selector';
   templateUrl: './execution-states.component.html',
   styleUrls: ['./execution-states.component.scss'],
 })
-export class ExecutionStatesComponent implements OnInit {
+export class ExecutionStatesComponent implements OnInit, OnDestroy {
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
@@ -41,6 +41,8 @@ export class ExecutionStatesComponent implements OnInit {
   isLoading$: Observable<boolean>;
 
   tableData = [];
+
+  currentUserSubscription$: any;
 
   get displayedColumns() {
     let columns = [];
@@ -77,12 +79,16 @@ export class ExecutionStatesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userStore
+    this.currentUserSubscription$ = this.userStore
       .pipe(select(getCurrentUser))
       .pipe(filter(user => user !== null))
       .subscribe(this.fetchExecutionStates.bind(this));
 
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
+  }
+
+  ngOnDestroy() {
+    this.currentUserSubscription$.unsubscribe();
   }
 
   get currentUserRole() {
@@ -211,6 +217,7 @@ export class ExecutionStatesComponent implements OnInit {
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
+      status: response.status,
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
       ...this.commonFieldMapping(data, execution),
@@ -227,6 +234,7 @@ export class ExecutionStatesComponent implements OnInit {
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
+      status: response.status,
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
       ...this.commonFieldMapping(data, execution),
