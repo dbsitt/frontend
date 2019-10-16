@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, filter, debounceTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -23,16 +23,16 @@ import {
   ACTIONS,
   CONFIRMED_ALLOCATION_TRADES_STATUS,
 } from '../blockchain.constants';
-import { exec } from 'child_process';
 import { Observable } from 'rxjs';
 import { getIsLoading } from 'src/app/store/ui.selector';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-excutionreport-states',
   templateUrl: './excution-report.component.html',
   styleUrls: ['./excution-report.component.scss'],
 })
-export class ExcutionReportComponent implements OnInit {
+export class ExcutionReportComponent implements OnInit, OnDestroy {
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
@@ -41,6 +41,31 @@ export class ExcutionReportComponent implements OnInit {
 
   tableData = [];
   tableDataCache = [];
+
+  autoNavigateSubscription$: any;
+  currentUserSubscription$: any;
+
+  ngOnInit() {
+    this.type = 'allocation-trade';
+    this.currentUserSubscription$ = this.userStore
+      .pipe(select(getCurrentUser))
+      .pipe(filter(user => user !== null))
+      .subscribe(this.fetchExecutionStates.bind(this));
+
+    this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
+    this.autoNavigateSubscription$ = this.helperService.currentUser$.subscribe(
+      e => {
+        if (e.role !== ROLES.BROKER) {
+          this.router.navigateByUrl('transactions/account');
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.autoNavigateSubscription$.unsubscribe();
+    this.currentUserSubscription$.unsubscribe();
+  }
 
   get displayedColumns() {
     let columns = [];
@@ -73,7 +98,8 @@ export class ExcutionReportComponent implements OnInit {
     private snackBar: MatSnackBar,
     private uiStore: Store<UiState>,
     private userStore: Store<UserState>,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private router: Router
   ) {}
 
   filter(filterVal: any) {
@@ -81,16 +107,6 @@ export class ExcutionReportComponent implements OnInit {
     this.tableDataCache = this.tableData.filter(function(item) {
       return item.client === filterVal;
     });
-  }
-
-  ngOnInit() {
-    this.type = 'allocation-trade';
-    this.userStore
-      .pipe(select(getCurrentUser))
-      .pipe(filter(user => user !== null))
-      .subscribe(this.fetchExecutionStates.bind(this));
-
-    this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
   }
 
   get currentUserRole() {
