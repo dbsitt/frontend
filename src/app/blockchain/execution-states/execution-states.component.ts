@@ -183,20 +183,13 @@ export class ExecutionStatesComponent implements OnInit {
     });
   }
 
-  commonFieldMapping(data) {
-    const {
-      valueDate,
-      cash,
-      currency,
-      price,
-      quantity,
-      product,
-      productType,
-    } = data;
+  commonFieldMapping(data, execution) {
+    const { valueDate, cash, currency, price, quantity } = data;
     return {
       productRelated: {
-        product,
-        prodType: productType,
+        prodType: 'Bond',
+        product:
+          execution.product.security.bond.productIdentifier.identifier[0].value,
         quantity,
       },
       valueRelated: {
@@ -209,7 +202,7 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   mapBrokerBlockTrade(response: any) {
-    const { data } = response;
+    const { data, execution } = response;
     return {
       ...data,
       tradeAndClient: {
@@ -220,12 +213,12 @@ export class ExecutionStatesComponent implements OnInit {
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
-      ...this.commonFieldMapping(data),
+      ...this.commonFieldMapping(data, execution),
     };
   }
 
   mapClientBlockTrade(response: any) {
-    const { data } = response;
+    const { data, execution } = response;
     return {
       ...data,
       tradeAndBroker: {
@@ -236,19 +229,19 @@ export class ExecutionStatesComponent implements OnInit {
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
-      ...this.commonFieldMapping(data),
+      ...this.commonFieldMapping(data, execution),
     };
   }
 
   mapBrokerAllocationTrade(response: any) {
-    const { data } = response;
+    const { data, execution } = response;
     return {
       ...data,
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
-      ...this.commonFieldMapping(data),
+      ...this.commonFieldMapping(data, execution),
       blockAndAllocationAndClient: {
         client: this.mapTransferParty('CLIENT', response),
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
@@ -260,7 +253,7 @@ export class ExecutionStatesComponent implements OnInit {
   }
 
   mapClientAllocationTrade(response: any) {
-    const { data } = response;
+    const { data, execution } = response;
     return {
       ...data,
       blockAndAllocationAndClient: {
@@ -274,21 +267,20 @@ export class ExecutionStatesComponent implements OnInit {
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
-      ...this.commonFieldMapping(data),
+      ...this.commonFieldMapping(data, execution),
     };
   }
 
   mapSettlementAgentAllocationTrade(response) {
-    const { data } = response;
+    const { data, execution } = response;
     return {
       ...data,
-      tradeNumber: response.execution.meta.globalKey,
+      tradeNumber: execution.meta.globalKey,
       broker: 'hardcoded',
       status: response.status,
-      prodType: data.productType,
-      ...this.commonFieldMapping(data),
+      ...this.commonFieldMapping(data, execution),
       tradeAndBrokerAndClient: {
-        tradeNumber: response.execution.meta.globalKey,
+        tradeNumber: execution.meta.globalKey,
         client: this.mapTransferParty('CLIENT', response),
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
@@ -320,13 +312,13 @@ export class ExecutionStatesComponent implements OnInit {
           return null;
       }
     } else {
-      if (
-        execution.status === BLOCK_TRADE_STATUS.EMPTY ||
-        execution.status === BLOCK_TRADE_STATUS.EXECUTED
-      ) {
-        return ACTIONS.ALLOCATE;
-      } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
-        return null;
+      switch (execution.status) {
+        case BLOCK_TRADE_STATUS.EMPTY:
+          return ACTIONS.ALLOCATE;
+        case BLOCK_TRADE_STATUS.EXECUTED:
+          return null;
+        case BLOCK_TRADE_STATUS.ALLOCATED:
+          return null;
       }
     }
   }
