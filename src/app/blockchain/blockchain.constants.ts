@@ -39,6 +39,6 @@ export const USERNAMES = {
   CLIENT2: 'Client2',
   CLIENT3: 'Client3',
   OBSERVER1: 'Observer',
-  SETTLEMENT_AGENT1: 'SA1',
-  COLLATERAL_AGENT1: 'CA',
+  SETTLEMENT_AGENT1: 'Settlement Agent',
+  COLLATERAL_AGENT1: 'Collateral Agent',
 };

@@ -192,6 +192,8 @@ export class ExecutionStatesComponent implements OnInit {
           return this.mapClientAllocationTrade(response);
         } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
           return this.mapSettlementAgentAllocationTrade(response);
+        } else if (this.currentUserRole === ROLES.COLLATERAL_AGENT) {
+          return this.mapSettlementAgentAllocationTrade(response);
         }
       }
     });
