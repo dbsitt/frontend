@@ -31,6 +31,23 @@ export const CLIENT_BLOCKTRADE_COLUMNS = [
   'status',
 ];
 
+export const SETTLEMENT_AGENT_BLOCKTRADE_COLUMNS = [
+  'tradeAndBroker',
+  // 'tradeNumber',
+  // 'broker',
+  'productRelated',
+  // 'prodType',
+  // 'product',
+  'valueRelated',
+  // 'quantity',
+  // 'price',
+  // 'cash',
+  // 'currency',
+  // 'valueDate',
+  'status',
+  'action',
+];
+
 export const BROKER_ALLOCATION_TRADE_COLUMNS = [
   'blockAndAllocationAndClient',
   // 'blockNumber',
@@ -65,7 +82,7 @@ export const CLIENT_ALLOCATION_TRADE_COLUMNS = [
   'action',
 ];
 
-export const SETTLEMENT_AGENT_COLUMNS = [
+export const SETTLEMENT_AGENT_ALLOCATION_TRADE_COLUMNS = [
   'tradeAndBrokerAndClient',
   // 'tradeNumber',
   // 'broker',
@@ -81,4 +98,21 @@ export const SETTLEMENT_AGENT_COLUMNS = [
   // 'valueDate',
   'status',
   'action',
+];
+
+export const COLLATERAL_AGENT_ALLOCATION_TRADE_COLUMNS = [
+  'tradeAndBrokerAndClient',
+  // 'tradeNumber',
+  // 'broker',
+  // 'client',
+  'productRelated',
+  // 'prodType',
+  // 'product',
+  'valueRelated',
+  // 'quantity',
+  // 'price',
+  // 'currency',
+  // 'cash',
+  // 'valueDate',
+  'status',
 ];
