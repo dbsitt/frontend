@@ -3,26 +3,41 @@ export const ROLES = {
   CLIENT: 'CLIENT',
   SETTLEMENT_AGENT: 'SETTLEMENT_AGENT',
   OBSERVER: 'OBSERVER',
+  COLLATERAL_AGENT: 'COLLATERAL_AGENT',
 };
 
 export const ACTIONS = {
   CONFIRM: 'Confirm',
+  AFFIRM: 'Affirm',
   ALLOCATE: 'Allocate',
+  SETTLE: 'Settle',
+  TRANSFER: 'Transfer',
 };
 
 export const CONFIRMED_ALLOCATION_TRADES_STATUS = {
-  CONFIRMED: 'Confirmed',
-  SETTLED: 'Settled',
-  TRANSFERRED: 'Transferred',
+  CONFIRMED: 'CONFIRMED',
+  SETTLED: 'SETTLED',
+  TRANSFERRED: 'TRANSFERRED',
 };
 
 export const BLOCK_TRADE_STATUS = {
   EMPTY: '',
-  ALLOCATED: 'Allocated',
+  ALLOCATED: 'ALLOCATED',
 };
 
 export const ALLOCATION_TRADE_STATUS = {
-  UNAFFIRMED: 'Unaffirmed',
-  AFFIRMED: 'Affirmed',
-  CONFIRMED: 'COnfirmed',
+  UNAFFIRMED: 'UNAFFIRMED',
+  AFFIRMED: 'AFFIRMED',
+  CONFIRMED: 'CONFIRMED',
+};
+
+export const USERNAMES = {
+  BROKER1: 'Broker1',
+  BROKER2: 'Broker2',
+  CLIENT1: 'Client1',
+  CLIENT2: 'Client2',
+  CLIENT3: 'Client3',
+  OBSERVER1: 'Observer',
+  SETTLEMENT_AGENT1: 'SA1',
+  COLLATERAL_AGENT1: 'CA',
 };

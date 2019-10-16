@@ -21,7 +21,11 @@ import {
   BLOCK_TRADE_STATUS,
   ROLES,
   ACTIONS,
+  CONFIRMED_ALLOCATION_TRADES_STATUS,
 } from '../blockchain.constants';
+import { exec } from 'child_process';
+import { Observable } from 'rxjs';
+import { getIsLoading } from 'src/app/store/ui.selector';
 
 @Component({
   selector: 'app-execution-states',
@@ -32,6 +36,8 @@ export class ExecutionStatesComponent implements OnInit {
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
+
+  isLoading$: Observable<boolean>;
 
   tableData = [];
 
@@ -49,10 +55,9 @@ export class ExecutionStatesComponent implements OnInit {
         columns = BROKER_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
+      } else if (userRole === ROLES.SETTLEMENT_AGENT) {
+        columns = SETTLEMENT_AGENT_COLUMNS;
       }
-      // TODO check this
-    } else if (this.type === 'settlement-agent') {
-      columns = SETTLEMENT_AGENT_COLUMNS;
     }
 
     return columns;
@@ -71,10 +76,16 @@ export class ExecutionStatesComponent implements OnInit {
       .pipe(select(getCurrentUser))
       .pipe(filter(user => user !== null))
       .subscribe(this.fetchExecutionStates.bind(this));
+
+    this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
   }
 
   get currentUserRole() {
     return this.helperService.getCurrentUserRole();
+  }
+
+  get currentUserId() {
+    return this.helperService.getCurrentUserId();
   }
 
   fetchExecutionStates() {
@@ -101,13 +112,13 @@ export class ExecutionStatesComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response !== null) {
-            this.tableData = this.mapExecutions(response.entity);
+            this.tableData = this.mapExecutions(response);
           }
         },
         () => {
-          console.log('err');
+          this.tableData = [];
           this.snackBar.open(
-            'Error occur when fetching execution-states',
+            `Error occur when fetching execution-states for ${this.currentUserId}`,
             'Close',
             {
               duration: 2000,
@@ -117,77 +128,154 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
+  mockData() {
+    const response = [
+      {
+        execution: {
+          meta: {
+            globalKey: 'GLOBAL-akshdfkahsdkfjhasdfkjasdhfkjdsaasdf',
+            externalKey: 'EXTERNAL-akshdfjashdfkjhjsadhfjkasdjfjkasd',
+          },
+          status: 'STATUS',
+        },
+        data: {
+          valueDate: '02-12-2019',
+          cash: '123',
+          currency: 'USD',
+          price: '12132',
+          quantity: '45',
+          product: 'PROD',
+          prodType: 'Bond',
+          client: 'CLIENT',
+          broker: 'BROKER',
+          blockTradeNum: 'TRADENUM=asdfhjkashdfjksdkfjds',
+        },
+      },
+    ];
+    this.tableData = this.mapExecutions(response);
+  }
+
   mapExecutions(executions: any[]): any[] {
-    return executions.map(exec => {
+    return executions.map(response => {
       if (this.type === 'block-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerBlockTrade(exec);
+          return this.mapBrokerBlockTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientBlockTrade(exec);
+          return this.mapClientBlockTrade(response);
         }
       } else if (this.type === 'allocation-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
-          return this.mapBrokerAllocationTrade(exec);
+          return this.mapBrokerAllocationTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
-          return this.mapClientAllocationTrade(exec);
+          return this.mapClientAllocationTrade(response);
+        } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
+          return this.mapSettlementAgentAllocationTrade(response);
         }
       }
     });
   }
 
-  mapClientBlockTrade(exec) {
-    const { data } = exec;
-    return {
-      ...data,
-      tradeNumber: data.blockTradeNum,
-      prodType: data.productType,
-    };
-  }
-
-  mapBrokerBlockTrade(exec) {
-    const { data } = exec;
-    return {
-      ...data,
-      tradeNumber: data.blockTradeNum,
-      prodType: data.productType,
-    };
-  }
-
-  mapBrokerAllocationTrade(exec) {
-    const { data } = exec;
-    return {
-      ...data,
-      blockNumber: data.blockTradeNum,
-
-      prodType: data.productType,
-    };
-  }
-
-  mapClientAllocationTrade(exec) {
-    const { data } = exec;
-    return this.dummyJson();
-  }
-
-  dummyJson() {
-    const str = 'string';
-    const num = 123;
-    const date = '15-10-2019';
-    const status = '-';
-    const currency = '$';
-    return {
-      status,
+  commonFieldMapping(data) {
+    const {
+      valueDate,
+      cash,
       currency,
-      tradeNumber: str,
-      blockNumber: str,
-      allocationNumber: str,
-      client: 'Client',
-      broker: 'Broker',
-      prodType: str,
-      product: str,
-      quantity: str,
-      price: num,
-      cash: num,
-      valueDate: date,
+      price,
+      quantity,
+      product,
+      productType,
+    } = data;
+    return {
+      productRelated: {
+        product,
+        prodType: productType,
+        quantity,
+      },
+      valueRelated: {
+        cash,
+        currency,
+        price,
+        valueDate,
+      },
+    };
+  }
+
+  mapBrokerBlockTrade(response: any) {
+    const { data } = response;
+    return {
+      ...data,
+      tradeAndClient: {
+        tradeNumber: data.blockTradeNum,
+        client: data.client,
+      },
+      tradeNumber: data.blockTradeNum,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
+    };
+  }
+
+  mapClientBlockTrade(response: any) {
+    const { data } = response;
+    return {
+      ...data,
+      tradeAndBroker: {
+        tradeNumber: data.blockTradeNum,
+        broker: data.client,
+      },
+      tradeNumber: data.blockTradeNum,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
+    };
+  }
+
+  mapBrokerAllocationTrade(response: any) {
+    const { data } = response;
+    return {
+      ...data,
+      blockAndAllocationAndClient: {
+        blockNumber: response.execution.meta.externalKey,
+        allocationNumber: response.execution.meta.globalKey,
+        client: data.client,
+      },
+      blockNumber: response.execution.meta.externalKey,
+      allocationNumber: response.execution.meta.globalKey,
+      status: response.status,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
+    };
+  }
+
+  mapClientAllocationTrade(response: any) {
+    const { data } = response;
+    return {
+      ...data,
+      blockAndAllocationAndClient: {
+        blockNumber: response.execution.meta.externalKey,
+        allocationNumber: response.execution.meta.globalKey,
+        client: data.client,
+      },
+      blockNumber: response.execution.meta.externalKey,
+      allocationNumber: response.execution.meta.globalKey,
+      status: response.status,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
+    };
+  }
+
+  mapSettlementAgentAllocationTrade(response) {
+    const { data } = response;
+    return {
+      ...data,
+      tradeAndBrokerAndClient: {
+        tradeNumber: response.execution.meta.globalKey,
+        broker: 'hardcoded',
+        client: data.client,
+      },
+      tradeNumber: response.execution.meta.globalKey,
+      broker: 'hardcoded',
+      status: response.status,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
     };
   }
 
@@ -195,6 +283,8 @@ export class ExecutionStatesComponent implements OnInit {
     if (this.type === 'block-trade') {
       if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
         return ACTIONS.ALLOCATE;
+      } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
+        return null;
       }
     } else if (this.type === 'allocation-trade') {
       if (this.currentUserRole === ROLES.BROKER) {
@@ -206,18 +296,70 @@ export class ExecutionStatesComponent implements OnInit {
           case ALLOCATION_TRADE_STATUS.CONFIRMED:
             return null;
         }
+      } else if (this.currentUserRole === ROLES.CLIENT) {
+        switch (execution.status) {
+          case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
+            return ACTIONS.AFFIRM;
+          case ALLOCATION_TRADE_STATUS.AFFIRMED:
+            return null;
+          case ALLOCATION_TRADE_STATUS.CONFIRMED:
+            return null;
+        }
+      } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
+        switch (execution.status) {
+          case CONFIRMED_ALLOCATION_TRADES_STATUS.CONFIRMED:
+            return ACTIONS.SETTLE;
+          case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
+            return ACTIONS.TRANSFER;
+          case CONFIRMED_ALLOCATION_TRADES_STATUS.TRANSFERRED:
+            return null;
+        }
       }
     }
+  }
+
+  sendRequest(url, body) {
+    this.uiStore.dispatch(setLoading({ value: true }));
+    this.httpClient
+      .post(this.helperService.getBaseUrl() + url, body)
+      .pipe(
+        finalize(() => {
+          this.uiStore.dispatch(setLoading({ value: false }));
+          this.fetchExecutionStates();
+        })
+      )
+      .subscribe(e => {
+        this.snackBar.open('Successful', 'Close', {
+          duration: 2000,
+        });
+      });
   }
 
   performAction(e) {
     const action = this.availableAction(e);
     switch (action) {
       case ACTIONS.ALLOCATE:
-        this.httpClient.post(this.helperService.getBaseUrl() + '/allocate', {});
+        this.sendRequest('/allocate', {});
+        break;
+      case ACTIONS.TRANSFER:
+        this.sendRequest(`/transfer`, {
+          executionRef: e.blockTradeNum,
+        });
+        break;
+      case ACTIONS.SETTLE:
+        this.sendRequest(`/settlement`, {
+          executionRef: e.blockTradeNum,
+        });
+        break;
+      case ACTIONS.AFFIRM:
+        this.sendRequest(`/affirmation`, {
+          executionRef: e.allocationNumber,
+        });
         break;
       case ACTIONS.CONFIRM:
-        this.httpClient.post(this.helperService.getBaseUrl() + '/confirm', {});
+        this.sendRequest(`/confirmation`, {
+          executionRef: e.allocationNumber,
+        });
         break;
       default:
         this.snackBar.open('Should not be executed', 'Close', {

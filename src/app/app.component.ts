@@ -14,7 +14,7 @@ import { UiState } from './store/ui.reducer';
 import { getIsLoading } from './store/ui.selector';
 import { MatSnackBar } from '@angular/material';
 import { HelperService } from './blockchain/helperService';
-import { ROLES } from './blockchain/blockchain.constants';
+import { ROLES, USERNAMES } from './blockchain/blockchain.constants';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +33,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
   userIdChanged$: Subject<string> = new Subject<string>();
 
   isLoading$: Observable<boolean>;
+
+  USERNAMES = USERNAMES;
 
   userId = 'Broker1';
 
@@ -67,7 +69,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   setUser() {
     const username = this.userId;
-    if (username === 'Broker1') {
+    if (username === USERNAMES.BROKER1 || username === USERNAMES.BROKER2) {
       // TODO change to api call
       const user: Account = {
         id: username,
@@ -78,9 +80,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
     } else if (
-      username === 'Client1' ||
-      username === 'Client2' ||
-      username === 'Client3'
+      username === USERNAMES.CLIENT1 ||
+      username === USERNAMES.CLIENT2 ||
+      username === USERNAMES.CLIENT3
     ) {
       const user: Account = {
         id: username,
@@ -91,7 +93,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
-    } else if (username === 'SA1') {
+    } else if (username === USERNAMES.SETTLEMENT_AGENT1) {
       const user: Account = {
         id: username,
         cashAccount: 456,
@@ -101,12 +103,22 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
       this.userStore.dispatch(setUser({ user }));
       this.userId = username;
-    } else if (username === 'Observer') {
+    } else if (username === USERNAMES.OBSERVER1) {
       const user: Account = {
         id: username,
         cashAccount: 456,
         securityHolding: '12345',
         role: ROLES.OBSERVER,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      this.userId = username;
+    } else if (username === USERNAMES.COLLATERAL_AGENT1) {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: ROLES.COLLATERAL_AGENT,
       };
 
       this.userStore.dispatch(setUser({ user }));

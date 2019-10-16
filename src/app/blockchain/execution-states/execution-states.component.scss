@@ -13,6 +13,20 @@
   width: 100%;
 }
 
+.data {
+  vertical-align: text-top;
+}
+
+.cell-wrapper {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.action-cell {
+  vertical-align: top;
+  padding-top: 0.5rem;
+}
+
 .action {
   display: flex;
   justify-content: center;
@@ -34,4 +48,9 @@
   &:hover {
     color: $color-primary;
   }
+}
+
+.no-event {
+  cursor: not-allowed;
+  pointer-events: none;
 }
