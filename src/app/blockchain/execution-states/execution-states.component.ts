@@ -14,7 +14,9 @@ import {
   CLIENT_BLOCKTRADE_COLUMNS,
   BROKER_ALLOCATION_TRADE_COLUMNS,
   CLIENT_ALLOCATION_TRADE_COLUMNS,
-  SETTLEMENT_AGENT_COLUMNS,
+  SETTLEMENT_AGENT_ALLOCATION_TRADE_COLUMNS,
+  SETTLEMENT_AGENT_BLOCKTRADE_COLUMNS,
+  COLLATERAL_AGENT_ALLOCATION_TRADE_COLUMNS,
 } from './columns';
 import {
   ALLOCATION_TRADE_STATUS,
@@ -23,7 +25,6 @@ import {
   ACTIONS,
   CONFIRMED_ALLOCATION_TRADES_STATUS,
 } from '../blockchain.constants';
-import { exec } from 'child_process';
 import { Observable } from 'rxjs';
 import { getIsLoading } from 'src/app/store/ui.selector';
 
@@ -50,7 +51,7 @@ export class ExecutionStatesComponent implements OnInit {
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
-        columns = CLIENT_BLOCKTRADE_COLUMNS;
+        columns = SETTLEMENT_AGENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
@@ -58,9 +59,9 @@ export class ExecutionStatesComponent implements OnInit {
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
-        columns = SETTLEMENT_AGENT_COLUMNS;
+        columns = SETTLEMENT_AGENT_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.COLLATERAL_AGENT) {
-        columns = SETTLEMENT_AGENT_COLUMNS;
+        columns = COLLATERAL_AGENT_ALLOCATION_TRADE_COLUMNS;
       }
     }
 
@@ -319,7 +320,10 @@ export class ExecutionStatesComponent implements OnInit {
           return null;
       }
     } else {
-      if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
+      if (
+        execution.status === BLOCK_TRADE_STATUS.EMPTY ||
+        execution.status === BLOCK_TRADE_STATUS.EXECUTED
+      ) {
         return ACTIONS.ALLOCATE;
       } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
         return null;
