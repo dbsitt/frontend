@@ -81,6 +81,7 @@ export class AccountSummaryComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response !== null) {
+            this.tableData = [];
             for (let i = 0; i < response.length; i++) {
               let productIdentifier =
                 response[i].portfolio.aggregationParameters.product[0].security
@@ -92,25 +93,12 @@ export class AccountSummaryComponent implements OnInit {
               let accountName = acc.account.accountName.value;
               let accountNumber = acc.account.accountNumber.value;
               let holder = party.value.name.value;
-
               let position = response[i].portfolio.portfolioState.positions[0];
               let quantity = position.cashBalance.amount;
               let currency = position.cashBalance.currency.value;
-
               let amount = position.quantity.amount;
               let positionStatus = position.positionStatus;
 
-              console.log('source: ' + source);
-              console.log(productName);
-              console.log(accountName);
-              console.log(accountNumber);
-              console.log(quantity);
-              console.log(currency);
-              console.log(amount);
-              console.log(positionStatus);
-
-              // alert(response[i].portfolio.product[0].security.bond.productIdentifier.identifier)
-              console.log(response[i]);
               var _account = new Object();
               _account['source'] = source;
               _account['productName'] = productName;
@@ -122,12 +110,10 @@ export class AccountSummaryComponent implements OnInit {
               _account['positionStatus'] = positionStatus;
               _account['holder'] = holder;
 
-              console.log(_account);
-
               this.tableData.push(_account);
-            }
 
-            //this.tableData = response;
+              console.log(this.tableData);
+            }
           }
         },
         () => {
@@ -146,20 +132,6 @@ export class AccountSummaryComponent implements OnInit {
     this.account$ = this.store.pipe(select(getCurrentUser));
     this.helperService.currentUser$.subscribe(e => {
       console.log('calling fetch account summary');
-
-      //_account.
-
-      // accountHolder: string;
-      // accountName: string;
-      // accountNumber: string;
-      // product: string;
-      // source: string;
-      // quantity: string;
-      // currency: string;
-      // amount: string;
-      // positionStatus: string;
-
-      //)
       this.fetchAccountSummary();
     });
 
