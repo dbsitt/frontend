@@ -25,7 +25,7 @@
         *ngIf="
           currentUserRole === 'BROKER' ||
           currentUserRole === 'CLIENT' ||
-          currentUserRole === 'OBSERVER'||
+          currentUserRole === 'OBSERVER' ||
           currentUserRole === 'SETTLEMENT_AGENT'
         "
         class="link"
@@ -68,14 +68,14 @@
       >
         Position Report</a
       >
-      <a
+      <!-- <a
         [routerLink]="['/transactions/report']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
         class="link"
       >
         Report</a
-      >
+      > -->
     </nav>
     <div class="user-wrapper">
       <i class="material-icons logo">account_box</i>

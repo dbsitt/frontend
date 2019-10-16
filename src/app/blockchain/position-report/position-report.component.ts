@@ -40,6 +40,7 @@ export class PositionReportComponent implements OnInit {
   isLoading$: Observable<boolean>;
 
   tableData = [];
+  tableDataCache = [];
 
   get displayedColumns() {
     let columns = [];
@@ -76,15 +77,20 @@ export class PositionReportComponent implements OnInit {
   ) {}
 
   filter(filterVal: any) {
-    alert(11);
     let result = [];
-    for (var i = 0; i < this.tableData.length; i++) {
-      if (this.tableData[i].clientId === filterVal) {
-        result.push(this.tableData[i]);
-      }
-    }
+    this.tableDataCache = this.tableData.filter(function(item) {
+      return item.client === filterVal;
+    });
 
-    this.tableData = result;
+    //this.tableDataCache = this.tableData
+    // this.tableData.filter(e)
+    // for (var i = 0; i < this.tableDataCache.length; i++) {
+    //   if (this.tableData[i].client === filterVal) {
+    //     result.push(this.tableData[i]);
+    //   }
+    // }
+
+    /// this.tableData = result;
   }
 
   ngOnInit() {
@@ -130,6 +136,7 @@ export class PositionReportComponent implements OnInit {
         (response: any) => {
           if (response !== null) {
             this.tableData = this.mapExecutions(response);
+            this.tableDataCache = this.tableData;
           }
         },
         () => {

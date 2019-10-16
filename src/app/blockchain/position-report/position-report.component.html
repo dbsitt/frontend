@@ -1,17 +1,21 @@
 <div class="material-icons refresh" (click)="fetchExecutionStates()">
   refresh
 </div>
-<label>Client </label>
-<select (change)="filter($event.target.value)">
-  <option value="0">Select Client</option
-  ><option value="clientId1">Client1</option>
-  <option value="clientId2">Client2</option>
-  <option value="clientId3">Client3</option>
-</select>
-<ng-container *ngIf="tableData.length > 0; else emptyState">
+
+<div style="margin-bottom: 4px;">
+  <label>Client </label>
+  <select (change)="filter($event.target.value)">
+    <option value="0">Select Client</option
+    ><option value="Client1">Client1</option>
+    <option value="Client2">Client2</option>
+    <option value="Client3">Client3</option>
+  </select>
+</div>
+
+<ng-container *ngIf="tableDataCache.length > 0; else emptyState">
   <table
     mat-table
-    [dataSource]="tableData"
+    [dataSource]="tableDataCache"
     class="mat-elevation-z8 execution-table"
     [hidden]="isLoading$ | async"
   >
