@@ -49,6 +49,8 @@ export class ExecutionStatesComponent implements OnInit {
         columns = BROKER_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_BLOCKTRADE_COLUMNS;
+      } else if (userRole === ROLES.SETTLEMENT_AGENT) {
+        columns = BROKER_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
@@ -183,6 +185,8 @@ export class ExecutionStatesComponent implements OnInit {
         if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerBlockTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
+          return this.mapClientBlockTrade(response);
+        } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
           return this.mapClientBlockTrade(response);
         }
       } else if (this.type === 'allocation-trade') {
