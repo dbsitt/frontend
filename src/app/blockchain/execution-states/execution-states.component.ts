@@ -232,16 +232,16 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
-      blockAndAllocationAndClient: {
-        blockNumber: response.execution.meta.externalKey,
-        allocationNumber: response.execution.meta.globalKey,
-        client: data.client,
-      },
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
       ...this.commonFieldMapping(data),
+      blockAndAllocationAndClient: {
+        blockNumber: response.execution.meta.externalKey,
+        allocationNumber: response.execution.meta.globalKey,
+        client: data.client,
+      },
     };
   }
 
@@ -266,16 +266,16 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
-      tradeAndBrokerAndClient: {
-        tradeNumber: response.execution.meta.globalKey,
-        broker: 'hardcoded',
-        client: data.client,
-      },
       tradeNumber: response.execution.meta.globalKey,
       broker: 'hardcoded',
       status: response.status,
       prodType: data.productType,
       ...this.commonFieldMapping(data),
+      tradeAndBrokerAndClient: {
+        tradeNumber: response.execution.meta.globalKey,
+        broker: 'hardcoded',
+        client: data.client,
+      },
     };
   }
 
