@@ -26,6 +26,7 @@ import { ExecutionStatesComponent } from './execution-states/execution-states.co
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { NodeStatusComponent } from './node-status/node-status.component';
 import { SharedModule } from '../shared/SharedModule';
+import { TransferInfoComponent } from './transfer-info/transfer-info.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -63,6 +64,7 @@ const blockchainRoutes: Routes = [
     ExecutionStatesComponent,
     AdminPageComponent,
     NodeStatusComponent,
+    TransferInfoComponent,
   ],
   imports: [
     CommonModule,

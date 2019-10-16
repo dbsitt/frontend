@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize, filter, takeLast, throttleTime } from 'rxjs/operators';
+import { finalize, filter, debounceTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UiState } from 'src/app/store/ui.reducer';
 import { setLoading } from 'src/app/store/ui.actions';
@@ -57,6 +57,8 @@ export class ExecutionStatesComponent implements OnInit {
         columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
         columns = SETTLEMENT_AGENT_COLUMNS;
+      } else if (userRole === ROLES.COLLATERAL_AGENT) {
+        columns = SETTLEMENT_AGENT_COLUMNS;
       }
     }
 
@@ -104,7 +106,7 @@ export class ExecutionStatesComponent implements OnInit {
     this.httpClient
       .get(this.helperService.getBaseUrl() + url)
       .pipe(
-        throttleTime(10),
+        debounceTime(10),
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })
@@ -155,8 +157,35 @@ export class ExecutionStatesComponent implements OnInit {
     this.tableData = this.mapExecutions(response);
   }
 
+  mapINFO(role: string, respose: any) {
+    const { party, partyRole } = respose.execution;
+
+    const partyReferenceId = partyRole.find(o => o.role === role).partyReference
+      .globalReference;
+
+    const name = party.find(o => o.globalReference === partyReferenceId).value
+      .name.value;
+
+    const buyOrSell = partyRole.find(
+      o =>
+        o.partyReference.globalReference === partyReferenceId && o.role !== role
+    ).role;
+
+    console.log(partyReferenceId);
+    console.log(name);
+    console.log(buyOrSell);
+
+    return {
+      name,
+      buyOrSell,
+    };
+  }
+
   mapExecutions(executions: any[]): any[] {
     return executions.map(response => {
+      this.mapINFO('CLIENT', response);
+      this.mapINFO('EXECUTING_ENTITY', response);
+      this.mapINFO('COUNTERPARTY', response);
       if (this.type === 'block-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
           return this.mapBrokerBlockTrade(response);
@@ -206,7 +235,9 @@ export class ExecutionStatesComponent implements OnInit {
       ...data,
       tradeAndClient: {
         tradeNumber: data.blockTradeNum,
-        client: data.client,
+        client: this.mapINFO('CLIENT', response),
+        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
+        counterparty: this.mapINFO('COUNTERPARTY', response),
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
@@ -220,7 +251,9 @@ export class ExecutionStatesComponent implements OnInit {
       ...data,
       tradeAndBroker: {
         tradeNumber: data.blockTradeNum,
-        broker: data.client,
+        client: this.mapINFO('CLIENT', response),
+        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
+        counterparty: this.mapINFO('COUNTERPARTY', response),
       },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
@@ -238,9 +271,11 @@ export class ExecutionStatesComponent implements OnInit {
       prodType: data.productType,
       ...this.commonFieldMapping(data),
       blockAndAllocationAndClient: {
+        client: this.mapINFO('CLIENT', response),
+        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
+        counterparty: this.mapINFO('COUNTERPARTY', response),
         blockNumber: response.execution.meta.externalKey,
         allocationNumber: response.execution.meta.globalKey,
-        client: data.client,
       },
     };
   }
@@ -252,7 +287,9 @@ export class ExecutionStatesComponent implements OnInit {
       blockAndAllocationAndClient: {
         blockNumber: response.execution.meta.externalKey,
         allocationNumber: response.execution.meta.globalKey,
-        client: data.client,
+        client: this.mapINFO('CLIENT', response),
+        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
+        counterparty: this.mapINFO('COUNTERPARTY', response),
       },
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
@@ -273,47 +310,62 @@ export class ExecutionStatesComponent implements OnInit {
       ...this.commonFieldMapping(data),
       tradeAndBrokerAndClient: {
         tradeNumber: response.execution.meta.globalKey,
-        broker: 'hardcoded',
-        client: data.client,
+        // broker: 'hardcoded',
+        // client: data.client,
+        client: this.mapINFO('CLIENT', response),
+        executingEntity: this.mapINFO('EXECUTING_ENTITY', response),
+        counterparty: this.mapINFO('COUNTERPARTY', response),
       },
     };
   }
 
   availableAction(execution: ExecutionState): string {
     if (this.type === 'block-trade') {
-      if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
-        return ACTIONS.ALLOCATE;
-      } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
-        return null;
-      }
+      return this.actionsForBlockTrade(execution);
     } else if (this.type === 'allocation-trade') {
-      if (this.currentUserRole === ROLES.BROKER) {
-        switch (execution.status) {
-          case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
-            return null;
-          case ALLOCATION_TRADE_STATUS.AFFIRMED:
-            return ACTIONS.CONFIRM;
-          case ALLOCATION_TRADE_STATUS.CONFIRMED:
-            return null;
-        }
-      } else if (this.currentUserRole === ROLES.CLIENT) {
-        switch (execution.status) {
-          case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
-            return ACTIONS.AFFIRM;
-          case ALLOCATION_TRADE_STATUS.AFFIRMED:
-            return null;
-          case ALLOCATION_TRADE_STATUS.CONFIRMED:
-            return null;
-        }
-      } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
-        switch (execution.status) {
-          case CONFIRMED_ALLOCATION_TRADES_STATUS.CONFIRMED:
-            return ACTIONS.SETTLE;
-          case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
-            return ACTIONS.TRANSFER;
-          case CONFIRMED_ALLOCATION_TRADES_STATUS.TRANSFERRED:
-            return null;
-        }
+      return this.actionsForAllocationTrade(execution);
+    } else {
+      return null;
+    }
+  }
+
+  actionsForBlockTrade(execution: ExecutionState): string {
+    if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
+      return ACTIONS.ALLOCATE;
+    } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
+      return null;
+    }
+  }
+
+  actionsForAllocationTrade(execution: ExecutionState): string {
+    if (this.currentUserRole === ROLES.BROKER) {
+      switch (execution.status) {
+        case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
+          return null;
+        case ALLOCATION_TRADE_STATUS.AFFIRMED:
+          return ACTIONS.CONFIRM;
+        case ALLOCATION_TRADE_STATUS.CONFIRMED:
+          return null;
+      }
+    } else if (this.currentUserRole === ROLES.CLIENT) {
+      switch (execution.status) {
+        case ALLOCATION_TRADE_STATUS.UNAFFIRMED:
+          return ACTIONS.AFFIRM;
+        case ALLOCATION_TRADE_STATUS.AFFIRMED:
+          return null;
+        case ALLOCATION_TRADE_STATUS.CONFIRMED:
+          return null;
+      }
+    } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
+      switch (execution.status) {
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.CONFIRMED:
+          return ACTIONS.SETTLE;
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
+          return ACTIONS.TRANSFER;
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.INSTRUCTED:
+          return ACTIONS.TRANSFER;
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.TRANSFERRED:
+          return null;
       }
     }
   }

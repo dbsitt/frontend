@@ -57,7 +57,7 @@ export class AccountSummaryComponent implements OnInit {
         () => {
           this.data = null;
           this.snackBar.open(
-            'Error occur when fetching execution-states',
+            'Error occur when fetching account summary',
             'Close',
             {
               duration: 2000,
