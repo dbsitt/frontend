@@ -6,79 +6,152 @@
     mat-table
     [dataSource]="tableData"
     class="mat-elevation-z8 execution-table"
+    [hidden]="isLoading$ | async"
   >
+    <ng-container matColumnDef="tradeAndBroker">
+      <th mat-header-cell *matHeaderCellDef>Block#</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Broker : {{ element.tradeAndBroker.broker }}</div>
+          <div>Trade#: {{ element.tradeAndBroker.tradeNumber }}</div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeAndClient">
+      <th mat-header-cell *matHeaderCellDef>Transaction</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Client: {{ element.tradeAndClient.client }}</div>
+          <div>Trade#: {{ element.tradeAndClient.tradeNumber }}</div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeAndBrokerAndClient">
+      <th mat-header-cell *matHeaderCellDef>Transaction</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Client : {{ element.tradeAndBrokerAndClient.client }}</div>
+          <div>Block# : {{ element.tradeAndBrokerAndClient.blockNumber }}</div>
+          <div>
+            Allocation#: {{ element.tradeAndBrokerAndClient.allocationNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="blockAndAllocationAndClient">
+      <th mat-header-cell *matHeaderCellDef>Transaction</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Client : {{ element.blockAndAllocationAndClient.client }}</div>
+          <div>
+            Block# : {{ element.blockAndAllocationAndClient.allocationNumber }}
+          </div>
+          <div>
+            Allocation#: {{ element.blockAndAllocationAndClient.blockNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="productRelated">
+      <th mat-header-cell *matHeaderCellDef>Product</th>
+      <th></th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Product: {{ element.productRelated.product }}</div>
+          <div>Type: {{ element.productRelated.prodType }}</div>
+          <div>Quantity: {{ element.productRelated.quantity }}</div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="valueRelated">
+      <th mat-header-cell *matHeaderCellDef>Value</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>Cash: {{ element.valueRelated.cash }}</div>
+          <div *ngIf="element.valueRelated.currency">
+            Currency : {{ element.valueRelated.currency }}
+          </div>
+          <div>Price: {{ element.valueRelated.price }}</div>
+          <div>Value Date: {{ element.valueRelated.valueDate }}</div>
+        </div>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="blockNumber">
       <th mat-header-cell *matHeaderCellDef>Block#</th>
-      <td mat-cell *matCellDef="let element" class="long-id">
+      <td mat-cell *matCellDef="let element" class="data">
         {{ element.blockNumber }}
       </td>
     </ng-container>
     <ng-container matColumnDef="tradeNumber">
       <th mat-header-cell *matHeaderCellDef>Trade#</th>
-      <td mat-cell *matCellDef="let element" class="long-id">
+      <td mat-cell *matCellDef="let element" class="data">
         {{ element.tradeNumber }}
       </td>
     </ng-container>
     <ng-container matColumnDef="allocationNumber">
       <th mat-header-cell *matHeaderCellDef>Allocation#</th>
-      <td mat-cell *matCellDef="let element" class="long-id">
+      <td mat-cell *matCellDef="let element" class="data">
         {{ element.allocationNumber }}
       </td>
     </ng-container>
-    <ng-container matColumnDef="tradeAndAllocationNumber">
-      <th mat-header-cell *matHeaderCellDef>Trade# and Allocation#</th>
-      <td
-        mat-cell
-        *matCellDef="let element"
-        style="display: flex; flex-direction: column;"
-      >
-        <div>
-          {{ element.ids.tradeNumber }}
-        </div>
-        <div>
-          {{ element.ids.allocationNumber }}
-        </div>
-      </td>
-    </ng-container>
+
     <ng-container matColumnDef="broker">
       <th mat-header-cell *matHeaderCellDef>Broker</th>
-      <td mat-cell *matCellDef="let element">{{ element.broker }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.broker }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="client">
       <th mat-header-cell *matHeaderCellDef>Client</th>
-      <td mat-cell *matCellDef="let element">{{ element.client }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.client }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="prodType">
       <th mat-header-cell *matHeaderCellDef>Prod Type</th>
-      <td mat-cell *matCellDef="let element">{{ element.prodType }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.prodType }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="product">
       <th mat-header-cell *matHeaderCellDef>Product</th>
-      <td mat-cell *matCellDef="let element">{{ element.product }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.product }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef>Quantity</th>
-      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.quantity }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.price }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="cash">
       <th mat-header-cell *matHeaderCellDef>$Cash</th>
-      <td mat-cell *matCellDef="let element">{{ element.cash }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.cash }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="currency">
       <th mat-header-cell *matHeaderCellDef>Currency</th>
-      <td mat-cell *matCellDef="let element">{{ element.currency }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.currency }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="valueDate">
       <th mat-header-cell *matHeaderCellDef>Value Date</th>
-      <td mat-cell *matCellDef="let element">{{ element.valueDate }}</td>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.valueDate }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="data">
         {{ element.status ? element.status : '-' }}
       </td>
     </ng-container>

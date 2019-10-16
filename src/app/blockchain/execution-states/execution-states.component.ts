@@ -24,6 +24,8 @@ import {
   CONFIRMED_ALLOCATION_TRADES_STATUS,
 } from '../blockchain.constants';
 import { exec } from 'child_process';
+import { Observable } from 'rxjs';
+import { getIsLoading } from 'src/app/store/ui.selector';
 
 @Component({
   selector: 'app-execution-states',
@@ -34,6 +36,8 @@ export class ExecutionStatesComponent implements OnInit {
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
+
+  isLoading$: Observable<boolean>;
 
   tableData = [];
 
@@ -72,6 +76,8 @@ export class ExecutionStatesComponent implements OnInit {
       .pipe(select(getCurrentUser))
       .pipe(filter(user => user !== null))
       .subscribe(this.fetchExecutionStates.bind(this));
+
+    this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
   }
 
   get currentUserRole() {
@@ -122,6 +128,33 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
+  mockData() {
+    const response = [
+      {
+        execution: {
+          meta: {
+            globalKey: 'GLOBAL-akshdfkahsdkfjhasdfkjasdhfkjdsaasdf',
+            externalKey: 'EXTERNAL-akshdfjashdfkjhjsadhfjkasdjfjkasd',
+          },
+          status: 'STATUS',
+        },
+        data: {
+          valueDate: '02-12-2019',
+          cash: '123',
+          currency: 'USD',
+          price: '12132',
+          quantity: '45',
+          product: 'PROD',
+          prodType: 'Bond',
+          client: 'CLIENT',
+          broker: 'BROKER',
+          blockTradeNum: 'TRADENUM=asdfhjkashdfjksdkfjds',
+        },
+      },
+    ];
+    this.tableData = this.mapExecutions(response);
+  }
+
   mapExecutions(executions: any[]): any[] {
     return executions.map(response => {
       if (this.type === 'block-trade') {
@@ -142,12 +175,28 @@ export class ExecutionStatesComponent implements OnInit {
     });
   }
 
-  mapClientBlockTrade(response: any) {
-    const { data } = response;
+  commonFieldMapping(data) {
+    const {
+      valueDate,
+      cash,
+      currency,
+      price,
+      quantity,
+      product,
+      prodType,
+    } = data;
     return {
-      ...data,
-      tradeNumber: data.blockTradeNum,
-      prodType: data.productType,
+      productRelated: {
+        product,
+        prodType,
+        quantity,
+      },
+      valueRelated: {
+        cash,
+        currency,
+        price,
+        valueDate,
+      },
     };
   }
 
@@ -155,8 +204,27 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
+      tradeAndClient: {
+        tradeNumber: data.blockTradeNum,
+        client: data.client,
+      },
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
+      ...this.commonFieldMapping(data),
+    };
+  }
+
+  mapClientBlockTrade(response: any) {
+    const { data } = response;
+    return {
+      ...data,
+      tradeAndBroker: {
+        tradeNumber: data.blockTradeNum,
+        broker: data.broker,
+      },
+      tradeNumber: data.blockTradeNum,
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
     };
   }
 
@@ -164,10 +232,16 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
+      blockAndAllocationAndClient: {
+        blockNumber: response.execution.meta.externalKey,
+        allocationNumber: response.execution.meta.globalKey,
+        client: data.client,
+      },
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
+      ...this.commonFieldMapping(data),
     };
   }
 
@@ -175,14 +249,16 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
-      blockNumber: response.execution.meta.externalKey,
-      allocationNumber: response.execution.meta.globalKey,
-      tradeAndAllocationNumber: {
+      blockAndAllocationAndClient: {
         blockNumber: response.execution.meta.externalKey,
         allocationNumber: response.execution.meta.globalKey,
+        client: data.client,
       },
+      blockNumber: response.execution.meta.externalKey,
+      allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
+      ...this.commonFieldMapping(data),
     };
   }
 
@@ -190,10 +266,16 @@ export class ExecutionStatesComponent implements OnInit {
     const { data } = response;
     return {
       ...data,
+      tradeAndBrokerAndClient: {
+        tradeNumber: response.execution.meta.globalKey,
+        broker: 'hardcoded',
+        client: data.client,
+      },
       tradeNumber: response.execution.meta.globalKey,
       broker: 'hardcoded',
       status: response.status,
       prodType: data.productType,
+      ...this.commonFieldMapping(data),
     };
   }
 
