@@ -83,23 +83,49 @@ export class AccountSummaryComponent implements OnInit {
           if (response !== null) {
             this.tableData = [];
             for (let i = 0; i < response.length; i++) {
+              //  let productIdentifier = '';
+              let source = '';
+              //let productName = '';
+              //if(response[i].portfolio.aggregationParameters.product && response[i].portfolio.aggregationParameters.product.length > 0){
+              let bond =
+                response[i].portfolio.aggregationParameters.product &&
+                response[i].portfolio.portfolioState.positions[0].product
+                  .security.bond;
               let productIdentifier =
-                response[i].portfolio.aggregationParameters.product[0].security
-                  .bond.productIdentifier;
-              let source = productIdentifier.source;
+                response[i].portfolio.portfolioState.positions[0].product &&
+                response[i].portfolio.portfolioState.positions[0].product
+                  .security.bond.productIdentifier;
               let productName = productIdentifier.identifier[0].value;
+              if (productIdentifier && productIdentifier.source) {
+                source = productIdentifier.source;
+              }
+
               let party = response[i].portfolio.aggregationParameters.party[0];
               let acc = party.value;
               let accountName = acc.account.accountName.value;
               let accountNumber = acc.account.accountNumber.value;
               let holder = party.value.name.value;
-              let position = response[i].portfolio.portfolioState.positions[0];
-              let quantity = position.cashBalance.amount;
-              let currency = position.cashBalance.currency.value;
-              let amount = position.quantity.amount;
-              let positionStatus = position.positionStatus;
 
-              var _account = new Object();
+              let quantity = '';
+              let currency = '';
+              let amount = '';
+              let positionStatus = '';
+              if (
+                response[i].portfolio.portfolioState.positions &&
+                response[i].portfolio.portfolioState.positions.length > 0
+              ) {
+                let position =
+                  response[i].portfolio.portfolioState.positions[0];
+                if (position.cashBalance) {
+                  quantity = position.cashBalance.amount;
+                  currency = position.cashBalance.currency.value;
+                }
+                amount = position.quantity.amount;
+                positionStatus = position.positionStatus || positionStatus;
+              }
+
+              const _account = new Object();
+
               _account['source'] = source;
               _account['productName'] = productName;
               _account['accountName'] = accountName;
