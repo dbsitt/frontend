@@ -1,9 +1,9 @@
-<div>
+<div *ngIf="data.name">
   <span class="label">Client: </span>{{ data.client.name }} ({{
     data.client.buyOrSell
   }})
 </div>
-<div>
+<div *ngIf="data.executingEntity">
   <span class="label">Executing Party: </span
   >{{ data.executingEntity.name }} ({{ data.executingEntity.buyOrSell }})
 </div>

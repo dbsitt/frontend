@@ -132,33 +132,6 @@ export class ExecutionStatesComponent implements OnInit {
       );
   }
 
-  mockData() {
-    const response = [
-      {
-        execution: {
-          meta: {
-            globalKey: 'GLOBAL-akshdfkahsdkfjhasdfkjasdhfkjdsaasdf',
-            externalKey: 'EXTERNAL-akshdfjashdfkjhjsadhfjkasdjfjkasd',
-          },
-          status: 'STATUS',
-        },
-        data: {
-          valueDate: '02-12-2019',
-          cash: '123',
-          currency: 'USD',
-          price: '12132',
-          quantity: '45',
-          product: 'PROD',
-          prodType: 'Bond',
-          client: 'CLIENT',
-          broker: 'BROKER',
-          blockTradeNum: 'TRADENUM=asdfhjkashdfjksdkfjds',
-        },
-      },
-    ];
-    this.tableData = this.mapExecutions(response);
-  }
-
   mapTransferParty(role: string, respose: any) {
     const { party, partyRole } = respose.execution;
 
@@ -170,8 +143,9 @@ export class ExecutionStatesComponent implements OnInit {
 
     const partyReferenceId = partyRoleReference.partyReference.globalReference;
 
-    const name = party.find(o => o.globalReference === partyReferenceId).value
-      .name.value;
+    const nameRef = party.find(o => o.globalReference === partyReferenceId);
+
+    const name = nameRef.value.name.value;
 
     const buyOrSell = partyRole.find(
       o =>
