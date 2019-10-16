@@ -213,7 +213,7 @@
         class="data"
         style="font-weight: bold;"
       >
-        {{ element.status ? element.status : '-' }}
+        {{ element.status === 'SETTLED' ? 'SETTLED' : 'EXECUTED' }}
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
