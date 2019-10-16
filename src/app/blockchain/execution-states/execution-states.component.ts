@@ -402,6 +402,5 @@ export class ExecutionStatesComponent implements OnInit {
           duration: 2000,
         });
     }
-    console.log(e);
   }
 }
