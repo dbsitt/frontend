@@ -4,7 +4,12 @@
   // justify-content: space-between;
 }
 
-mat-card {
+.main-card {
+  width: 98%;
+}
+
+table {
+  position: relative;
   width: 100%;
 }
 
@@ -29,7 +34,7 @@ mat-card {
 .refresh {
   padding-left: 98%;
   cursor: pointer;
-  //position: absolute;
+  position: absolute;
   top: 0;
   right: 0;
 

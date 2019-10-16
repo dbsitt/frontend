@@ -1,62 +1,69 @@
-<div class="material-icons refresh" (click)="fetchAccountSummary()">
-  refresh
-</div>
-<ng-container *ngIf="tableData.length > 0; else emptyState">
-  <table
-    mat-table
-    [dataSource]="tableData"
-    class="mat-elevation-z8 execution-table"
-  >
-    <ng-container matColumnDef="holder">
-      <th mat-header-cell *matHeaderCellDef>Holder</th>
-      <td class="table-cell-md" mat-cell *matCellDef="let element">
-        {{ element.holder }}
-      </td>
-    </ng-container>
+<mat-card class="main-card">
+  <mat-card-title>Account Summary</mat-card-title>
+  <mat-card-content>
+    <div class="material-icons refresh" (click)="fetchAccountSummary()">
+      refresh
+    </div>
+    <ng-container *ngIf="tableData.length > 0; else emptyState">
+      <table
+        mat-table
+        [dataSource]="tableData"
+        class="mat-elevation-z8 execution-table"
+      >
+        <ng-container matColumnDef="holder">
+          <th mat-header-cell *matHeaderCellDef>Holder</th>
+          <td class="table-cell-md" mat-cell *matCellDef="let element">
+            {{ element.holder }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="walletRef">
-      <th class="table-cell" mat-header-cell *matHeaderCellDef>
-        Account Reference
-      </th>
-      <td class="table-cell" mat-cell *matCellDef="let element">
-        {{ element.walletRef }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="walletRef">
+          <th class="table-cell" mat-header-cell *matHeaderCellDef>
+            Account Reference
+          </th>
+          <td class="table-cell" mat-cell *matCellDef="let element">
+            {{ element.walletRef }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="accountNumber">
-      <th class="table-cell" mat-header-cell *matHeaderCellDef>
-        Account Number
-      </th>
-      <td class="table-cell" mat-cell *matCellDef="let element">
-        {{ element.accountNumber }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="accountNumber">
+          <th class="table-cell" mat-header-cell *matHeaderCellDef>
+            Account Number
+          </th>
+          <td class="table-cell" mat-cell *matCellDef="let element">
+            {{ element.accountNumber }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="accountName">
-      <th class="table-cell" mat-header-cell *matHeaderCellDef>Account Name</th>
-      <td class="table-cell" mat-cell *matCellDef="let element">
-        {{ element.accountName }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="accountName">
+          <th class="table-cell" mat-header-cell *matHeaderCellDef>
+            Account Name
+          </th>
+          <td class="table-cell" mat-cell *matCellDef="let element">
+            {{ element.accountName }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="currency">
-      <th mat-header-cell *matHeaderCellDef>Currency</th>
-      <td class="table-cell-sm" mat-cell *matCellDef="let element">
-        {{ element.currency }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef>Currency</th>
+          <td class="table-cell-sm" mat-cell *matCellDef="let element">
+            {{ element.currency }}
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>Amount</th>
-      <td class="table-cell-sm" mat-cell *matCellDef="let element">
-        {{ element.amount }}
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td class="table-cell-sm" mat-cell *matCellDef="let element">
+            {{ element.amount }}
+          </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns"></tr>
-  </table>
-</ng-container>
-<ng-template #emptyState>
-  <div>Empty Account Summary</div>
-</ng-template>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+    </ng-container>
+    <ng-template #emptyState>
+      <div>Empty Account Summary</div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
