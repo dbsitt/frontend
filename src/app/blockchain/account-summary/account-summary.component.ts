@@ -23,6 +23,14 @@ export class AccountSummaryComponent implements OnInit {
   data: any = null;
   account$: Observable<Account>;
   tableData = [];
+  columns = [
+    'walletRef',
+    'accountNumber',
+    'accountName',
+    'currency',
+    'amount',
+    'holder',
+  ];
 
   constructor(
     private store: Store<BlockchainState>,
@@ -35,22 +43,40 @@ export class AccountSummaryComponent implements OnInit {
 
   get displayedColumns() {
     return [
+      'holder',
       'walletRef',
       'accountNumber',
       'accountName',
       'currency',
       'amount',
-      'holder',
     ];
   }
   get currentUserRole() {
     return this.helperService.getCurrentUserRole();
   }
   fetchAccountSummary() {
+    this.columns = [
+      'holder',
+      'walletRef',
+      'accountNumber',
+      'accountName',
+      'currency',
+      'amount',
+    ];
+    if (
+      this.currentUserRole === 'CLIENT' ||
+      this.currentUserRole === 'BROKER'
+    ) {
+      let test = this.columns.filter(function(item) {
+        return item !== 'holder';
+      });
+
+      this.columns = test;
+    }
+
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
       .get(this.helperService.getBaseUrl() + '/getAccounts')
-      //.get('http://3.1.246.227:10050/api/getAccounts')
       //.get('http://localhost:4000/getAccounts')
       .pipe(
         finalize(() => {
@@ -81,9 +107,6 @@ export class AccountSummaryComponent implements OnInit {
     this.helperService.currentUser$.subscribe(e => {
       console.log('calling fetch account summary');
       this.fetchAccountSummary();
-      // if (e.role === ROLES.SETTLEMENT_AGENT) {
-      //   this.router.navigateByUrl('transactions/admin');
-      // }
     });
 
     // interval(4000)

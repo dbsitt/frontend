@@ -9,8 +9,8 @@
   >
     <ng-container matColumnDef="holder">
       <th mat-header-cell *matHeaderCellDef>Holder</th>
-      <td class="table-cell-sm" mat-cell *matCellDef="let element">
-        {{ element.amount }}
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.holder }}
       </td>
     </ng-container>
 
@@ -53,8 +53,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
   </table>
 </ng-container>
 <ng-template #emptyState>
