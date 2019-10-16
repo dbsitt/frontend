@@ -10,12 +10,18 @@ mat-card {
 
 .table-cell {
   width: 23%;
+  word-break: break-all;
+  padding-right: 30px;
 }
-.table-cell-acc-ref {
-  width: 30%;
+
+.table-cell-sm {
+  width: 5%;
+  word-break: break-all;
+  padding-right: 30px;
 }
 
 .refresh {
+  padding-left: 98%;
   cursor: pointer;
   //position: absolute;
   top: 0;
