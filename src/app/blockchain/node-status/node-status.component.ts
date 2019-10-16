@@ -15,11 +15,15 @@ import { interval } from 'rxjs/internal/observable/interval';
 import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-account-summary',
-  templateUrl: './account-summary.component.html',
-  styleUrls: ['./account-summary.component.scss'],
+  selector: 'app-node-status',
+  templateUrl: './node-status.component.html',
+  styleUrls: ['./node-status.component.scss'],
 })
-export class AccountSummaryComponent implements OnInit {
+export class NodeStatusComponent implements OnInit {
+  public accounts: AccountBalance[];
+  public cacheAccounts: AccountBalance[];
+  public summaries: any[];
+
   data: any = null;
   account$: Observable<Account>;
   tableData = [];
@@ -37,11 +41,21 @@ export class AccountSummaryComponent implements OnInit {
     return ['walletRef', 'accountNumber', 'accountName', 'currency', 'amount'];
   }
 
+  filterAccountBalance(filterVal: any) {
+    if (filterVal == '0') this.accounts = this.cacheAccounts;
+    else
+      this.accounts = this.cacheAccounts.filter(
+        item => item.amount > filterVal
+      );
+  }
+
   fetchAccountSummary() {
     this.uiStore.dispatch(setLoading({ value: true }));
     this.httpClient
-      .get(this.helperService.getBaseUrl() + '/getAccounts')
+      //.get(this.helperService.getBaseUrl() + '/getAccounts')
       //.get('http://3.1.246.227:10050/api/getAccounts')
+      .get('http://localhost:4000/getAccounts')
+
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
@@ -50,6 +64,10 @@ export class AccountSummaryComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response !== null) {
+            this.accounts = response as AccountBalance[];
+            this.cacheAccounts = this.accounts;
+            console.log(this.accounts);
+
             this.tableData = response;
           }
         },
@@ -67,36 +85,23 @@ export class AccountSummaryComponent implements OnInit {
   }
   ngOnInit() {
     this.account$ = this.store.pipe(select(getCurrentUser));
-    this.fetchAccountSummary();
-    this.helperService.currentUser$.subscribe(e => {
-      console.log('calling fetch account summary');
-      this.fetchAccountSummary();
-      // if (e.role === ROLES.SETTLEMENT_AGENT) {
-      //   this.router.navigateByUrl('transactions/admin');
-      // }
-    });
+    // this.fetchAccountSummary();
 
-    // interval(4000)
-    // .pipe(
-    //   startWith(0),
-    //   switchMap(() => this.httpClient.get('http://3.1.246.227:10050/api/getAccounts'))
-    // )
-    // .subscribe(
-    //   (response: any) => {
-    //     if (response !== null) {
-    //       this.tableData = response;
-    //     }
-    //   },
-    //   () => {
-    //     this.data = null;
-    //     this.snackBar.open(
-    //       'Error occur when fetching execution-states',
-    //       'Close',
-    //       {
-    //         duration: 2000,
-    //       }
-    //     );
-    //   }
-    // );
+    // this.helperService.currentUser$.subscribe(e => {
+    //   console.log("calling fetch account summary")
+    this.fetchAccountSummary();
+    // });
   }
+}
+
+interface AccountBalance {
+  walletRef: string;
+  accountNumber: string;
+  currency: string;
+  accountName: string;
+  amount: string;
+}
+
+interface Summary {
+  name: string;
 }

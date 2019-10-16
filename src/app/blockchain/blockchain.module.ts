@@ -24,6 +24,7 @@ import { TradeSummaryComponent } from './trade-summary/trade-summary.component';
 import { APIInterceptor } from '../interceptors';
 import { ExecutionStatesComponent } from './execution-states/execution-states.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { NodeStatusComponent } from './node-status/node-status.component';
 import { SharedModule } from '../shared/SharedModule';
 
 const blockchainRoutes: Routes = [
@@ -46,6 +47,7 @@ const blockchainRoutes: Routes = [
   { path: 'confirm', component: ConfirmationComponent },
   { path: 'admin', component: AdminPageComponent },
   { path: 'account', component: AccountSummaryComponent },
+  { path: 'position-report', component: NodeStatusComponent },
 ];
 
 @NgModule({
@@ -60,6 +62,7 @@ const blockchainRoutes: Routes = [
     TradeSummaryComponent,
     ExecutionStatesComponent,
     AdminPageComponent,
+    NodeStatusComponent,
   ],
   imports: [
     CommonModule,

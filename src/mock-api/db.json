@@ -1,11 +1,32 @@
 {
-  "accounts": [
+  "getAccounts": [
     {
-      "id": "1111111",
-      "account": "DBS_123456",
-      "name": "Saving Account 2",
+      "walletRef": "DH0371475458DH0371475458DH0371475458DH0371475458DH0371475458",
+      "accountNumber": "DBS_123456DBS_123456DBS_123456DBS_123456DBS_123456",
+      "accountName": "Saving Account 2",
       "currency": "SGD",
-      "amount": "100,000"
+      "amount": "10"
+    },
+    {
+      "walletRef": "1111111",
+      "accountNumber": "DBS_123456",
+      "accountName": "Saving Account 2",
+      "currency": "SGD",
+      "amount": "100"
+    },
+    {
+      "walletRef": "1111111",
+      "accountNumber": "DBS_123456",
+      "accountName": "Saving Account 2",
+      "currency": "SGD",
+      "amount": "1009"
+    },
+    {
+      "walletRef": "1111111",
+      "accountNumber": "DBS_123456",
+      "accountName": "Saving Account 2",
+      "currency": "SGD",
+      "amount": "1000"
     }
   ]
 }

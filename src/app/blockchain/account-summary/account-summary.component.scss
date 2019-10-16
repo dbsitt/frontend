@@ -1,3 +1,4 @@
+@import '../../shared/styles/variables.scss';
 .summary {
   display: flex;
   // justify-content: space-between;
@@ -9,4 +10,18 @@ mat-card {
 
 .table-cell {
   width: 23%;
+}
+.table-cell-acc-ref {
+  width: 30%;
+}
+
+.refresh {
+  cursor: pointer;
+  //position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    color: $color-primary;
+  }
 }

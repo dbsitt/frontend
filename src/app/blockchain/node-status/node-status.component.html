@@ -1,17 +1,28 @@
 <div class="material-icons refresh" (click)="fetchAccountSummary()">
   refresh
 </div>
-<ng-container *ngIf="tableData.length > 0; else emptyState">
+<div>
+  <label>Date: </label>
+  <select (change)="filterAccountBalance($event.target.value)">
+    <option value="0">Select amount</option
+    ><option> </option
+    ><option value="0">--0--</option>
+    <option value="10">--10--</option>
+    <option value="100">--100--</option>
+    <option value="1000">--1000--</option>
+  </select>
+</div>
+<ng-container *ngIf="accounts.length > 0; else emptyState">
   <table
     mat-table
-    [dataSource]="tableData"
+    [dataSource]="accounts"
     class="mat-elevation-z8 execution-table"
   >
     <ng-container matColumnDef="walletRef">
-      <th class="table-cell-acc-ref" mat-header-cell *matHeaderCellDef>
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
         Account Reference
       </th>
-      <td class="table-cell-acc-ref" mat-cell *matCellDef="let element">
+      <td class="table-cell" mat-cell *matCellDef="let element">
         {{ element.walletRef }}
       </td>
     </ng-container>
