@@ -1,0 +1,225 @@
+<div
+  style="margin-left: 98%; position: relative;"
+  class="material-icons refresh"
+  (click)="fetchExecutionStates()"
+>
+  refresh
+</div>
+
+<div style="margin-bottom: 4px;">
+  <label>Client </label>
+  <select (change)="filter($event.target.value)">
+    <option value="0">Select Client</option
+    ><option value="Client1">Client1</option>
+    <option value="Client2">Client2</option>
+    <option value="Client3">Client3</option>
+  </select>
+</div>
+
+<ng-container *ngIf="tableDataCache.length > 0; else emptyState">
+  <table
+    mat-table
+    [dataSource]="tableDataCache"
+    class="mat-elevation-z8 execution-table"
+    [hidden]="isLoading$ | async"
+  >
+    <ng-container matColumnDef="tradeAndBroker">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Block#</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <app-transfer-info
+            [data]="element.tradeAndBroker"
+          ></app-transfer-info>
+          <div>
+            <span class="label">Trade#: </span
+            >{{ element.tradeAndBroker.tradeNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeAndClient">
+      <th mat-header-cell *matHeaderCellDef class="header-label">
+        Transaction
+      </th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <app-transfer-info
+            [data]="element.tradeAndClient"
+          ></app-transfer-info>
+          <div>
+            <span class="label">Trade#: </span
+            >{{ element.tradeAndClient.tradeNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeAndBrokerAndClient">
+      <th mat-header-cell *matHeaderCellDef class="header-label">
+        Transaction
+      </th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <app-transfer-info
+            [data]="element.tradeAndBrokerAndClient"
+          ></app-transfer-info>
+          <div>
+            <span class="label"> Allocation#: </span
+            >{{ element.tradeAndBrokerAndClient.tradeNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="blockAndAllocationAndClient">
+      <th mat-header-cell *matHeaderCellDef class="header-label">
+        Transaction
+      </th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <app-transfer-info
+            [data]="element.blockAndAllocationAndClient"
+          ></app-transfer-info>
+          <div>
+            <span class="label"> Block# : </span
+            >{{ element.blockAndAllocationAndClient.allocationNumber }}
+          </div>
+          <div>
+            <span class="label"> Allocation#: </span
+            >{{ element.blockAndAllocationAndClient.blockNumber }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="productRelated">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Product</th>
+      <th></th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>
+            <span class="label">Product: </span
+            >{{ element.productRelated.product }}
+          </div>
+          <div>
+            <span class="label">Type: </span
+            >{{ element.productRelated.prodType }}
+          </div>
+          <div>
+            <span class="label">Quantity: </span
+            >{{ element.productRelated.quantity }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="valueRelated">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Value</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        <div class="cell-wrapper">
+          <div>
+            <span class="label">Cash: </span>{{ element.valueRelated.cash }}
+          </div>
+          <div *ngIf="element.valueRelated.currency">
+            <span class="label">Currency: </span
+            >{{ element.valueRelated.currency }}
+          </div>
+          <div>
+            <span class="label">Price: </span>{{ element.valueRelated.price }}
+          </div>
+          <div>
+            <span class="label">Value Date: </span
+            >{{ element.valueRelated.valueDate }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="blockNumber">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Block#</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.blockNumber }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tradeNumber">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Trade#</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.tradeNumber }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="allocationNumber">
+      <th mat-header-cell *matHeaderCellDef class="header-label">
+        Allocation#
+      </th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.allocationNumber }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="broker">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Broker</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.broker }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Client</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.client }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="prodType">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Prod Type</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.prodType }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Product</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.product }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Quantity</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.quantity }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Price</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.price }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="cash">
+      <th mat-header-cell *matHeaderCellDef class="header-label">$Cash</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.cash }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="currency">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Currency</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.currency }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="valueDate">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Value Date</th>
+      <td mat-cell *matCellDef="let element" class="data">
+        {{ element.valueDate }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="header-label">Status</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        class="data"
+        style="font-weight: bold;"
+      >
+        {{ element.status === 'SETTLED' ? 'SETTLED' : 'EXECUTED' }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>
+<ng-template #emptyState>
+  <div>Empty Report Data</div>
+</ng-template>

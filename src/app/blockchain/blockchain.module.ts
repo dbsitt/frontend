@@ -29,6 +29,7 @@ import { SharedModule } from '../shared/SharedModule';
 import { TransferInfoComponent } from './transfer-info/transfer-info.component';
 import { ReportPageComponent } from './report-page/report-page.component';
 import { PositionReportComponent } from './position-report/position-report.component';
+import { ExcutionReportComponent } from './excution-report/excution-report.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -50,6 +51,7 @@ const blockchainRoutes: Routes = [
   { path: 'confirm', component: ConfirmationComponent },
   { path: 'admin', component: AdminPageComponent },
   { path: 'account', component: AccountSummaryComponent },
+  { path: 'execution-report', component: ExcutionReportComponent },
   { path: 'position-report', component: PositionReportComponent },
   { path: 'report', component: ReportPageComponent },
 ];
@@ -70,6 +72,7 @@ const blockchainRoutes: Routes = [
     TransferInfoComponent,
     ReportPageComponent,
     PositionReportComponent,
+    ExcutionReportComponent,
   ],
   imports: [
     CommonModule,

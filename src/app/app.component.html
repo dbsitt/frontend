@@ -16,7 +16,7 @@
           currentUserRole === 'SETTLEMENT_AGENT'
         "
         class="link"
-        >Account Summary
+        >Account
       </a>
       <a
         [routerLink]="['/transactions']"
@@ -61,13 +61,13 @@
         Admin</a
       >
       <a
-        [routerLink]="['/transactions/position-report']"
+        [routerLink]="['/transactions/execution-report']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
         *ngIf="currentUserRole === 'BROKER'"
         class="link"
       >
-        Position Report</a
+        Execution Report</a
       >
       <!-- <a
         [routerLink]="['/transactions/report']"
