@@ -27,6 +27,9 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { NodeStatusComponent } from './node-status/node-status.component';
 import { SharedModule } from '../shared/SharedModule';
 import { TransferInfoComponent } from './transfer-info/transfer-info.component';
+import { ReportPageComponent } from './report-page/report-page.component';
+import { PositionReportComponent } from './position-report/position-report.component';
+import { ExcutionReportComponent } from './excution-report/excution-report.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -48,7 +51,9 @@ const blockchainRoutes: Routes = [
   { path: 'confirm', component: ConfirmationComponent },
   { path: 'admin', component: AdminPageComponent },
   { path: 'account', component: AccountSummaryComponent },
-  { path: 'position-report', component: NodeStatusComponent },
+  { path: 'execution-report', component: ExcutionReportComponent },
+  { path: 'position-report', component: PositionReportComponent },
+  { path: 'report', component: ReportPageComponent },
 ];
 
 @NgModule({
@@ -65,6 +70,9 @@ const blockchainRoutes: Routes = [
     AdminPageComponent,
     NodeStatusComponent,
     TransferInfoComponent,
+    ReportPageComponent,
+    PositionReportComponent,
+    ExcutionReportComponent,
   ],
   imports: [
     CommonModule,

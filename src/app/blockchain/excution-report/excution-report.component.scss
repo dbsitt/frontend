@@ -1,0 +1,82 @@
+.uploader {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit {
+  width: 20rem;
+}
+
+.file-chooser {
+  margin-bottom: 1rem;
+}
+@import '../../shared/styles/variables.scss';
+
+.list-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.execution {
+  flex: 1;
+}
+
+.execution-table {
+  width: 100%;
+}
+
+.data {
+  vertical-align: text-top;
+}
+
+.cell-wrapper {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.action-cell {
+  vertical-align: top;
+  padding-top: 0.5rem;
+}
+
+.action {
+  &__button {
+    transition: transform 0.2s ease-in-out;
+
+    &:not(:disabled) {
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.refresh {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.no-event {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.header-label {
+  font-weight: bold !important;
+}

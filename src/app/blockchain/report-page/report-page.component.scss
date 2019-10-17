@@ -1,0 +1,38 @@
+.upload-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.file-chooser {
+  margin-bottom: 1rem;
+}
+.summary {
+  display: flex;
+}
+
+mat-card {
+  width: 100%;
+}
+
+.table-cell {
+  width: 7%;
+}
+
+.upload-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.submit {
+  margin-top: 0.5rem;
+  width: 10rem;
+  margin-right: 0.5rem;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.file-chooser {
+  margin-bottom: 1rem;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, filter, debounceTime } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -14,9 +14,7 @@ import {
   CLIENT_BLOCKTRADE_COLUMNS,
   BROKER_ALLOCATION_TRADE_COLUMNS,
   CLIENT_ALLOCATION_TRADE_COLUMNS,
-  SETTLEMENT_AGENT_ALLOCATION_TRADE_COLUMNS,
-  SETTLEMENT_AGENT_BLOCKTRADE_COLUMNS,
-  COLLATERAL_AGENT_ALLOCATION_TRADE_COLUMNS,
+  SETTLEMENT_AGENT_COLUMNS,
 } from './columns';
 import {
   ALLOCATION_TRADE_STATUS,
@@ -25,15 +23,16 @@ import {
   ACTIONS,
   CONFIRMED_ALLOCATION_TRADES_STATUS,
 } from '../blockchain.constants';
+import { exec } from 'child_process';
 import { Observable } from 'rxjs';
 import { getIsLoading } from 'src/app/store/ui.selector';
 
 @Component({
-  selector: 'app-execution-states',
-  templateUrl: './execution-states.component.html',
-  styleUrls: ['./execution-states.component.scss'],
+  selector: 'app-positionreport-states',
+  templateUrl: './position-report.component.html',
+  styleUrls: ['./position-report.component.scss'],
 })
-export class ExecutionStatesComponent implements OnInit, OnDestroy {
+export class PositionReportComponent implements OnInit {
   @Input() type: string;
 
   checkedExecutionList: string[] = [];
@@ -41,8 +40,7 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
 
   tableData = [];
-
-  currentUserSubscription$: any;
+  tableDataCache = [];
 
   get displayedColumns() {
     let columns = [];
@@ -52,8 +50,6 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
         columns = BROKER_BLOCKTRADE_COLUMNS;
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_BLOCKTRADE_COLUMNS;
-      } else if (userRole === ROLES.SETTLEMENT_AGENT) {
-        columns = SETTLEMENT_AGENT_BLOCKTRADE_COLUMNS;
       }
     } else if (this.type === 'allocation-trade') {
       if (userRole === ROLES.BROKER) {
@@ -61,13 +57,15 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
       } else if (userRole === ROLES.CLIENT) {
         columns = CLIENT_ALLOCATION_TRADE_COLUMNS;
       } else if (userRole === ROLES.SETTLEMENT_AGENT) {
-        columns = SETTLEMENT_AGENT_ALLOCATION_TRADE_COLUMNS;
+        columns = SETTLEMENT_AGENT_COLUMNS;
       } else if (userRole === ROLES.COLLATERAL_AGENT) {
-        columns = COLLATERAL_AGENT_ALLOCATION_TRADE_COLUMNS;
+        columns = SETTLEMENT_AGENT_COLUMNS;
       }
     }
-
-    return columns;
+    let _columns = columns.filter(function(item) {
+      return item !== 'action';
+    });
+    return _columns;
   }
 
   constructor(
@@ -78,17 +76,21 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
     private helperService: HelperService
   ) {}
 
+  filter(filterVal: any) {
+    let result = [];
+    this.tableDataCache = this.tableData.filter(function(item) {
+      return item.client === filterVal;
+    });
+  }
+
   ngOnInit() {
-    this.currentUserSubscription$ = this.userStore
+    this.type = 'allocation-trade';
+    this.userStore
       .pipe(select(getCurrentUser))
       .pipe(filter(user => user !== null))
       .subscribe(this.fetchExecutionStates.bind(this));
 
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
-  }
-
-  ngOnDestroy() {
-    this.currentUserSubscription$.unsubscribe();
   }
 
   get currentUserRole() {
@@ -124,12 +126,13 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
         (response: any) => {
           if (response !== null) {
             this.tableData = this.mapExecutions(response);
+            this.tableDataCache = this.tableData;
           }
         },
         () => {
           this.tableData = [];
           this.snackBar.open(
-            `Error occur when fetching execution-states for ${this.currentUserId}`,
+            `Error occur when fetching position report for ${this.currentUserId}`,
             'Close',
             {
               duration: 2000,
@@ -137,6 +140,33 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
           );
         }
       );
+  }
+
+  mockData() {
+    const response = [
+      {
+        execution: {
+          meta: {
+            globalKey: 'GLOBAL-akshdfkahsdkfjhasdfkjasdhfkjdsaasdf',
+            externalKey: 'EXTERNAL-akshdfjashdfkjhjsadhfjkasdjfjkasd',
+          },
+          status: 'STATUS',
+        },
+        data: {
+          valueDate: '02-12-2019',
+          cash: '123',
+          currency: 'USD',
+          price: '12132',
+          quantity: '45',
+          product: 'PROD',
+          prodType: 'Bond',
+          client: 'CLIENT',
+          broker: 'BROKER',
+          blockTradeNum: 'TRADENUM=asdfhjkashdfjksdkfjds',
+        },
+      },
+    ];
+    this.tableData = this.mapExecutions(response);
   }
 
   mapTransferParty(role: string, respose: any) {
@@ -172,8 +202,6 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
           return this.mapBrokerBlockTrade(response);
         } else if (this.currentUserRole === ROLES.CLIENT) {
           return this.mapClientBlockTrade(response);
-        } else if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
-          return this.mapClientBlockTrade(response);
         }
       } else if (this.type === 'allocation-trade') {
         if (this.currentUserRole === ROLES.BROKER) {
@@ -189,13 +217,20 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
     });
   }
 
-  commonFieldMapping(data, execution) {
-    const { valueDate, cash, currency, price, quantity } = data;
+  commonFieldMapping(data) {
+    const {
+      valueDate,
+      cash,
+      currency,
+      price,
+      quantity,
+      product,
+      productType,
+    } = data;
     return {
       productRelated: {
-        prodType: 'Bond',
-        product:
-          execution.product.security.bond.productIdentifier.identifier[0].value,
+        product,
+        prodType: productType,
         quantity,
       },
       valueRelated: {
@@ -208,7 +243,7 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   }
 
   mapBrokerBlockTrade(response: any) {
-    const { data, execution } = response;
+    const { data } = response;
     return {
       ...data,
       tradeAndClient: {
@@ -217,15 +252,14 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
-      status: response.status,
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
-      ...this.commonFieldMapping(data, execution),
+      ...this.commonFieldMapping(data),
     };
   }
 
   mapClientBlockTrade(response: any) {
-    const { data, execution } = response;
+    const { data } = response;
     return {
       ...data,
       tradeAndBroker: {
@@ -234,22 +268,21 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
       },
-      status: response.status,
       tradeNumber: data.blockTradeNum,
       prodType: data.productType,
-      ...this.commonFieldMapping(data, execution),
+      ...this.commonFieldMapping(data),
     };
   }
 
   mapBrokerAllocationTrade(response: any) {
-    const { data, execution } = response;
+    const { data } = response;
     return {
       ...data,
       blockNumber: response.execution.meta.externalKey,
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
-      ...this.commonFieldMapping(data, execution),
+      ...this.commonFieldMapping(data),
       blockAndAllocationAndClient: {
         client: this.mapTransferParty('CLIENT', response),
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
@@ -261,7 +294,7 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   }
 
   mapClientAllocationTrade(response: any) {
-    const { data, execution } = response;
+    const { data } = response;
     return {
       ...data,
       blockAndAllocationAndClient: {
@@ -275,20 +308,21 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
       allocationNumber: response.execution.meta.globalKey,
       status: response.status,
       prodType: data.productType,
-      ...this.commonFieldMapping(data, execution),
+      ...this.commonFieldMapping(data),
     };
   }
 
   mapSettlementAgentAllocationTrade(response) {
-    const { data, execution } = response;
+    const { data } = response;
     return {
       ...data,
-      tradeNumber: execution.meta.globalKey,
+      tradeNumber: response.execution.meta.globalKey,
       broker: 'hardcoded',
       status: response.status,
-      ...this.commonFieldMapping(data, execution),
+      prodType: data.productType,
+      ...this.commonFieldMapping(data),
       tradeAndBrokerAndClient: {
-        tradeNumber: execution.meta.globalKey,
+        tradeNumber: response.execution.meta.globalKey,
         client: this.mapTransferParty('CLIENT', response),
         executingEntity: this.mapTransferParty('EXECUTING_ENTITY', response),
         counterparty: this.mapTransferParty('COUNTERPARTY', response),
@@ -307,27 +341,10 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   }
 
   actionsForBlockTrade(execution: ExecutionState): string {
-    if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
-      switch (execution.status) {
-        case BLOCK_TRADE_STATUS.EXECUTED:
-        case BLOCK_TRADE_STATUS.EMPTY:
-          return null;
-        case BLOCK_TRADE_STATUS.ALLOCATED:
-          return ACTIONS.SETTLE;
-        case BLOCK_TRADE_STATUS.INSTRUCTED:
-          return ACTIONS.TRANSFER;
-        case BLOCK_TRADE_STATUS.SETTLED:
-          return null;
-      }
-    } else {
-      switch (execution.status) {
-        case BLOCK_TRADE_STATUS.EMPTY:
-          return ACTIONS.ALLOCATE;
-        case BLOCK_TRADE_STATUS.EXECUTED:
-          return null;
-        case BLOCK_TRADE_STATUS.ALLOCATED:
-          return null;
-      }
+    if (execution.status === BLOCK_TRADE_STATUS.EMPTY) {
+      return ACTIONS.ALLOCATE;
+    } else if (execution.status === BLOCK_TRADE_STATUS.ALLOCATED) {
+      return null;
     }
   }
 
@@ -354,10 +371,10 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
       switch (execution.status) {
         case CONFIRMED_ALLOCATION_TRADES_STATUS.CONFIRMED:
           return ACTIONS.SETTLE;
+        case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
+          return ACTIONS.TRANSFER;
         case CONFIRMED_ALLOCATION_TRADES_STATUS.INSTRUCTED:
           return ACTIONS.TRANSFER;
-        case CONFIRMED_ALLOCATION_TRADES_STATUS.SETTLED:
-          return null;
         case CONFIRMED_ALLOCATION_TRADES_STATUS.TRANSFERRED:
           return null;
       }
@@ -420,5 +437,6 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
           duration: 2000,
         });
     }
+    console.log(e);
   }
 }

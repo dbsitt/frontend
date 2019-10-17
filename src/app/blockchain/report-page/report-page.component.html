@@ -1,0 +1,140 @@
+<div class="material-icons refresh" (click)="fetchAccountSummary()">
+  refresh
+</div>
+
+<div>
+  <label>Client </label>
+  <select (change)="filterAccountBalance($event.target.value)">
+    <option value="0">Select Client</option
+    ><option value="clientId1">Client1</option>
+    <option value="clientId2">Client2</option>
+    <option value="clientId3">Client3</option>
+  </select>
+
+  <!-- <label style="margin-left: 100px;">Position Status: </label>
+    <select (change)="filterAccountBalance($event.target.value)">
+      <option value="0">Select position status</option
+      ><option value="0">EXCECUTED/option>
+      <option value="10">SETTLED</option>
+    </select> -->
+</div>
+
+<ng-container *ngIf="accounts.length > 0; else emptyState">
+  <table
+    mat-table
+    [dataSource]="accounts"
+    class="mat-elevation-z8 execution-table"
+  >
+    <ng-container matColumnDef="clientId" class="table-cell">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        clientId
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.clientId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="partyId" class="table-cell">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        partyId
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.partyId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="productId" class="table-cell">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        productId
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.productId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="productName">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>productName</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.productName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="productSource">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        productSource
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.productSource }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantityAmount">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        quantityAmount
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.quantityAmount }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cashBalanceAmount">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        cashBalanceAmount
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.cashBalanceAmount }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currency">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>currency</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.currency }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="positionStatus">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        positionStatus
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.positionStatus }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="transactionId">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>
+        transactionId
+      </th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.transactionId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="eventId">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>eventId</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.eventId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="executionId">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>executionId</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.executionId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateTime">
+      <th class="table-cell" mat-header-cell *matHeaderCellDef>dateTime</th>
+      <td class="table-cell" mat-cell *matCellDef="let element">
+        {{ element.dateTime }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>
+<ng-template #emptyState>
+  <div>Empty Report</div>
+</ng-template>

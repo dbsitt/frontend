@@ -29,9 +29,12 @@
 .loading-logo {
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: $color-primary-light 0px 0px 10px 1px;
-  padding: 0.5rem;
+  background-image: url('/assets/dbs-logo.png');
   border-radius: 50%;
-  font-size: 5rem;
+  // font-size: 5rem;
+  height: 89px;
+  width: 89px;
+  background-repeat: no-repeat;
   animation: rotateClockwise 2s infinite;
   color: $color-primary;
 }

@@ -4,26 +4,37 @@
   // justify-content: space-between;
 }
 
-mat-card {
+.main-card {
+  width: 98%;
+}
+
+table {
+  position: relative;
   width: 100%;
 }
 
 .table-cell {
-  width: 23%;
+  width: 12%;
   word-break: break-all;
   padding-right: 30px;
 }
 
 .table-cell-sm {
-  width: 5%;
+  width: 10%;
   word-break: break-all;
   padding-right: 30px;
+}
+
+.table-cell-md {
+  width: 10%;
+  word-break: break-all;
+  padding-right: 10px;
 }
 
 .refresh {
   padding-left: 98%;
   cursor: pointer;
-  //position: absolute;
+  position: absolute;
   top: 0;
   right: 0;
 

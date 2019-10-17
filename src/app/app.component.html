@@ -16,7 +16,7 @@
           currentUserRole === 'SETTLEMENT_AGENT'
         "
         class="link"
-        >Account Summary
+        >Account
       </a>
       <a
         [routerLink]="['/transactions']"
@@ -25,7 +25,7 @@
         *ngIf="
           currentUserRole === 'BROKER' ||
           currentUserRole === 'CLIENT' ||
-          currentUserRole === 'OBSERVER'||
+          currentUserRole === 'OBSERVER' ||
           currentUserRole === 'SETTLEMENT_AGENT'
         "
         class="link"
@@ -60,13 +60,22 @@
       >
         Admin</a
       >
+      <a
+        [routerLink]="['/transactions/execution-report']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="currentUserRole === 'BROKER'"
+        class="link"
+      >
+        Execution Report</a
+      >
       <!-- <a
-        [routerLink]="['/transactions/position-report']"
+        [routerLink]="['/transactions/report']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"
         class="link"
       >
-        Position Report</a
+        Report</a
       > -->
     </nav>
     <div class="user-wrapper">
