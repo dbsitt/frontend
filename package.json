@@ -66,6 +66,7 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "~3.5.3"
   },
+  "lite": "lite-server -c bs-config.json",
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
