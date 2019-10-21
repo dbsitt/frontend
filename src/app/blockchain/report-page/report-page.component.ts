@@ -44,7 +44,6 @@ export class ReportPageComponent implements OnInit {
     // this.fetchAccountSummary();
 
     // this.helperService.currentUser$.subscribe(e => {
-    //   console.log("calling fetch account summary")
     this.fetchAccountSummary();
     this.helperService.currentUser$.subscribe(() => {
       this.resetData();
@@ -127,7 +126,6 @@ export class ReportPageComponent implements OnInit {
         if (this.cacheAccounts[i].clientId === filterVal) {
           test.push(this.cacheAccounts[i]);
         }
-        console.log(this.cacheAccounts[i]);
         //Do something
       }
 
@@ -135,7 +133,6 @@ export class ReportPageComponent implements OnInit {
       // let aa = this.cacheAccounts.filter(
       //   item => item.clientId === filterVal
       // );
-      // console.log(aa);
       //this.accounts = aa;
       // alert(filterVal)
     }

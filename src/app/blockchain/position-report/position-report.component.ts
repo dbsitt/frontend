@@ -437,6 +437,5 @@ export class PositionReportComponent implements OnInit {
           duration: 2000,
         });
     }
-    console.log(e);
   }
 }

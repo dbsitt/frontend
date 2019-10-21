@@ -137,8 +137,6 @@ export class AccountSummaryComponent implements OnInit {
               _account['holder'] = holder;
 
               this.tableData.push(_account);
-
-              console.log(this.tableData);
             }
           }
         },
@@ -157,7 +155,6 @@ export class AccountSummaryComponent implements OnInit {
   ngOnInit() {
     this.account$ = this.store.pipe(select(getCurrentUser));
     this.helperService.currentUser$.subscribe(e => {
-      console.log('calling fetch account summary');
       this.fetchAccountSummary();
     });
 

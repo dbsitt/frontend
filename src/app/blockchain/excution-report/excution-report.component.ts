@@ -453,6 +453,5 @@ export class ExcutionReportComponent implements OnInit, OnDestroy {
           duration: 2000,
         });
     }
-    console.log(e);
   }
 }

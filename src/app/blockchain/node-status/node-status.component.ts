@@ -66,7 +66,6 @@ export class NodeStatusComponent implements OnInit {
           if (response !== null) {
             this.accounts = response as AccountBalance[];
             this.cacheAccounts = this.accounts;
-            console.log(this.accounts);
 
             this.tableData = response;
           }
@@ -88,7 +87,6 @@ export class NodeStatusComponent implements OnInit {
     // this.fetchAccountSummary();
 
     // this.helperService.currentUser$.subscribe(e => {
-    //   console.log("calling fetch account summary")
     this.fetchAccountSummary();
     // });
   }
