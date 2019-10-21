@@ -33,6 +33,17 @@
         Block Trade
       </a>
       <a
+        [routerLink]="['/transactions/execute-trade']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="
+          currentUserRole === 'BROKER'
+        "
+        class="link"
+      >
+        Execute Trade
+      </a>
+      <a
         [routerLink]="['/transactions/allocate']"
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: true }"

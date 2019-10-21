@@ -42,6 +42,10 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
 
   tableData = [];
 
+  dataToAllocate = null;
+
+  isAllocateMode = false;
+
   currentUserSubscription$: any;
 
   get displayedColumns() {
@@ -307,6 +311,7 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   }
 
   actionsForBlockTrade(execution: ExecutionState): string {
+    return ACTIONS.ALLOCATE;
     if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
       switch (execution.status) {
         case BLOCK_TRADE_STATUS.EXECUTED:
@@ -381,19 +386,16 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
       });
   }
 
+  setDataToAllocate(data) {
+    this.dataToAllocate = data;
+    this.isAllocateMode = true;
+  }
+
   performAction(e) {
     const action = this.availableAction(e);
     switch (action) {
       case ACTIONS.ALLOCATE:
-        // Just in case
-        // this.sendRequest('/allocate', {});
-        this.snackBar.open(
-          'Allocate should be performed in Admin tab',
-          'Close',
-          {
-            duration: 2000,
-          }
-        );
+        this.setDataToAllocate(e);
         break;
       case ACTIONS.TRANSFER:
         this.sendRequest(`/transfer`, {

@@ -13,6 +13,9 @@ import {
   MatSnackBarModule,
   MatCardModule,
   MatTableModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
 } from '@angular/material';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
@@ -30,6 +33,8 @@ import { TransferInfoComponent } from './transfer-info/transfer-info.component';
 import { ReportPageComponent } from './report-page/report-page.component';
 import { PositionReportComponent } from './position-report/position-report.component';
 import { ExcutionReportComponent } from './excution-report/excution-report.component';
+import { ExecuteTradeComponent } from './execute-trade/execute-trade.component';
+import { AllocateTradeComponent } from './allocate-trade/allocate-trade.component';
 
 const blockchainRoutes: Routes = [
   {
@@ -43,6 +48,10 @@ const blockchainRoutes: Routes = [
   {
     path: 'affirm',
     component: AffirmTransactionComponent,
+  },
+  {
+    path: 'execute-trade',
+    component: ExecuteTradeComponent,
   },
   {
     path: 'allocate',
@@ -73,6 +82,8 @@ const blockchainRoutes: Routes = [
     ReportPageComponent,
     PositionReportComponent,
     ExcutionReportComponent,
+    ExecuteTradeComponent,
+    AllocateTradeComponent,
   ],
   imports: [
     CommonModule,
@@ -89,6 +100,9 @@ const blockchainRoutes: Routes = [
     HttpClientModule,
     NgxJsonViewerModule,
     MatTableModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     SharedModule,
   ],
   providers: [

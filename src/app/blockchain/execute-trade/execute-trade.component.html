@@ -1,0 +1,93 @@
+<mat-card>
+  <form class="form">
+    <div class="input-values">
+      <mat-form-field>
+        <mat-label>Client</mat-label>
+        <mat-select
+          [value]="client"
+          (selectionChange)="onSelectChange('client', $event)"
+        >
+          <mat-option *ngFor="let client of clients" [value]="client">
+            {{ client }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Buy/Sell</mat-label>
+        <mat-select
+          [value]="buySell"
+          (selectionChange)="onSelectChange('buySell', $event)"
+        >
+          <mat-option [value]="'Buy'">
+            Buy
+          </mat-option>
+          <mat-option [value]="'Sell'">
+            Sell
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Product</mat-label>
+        <mat-select
+          [value]="product"
+          (selectionChange)="onSelectChange('product', $event)"
+        >
+          <mat-option [value]="'DH0371475458'">
+            DH0371475458
+          </mat-option>
+          <mat-option [value]="'DH1986947194'">
+            DH1986947194
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Quantity"
+          [value]="quantity"
+          type="number"
+          (change)="onValueChange('quantity', $event)"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Price"
+          [value]="price"
+          type="number"
+          (change)="onValueChange('price', $event)"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Trade Date"
+          value="12/12/2020"
+          type="date"
+          (ngModelChange)="setSome($event)"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Value Date"
+          value="12/12/2020"
+          type="date"
+          (ngModelChange)="setSome($event)"
+        />
+      </mat-form-field>
+    </div>
+    <div class="actions">
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+      <button mat-raised-button class="cancel">Cancel</button>
+    </div>
+  </form>
+</mat-card>
