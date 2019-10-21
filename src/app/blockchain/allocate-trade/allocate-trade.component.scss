@@ -1,6 +1,15 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
 .form {
   display: flex;
   flex-direction: column;
+}
+
+.allocate-trade-card {
+  width: 50rem;
 }
 
 .input-values {
@@ -10,8 +19,27 @@
 
 .actions {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   .cancel {
     margin-right: 1rem;
   }
+}
+
+.allocation {
+  width: 15rem;
+}
+
+.allocate-table {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.cell-wrapper {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 90%;
 }

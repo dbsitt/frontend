@@ -311,7 +311,6 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
   }
 
   actionsForBlockTrade(execution: ExecutionState): string {
-    return ACTIONS.ALLOCATE;
     if (this.currentUserRole === ROLES.SETTLEMENT_AGENT) {
       switch (execution.status) {
         case BLOCK_TRADE_STATUS.EXECUTED:
@@ -329,7 +328,7 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
         case BLOCK_TRADE_STATUS.EMPTY:
           return ACTIONS.ALLOCATE;
         case BLOCK_TRADE_STATUS.EXECUTED:
-          return null;
+          return ACTIONS.ALLOCATE;
         case BLOCK_TRADE_STATUS.ALLOCATED:
           return null;
       }
@@ -422,5 +421,9 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
           duration: 2000,
         });
     }
+  }
+
+  onCancelHandler() {
+    this.isAllocateMode = false;
   }
 }

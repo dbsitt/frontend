@@ -1,150 +1,157 @@
-<mat-card>
-  <table
-    mat-table
-    [dataSource]="tableData"
-    class="mat-elevation-z8 execution-table"
-    [hidden]="isLoading$ | async"
-  >
-    <ng-container matColumnDef="tradeAndBroker">
-      <th mat-header-cell *matHeaderCellDef class="header-label">Block#</th>
-      <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper" *ngIf="element.tradeAndBroker">
-          <app-transfer-info
-            [data]="element.tradeAndBroker"
-          ></app-transfer-info>
-          <div>
-            <span class="label">Trade#: </span
-            >{{ element.tradeAndBroker.tradeNumber }}
-          </div>
-        </div>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="tradeAndClient">
-      <th mat-header-cell *matHeaderCellDef class="header-label">
-        Transaction
-      </th>
-      <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper" *ngIf="element.tradeAndClient">
-          <app-transfer-info
-            [data]="element.tradeAndClient"
-          ></app-transfer-info>
-          <div>
-            <span class="label">Trade#: </span
-            >{{ element.tradeAndClient.tradeNumber }}
-          </div>
-        </div>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="productRelated">
-      <th mat-header-cell *matHeaderCellDef class="header-label">Product</th>
-      <th></th>
-      <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
-          <div>
-            <span class="label">Product: </span
-            >{{ element.productRelated.product }}
-          </div>
-          <div>
-            <span class="label">Type: </span
-            >{{ element.productRelated.prodType }}
-          </div>
-          <div>
-            <span class="label">Quantity: </span
-            >{{ element.productRelated.quantity }}
-          </div>
-        </div>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="valueRelated">
-      <th mat-header-cell *matHeaderCellDef class="header-label">Value</th>
-      <td mat-cell *matCellDef="let element" class="data">
-        <div class="cell-wrapper">
-          <div>
-            <span class="label">Cash: </span>{{ element.valueRelated.cash }}
-          </div>
-          <div *ngIf="element.valueRelated.currency">
-            <span class="label">Currency: </span
-            >{{ element.valueRelated.currency }}
-          </div>
-          <div>
-            <span class="label">Price: </span>{{ element.valueRelated.price }}
-          </div>
-          <div>
-            <span class="label">Value Date: </span
-            >{{ element.valueRelated.valueDate }}
-          </div>
-        </div>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef class="header-label">Status</th>
-      <td
-        mat-cell
-        *matCellDef="let element"
-        class="data"
-        style="font-weight: bold;"
-      >
-        {{ element.status ? element.status : '-' }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef class="header-label">Action</th>
-      <td mat-cell *matCellDef="let element" class="action-cell">
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!availableAction(element)"
-          class="action__button"
-          (click)="performAction(element)"
-        >
-          <div
-            class="material-icons no-event"
-            *ngIf="!availableAction(element)"
-          >
-            not_interested
-          </div>
-          <div *ngIf="availableAction(element)">
-            {{ availableAction(element) }}
-          </div>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-
-  <div class="input-values">
-    <mat-form-field class="example-full-width">
-      <input
-        matInput
-        placeholder="Allocation 1"
-        [value]="allocation1"
-        type="number"
-        (input)="onValueChange('allocation1', $event)"
-      />
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input
-        matInput
-        placeholder="Allocation 2"
-        [value]="allocation2"
-        type="number"
-        (input)="onValueChange('allocation2', $event)"
-      />
-    </mat-form-field>
-  </div>
-  <div class="actions">
-    <button
-      mat-raised-button
-      color="primary"
-      class="submit"
-      (click)="onSubmit()"
+<mat-card class="allocate-trade-card">
+  <mat-card-title>
+    Allocate Trade
+  </mat-card-title>
+  <mat-card-content>
+    <table
+      mat-table
+      [dataSource]="tableData"
+      class="mat-elevation-z1 allocate-table"
     >
-      Submit
-    </button>
-    <button mat-raised-button class="cancel">Cancel</button>
-  </div>
+      <ng-container matColumnDef="tradeAndBroker">
+        <th mat-header-cell *matHeaderCellDef class="header-label">Block#</th>
+        <td mat-cell *matCellDef="let element" class="data">
+          <div class="cell-wrapper" *ngIf="element.tradeAndBroker">
+            <app-transfer-info
+              [data]="element.tradeAndBroker"
+            ></app-transfer-info>
+            <div>
+              <span class="label">Trade#: </span
+              >{{ element.tradeAndBroker.tradeNumber }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tradeAndClient">
+        <th mat-header-cell *matHeaderCellDef class="header-label">
+          Transaction
+        </th>
+        <td mat-cell *matCellDef="let element" class="data">
+          <div class="cell-wrapper" *ngIf="element.tradeAndClient">
+            <app-transfer-info
+              [data]="element.tradeAndClient"
+            ></app-transfer-info>
+            <div>
+              <span class="label">Trade#: </span
+              >{{ element.tradeAndClient.tradeNumber }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="productRelated">
+        <th mat-header-cell *matHeaderCellDef class="header-label">Product</th>
+        <th></th>
+        <td mat-cell *matCellDef="let element" class="data">
+          <div class="cell-wrapper">
+            <div>
+              <span class="label">Product: </span
+              >{{ element.productRelated.product }}
+            </div>
+            <div>
+              <span class="label">Type: </span
+              >{{ element.productRelated.prodType }}
+            </div>
+            <div>
+              <span class="label">Quantity: </span
+              >{{ element.productRelated.quantity }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="valueRelated">
+        <th mat-header-cell *matHeaderCellDef class="header-label">Value</th>
+        <td mat-cell *matCellDef="let element" class="data">
+          <div class="cell-wrapper">
+            <div>
+              <span class="label">Cash: </span>{{ element.valueRelated.cash }}
+            </div>
+            <div *ngIf="element.valueRelated.currency">
+              <span class="label">Currency: </span
+              >{{ element.valueRelated.currency }}
+            </div>
+            <div>
+              <span class="label">Price: </span>{{ element.valueRelated.price }}
+            </div>
+            <div>
+              <span class="label">Value Date: </span
+              >{{ element.valueRelated.valueDate }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="header-label">Status</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="data"
+          style="font-weight: bold;"
+        >
+          {{ element.status ? element.status : '-' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="header-label">Action</th>
+        <td mat-cell *matCellDef="let element" class="action-cell">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!availableAction(element)"
+            class="action__button"
+            (click)="performAction(element)"
+          >
+            <div
+              class="material-icons no-event"
+              *ngIf="!availableAction(element)"
+            >
+              not_interested
+            </div>
+            <div *ngIf="availableAction(element)">
+              {{ availableAction(element) }}
+            </div>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+  <mat-card class="allocation-card">
+    <div class="input-values">
+      <mat-form-field class="example-full-width" class="allocation">
+        <input
+          matInput
+          placeholder="Allocation 1"
+          [value]="allocation1"
+          type="number"
+          (input)="onValueChange('allocation1', $event)"
+        />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" class="allocation">
+        <input
+          matInput
+          placeholder="Allocation 2"
+          [value]="allocation2"
+          type="number"
+          (input)="onValueChange('allocation2', $event)"
+        />
+      </mat-form-field>
+    </div>
+    <div class="actions">
+      <button mat-raised-button class="cancel" (click)="onCancel()">
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </div>
+  </mat-card>
 </mat-card>

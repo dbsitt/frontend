@@ -1,89 +1,124 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HelperService } from '../helperService';
-import { USERNAMES } from '../blockchain.constants';
+import { USERNAMES, ROLES } from '../blockchain.constants';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import moment from 'moment';
 
 @Component({
   selector: 'app-execute-trade',
   templateUrl: './execute-trade.component.html',
   styleUrls: ['./execute-trade.component.scss'],
 })
-export class ExecuteTradeComponent implements OnInit {
-  clients = ['Client1', 'Client2', 'Client3'];
-
+export class ExecuteTradeComponent implements OnInit, OnDestroy {
   client = 'Client1';
   buySell = 'Buy';
   product = 'DH0371475458';
   quantity: number = null;
   price: number = null;
-  tradeDate = '2019/10/16';
-  eventDate = '2019/10/16';
+  tradeDate = new FormControl(moment().toDate());
+  eventDate = new FormControl(
+    moment()
+      .add(1, 'd')
+      .toDate()
+  );
+  currentUserSubscription$: any;
 
   constructor(
     private httpClient: HttpClient,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentUserSubscription$ = this.helperService.currentUser$.subscribe(
+      e => {
+        if (e.role !== ROLES.BROKER) {
+          this.router.navigateByUrl('transactions/account');
+        }
+      }
+    );
+  }
 
-  setSome(event) {
-    console.log('te', event);
+  ngOnDestroy(): void {
+    this.currentUserSubscription$.unsubscribe();
   }
 
   onValueChange(type, event) {
-    console.log(type);
     const { value } = event.target;
     this[type] = value;
   }
 
   onSelectChange(type, event) {
-    console.log(type);
     const { value } = event;
     this[type] = value;
   }
 
-  onDateChange(type, event) {
-    console.log(type);
-    console.log(event);
+  validate(): boolean {
+    if (!this.quantity || this.quantity <= 0) {
+      this.snackBar.open('Quantity must be greater than zero', 'Close', {
+        duration: 2000,
+      });
+      return false;
+    }
+    if (!this.price || this.price <= 0) {
+      this.snackBar.open('Price must be greater than zero', 'Close', {
+        duration: 2000,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  get counterparty() {
+    return this.helperService.getCurrentUserId() === USERNAMES.BROKER1
+      ? USERNAMES.BROKER2
+      : USERNAMES.BROKER1;
+  }
+
+  onCancel() {
+    this.client = USERNAMES.CLIENT1;
+    this.buySell = 'Buy';
+    this.product = 'DH0371475458';
+    this.quantity = null;
+    this.price = null;
+    this.tradeDate.setValue(moment().toDate());
+    this.eventDate.setValue(
+      moment()
+        .add(1, 'd')
+        .toDate()
+    );
   }
 
   onSubmit() {
-    const {
-      buySell,
-      client,
-      product,
-      price,
-      quantity,
-      tradeDate,
-      eventDate,
-    } = this;
+    const { buySell, client, product, price, quantity } = this;
+    const tradeDate = moment(this.tradeDate.value).format('YYYY/MM/DD');
+    const eventDate = moment(this.eventDate.value).format('YYYY/MM/DD');
     const executingParty = this.helperService.getCurrentUserId();
-    const counterParty =
-      executingParty === USERNAMES.BROKER1
-        ? USERNAMES.BROKER2
-        : USERNAMES.BROKER1;
+    const counterParty = this.counterparty;
 
-    console.log({
-      client,
-      executingParty,
-      counterParty,
-      buySell,
-      product,
-      price,
-      quantity,
-      tradeDate,
-      eventDate,
-    });
-    // this.httpClient.post('book/blockTrade', {
-    //   client,
-    //   executingParty,
-    //   counterParty,
-    //   buySell,
-    //   product,
-    //   price,
-    //   quantity,
-    //   tradeDate,
-    //   eventDate,
-    // });
+    if (this.validate()) {
+      this.httpClient
+        .post(this.helperService.getBaseUrl() + '/book/blockTrade', {
+          client,
+          executingParty,
+          counterParty,
+          buySell,
+          product,
+          price,
+          quantity,
+          tradeDate,
+          eventDate,
+        })
+        .subscribe(() => {
+          this.snackBar.open('Successfully allocated', 'Close', {
+            duration: 2000,
+          });
+        });
+    }
   }
 }

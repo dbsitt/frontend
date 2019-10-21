@@ -5,7 +5,7 @@
 
 .input-values {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .actions {
@@ -14,4 +14,21 @@
   .cancel {
     margin-right: 1rem;
   }
+}
+
+.left-section,
+.right-section {
+  width: 15rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.execute-card {
+  width: 40rem;
+}
+
+:host {
+  display: flex;
+  justify-content: center;
 }

@@ -1,93 +1,124 @@
-<mat-card>
-  <form class="form">
-    <div class="input-values">
-      <mat-form-field>
-        <mat-label>Client</mat-label>
-        <mat-select
-          [value]="client"
-          (selectionChange)="onSelectChange('client', $event)"
+<mat-card class="execute-card">
+  <mat-card-title>Execute Trade</mat-card-title>
+  <mat-card-content>
+    <form class="form">
+      <div class="input-values">
+        <div class="left-section">
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Counterparty"
+              [disabled]="true"
+              [value]="counterparty"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Client</mat-label>
+            <mat-select
+              [value]="client"
+              (selectionChange)="onSelectChange('client', $event)"
+            >
+              <mat-option [value]="'Client1'">
+                Client1
+              </mat-option>
+              <mat-option [value]="'Client2'">
+                Client2
+              </mat-option>
+              <mat-option [value]="'Client3'">
+                Client3
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Buy/Sell</mat-label>
+            <mat-select
+              [value]="buySell"
+              (selectionChange)="onSelectChange('buySell', $event)"
+            >
+              <mat-option [value]="'Buy'">
+                Buy
+              </mat-option>
+              <mat-option [value]="'Sell'">
+                Sell
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Product</mat-label>
+            <mat-select
+              [value]="product"
+              (selectionChange)="onSelectChange('product', $event)"
+            >
+              <mat-option [value]="'DH0371475458'">
+                DH0371475458
+              </mat-option>
+              <mat-option [value]="'DH1986947194'">
+                DH1986947194
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="right-section">
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Quantity"
+              [value]="quantity"
+              type="number"
+              (change)="onValueChange('quantity', $event)"
+            />
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Price"
+              [value]="price"
+              type="number"
+              (change)="onValueChange('price', $event)"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [matDatepicker]="tradeDatePicker"
+              placeholder="Trade Date"
+              [formControl]="tradeDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="tradeDatePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #tradeDatePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [matDatepicker]="valueDatePicker"
+              [formControl]="eventDate"
+              placeholder="Value Date"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="valueDatePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #valueDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="submit"
+          (click)="onSubmit()"
         >
-          <mat-option *ngFor="let client of clients" [value]="client">
-            {{ client }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Buy/Sell</mat-label>
-        <mat-select
-          [value]="buySell"
-          (selectionChange)="onSelectChange('buySell', $event)"
-        >
-          <mat-option [value]="'Buy'">
-            Buy
-          </mat-option>
-          <mat-option [value]="'Sell'">
-            Sell
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Product</mat-label>
-        <mat-select
-          [value]="product"
-          (selectionChange)="onSelectChange('product', $event)"
-        >
-          <mat-option [value]="'DH0371475458'">
-            DH0371475458
-          </mat-option>
-          <mat-option [value]="'DH1986947194'">
-            DH1986947194
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Quantity"
-          [value]="quantity"
-          type="number"
-          (change)="onValueChange('quantity', $event)"
-        />
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Price"
-          [value]="price"
-          type="number"
-          (change)="onValueChange('price', $event)"
-        />
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Trade Date"
-          value="12/12/2020"
-          type="date"
-          (ngModelChange)="setSome($event)"
-        />
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Value Date"
-          value="12/12/2020"
-          type="date"
-          (ngModelChange)="setSome($event)"
-        />
-      </mat-form-field>
-    </div>
-    <div class="actions">
-      <button
-        mat-raised-button
-        color="primary"
-        class="submit"
-        (click)="onSubmit()"
-      >
-        Submit
-      </button>
-      <button mat-raised-button class="cancel">Cancel</button>
-    </div>
-  </form>
+          Submit
+        </button>
+        <button mat-raised-button class="cancel" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
 </mat-card>
