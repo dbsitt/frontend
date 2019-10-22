@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HelperService } from '../helperService';
-import { USERNAMES, ROLES } from '../blockchain.constants';
+import { USERNAMES, ROLES, generateAccountData } from '../blockchain.constants';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
@@ -129,13 +129,18 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     const price = priceFormControl.value;
     const quantity = quantityFormControl.value;
 
+    const clientAccount = generateAccountData(client).mainAccount;
+    const counterPartyAccount = generateAccountData(counterParty).mainAccount;
+    const executingEntityAccount = generateAccountData(executingEntity)
+      .mainAccount;
+
     if (this.validate()) {
       this.uiStore.dispatch(setLoading({ value: true }));
       this.httpClient
         .post(this.helperService.getBaseUrl() + '/book/blocktrade', {
-          client,
-          executingEntity,
-          counterParty,
+          client: clientAccount,
+          executingEntity: executingEntityAccount,
+          counterParty: counterPartyAccount,
           buySell: buySell.toLocaleLowerCase(),
           product,
           price,

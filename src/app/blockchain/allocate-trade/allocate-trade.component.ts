@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { HelperService } from '../helperService';
-import { ROLES } from '../blockchain.constants';
+import { ROLES, USERNAMES, generateAccountData } from '../blockchain.constants';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../ErrorStateMatcher';
@@ -41,6 +41,8 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
   ]);
 
   tableData = [];
+
+  client = USERNAMES.CLIENT1;
 
   currentUserSubscription$: any;
 
@@ -110,6 +112,14 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
     return !isNaN(+num) && num > 0;
   }
 
+  get clientData() {
+    if (!this.data) {
+      return null;
+    }
+
+    return generateAccountData(this.data.client);
+  }
+
   get displayedColumns() {
     return this.columns;
   }
@@ -123,14 +133,18 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { tradeNumber } = this.data;
+    const { tradeNumber, client } = this.data;
     this.uiStore.dispatch(setLoading({ value: true }));
+
+    const { subAccount1, subAccount2 } = generateAccountData(client);
 
     this.httpClient
       .post(this.helperService.getBaseUrl() + '/allocateTrade', {
         executionRef: tradeNumber,
         amount1: this.allocation1FormControl.value,
         amount2: this.allocation2FormControl.value,
+        subAccount1,
+        subAccount2,
       })
       .pipe(
         finalize(() => {

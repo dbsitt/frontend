@@ -1,3 +1,5 @@
+import { BasicAccount } from './blockchain';
+
 export const ROLES = {
   BROKER: 'BROKER',
   CLIENT: 'CLIENT',
@@ -46,4 +48,43 @@ export const USERNAMES = {
   OBSERVER1: 'Observer',
   SETTLEMENT_AGENT1: 'Settlement Agent',
   COLLATERAL_AGENT1: 'Collateral Agent',
+};
+
+export const generateAccountData: (
+  clientName: string
+) => BasicAccount = clientName => {
+  switch (clientName) {
+    case USERNAMES.CLIENT1:
+      return {
+        mainAccount: 'Client1_ACT#2',
+        subAccount1: 'Client1_ACT#0',
+        subAccount2: 'Client1_ACT#1',
+      };
+    case USERNAMES.CLIENT2:
+      return {
+        mainAccount: 'Client2_ACT#1',
+        subAccount1: 'Client2_ACT#2',
+        subAccount2: 'Client2_ACT#0',
+      };
+    case USERNAMES.CLIENT3:
+      return {
+        mainAccount: 'Client3_ACT#0',
+        subAccount1: 'Client3_ACT#1',
+        subAccount2: 'Client3_ACT#2',
+      };
+    case USERNAMES.BROKER1:
+      return {
+        mainAccount: 'Broker1_ACT#0',
+        subAccount1: null,
+        subAccount2: null,
+      };
+    case USERNAMES.BROKER2:
+      return {
+        mainAccount: 'Broker2_ACT#0',
+        subAccount1: null,
+        subAccount2: null,
+      };
+    default:
+      return null;
+  }
 };

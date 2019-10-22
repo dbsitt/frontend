@@ -51,3 +51,9 @@ export type ExecutionState = {
   status: string;
   underlying: string;
 };
+
+export type BasicAccount = {
+  mainAccount: string;
+  subAccount1?: string;
+  subAccount2?: string;
+};
