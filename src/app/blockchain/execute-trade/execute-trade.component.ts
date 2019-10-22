@@ -2,10 +2,29 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HelperService } from '../helperService';
 import { USERNAMES, ROLES } from '../blockchain.constants';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, ErrorStateMatcher } from '@angular/material';
 import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormGroupDirective,
+  NgForm,
+} from '@angular/forms';
 import moment from 'moment';
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
+  }
+}
 
 @Component({
   selector: 'app-execute-trade',
@@ -13,11 +32,10 @@ import moment from 'moment';
   styleUrls: ['./execute-trade.component.scss'],
 })
 export class ExecuteTradeComponent implements OnInit, OnDestroy {
+  matcher = new MyErrorStateMatcher();
   client = 'Client1';
   buySell = 'Buy';
   product = 'DH0371475458';
-  quantity: number = null;
-  price: number = null;
   tradeDate = new FormControl(moment().toDate());
   eventDate = new FormControl(
     moment()
@@ -25,6 +43,15 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
       .toDate()
   );
   currentUserSubscription$: any;
+
+  quantityFormControl = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+  ]);
+  priceFormControl = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+  ]);
 
   constructor(
     private httpClient: HttpClient,
@@ -58,13 +85,17 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
   }
 
   validate(): boolean {
-    if (!this.quantity || this.quantity <= 0) {
+    const { priceFormControl, quantityFormControl } = this;
+
+    const price = priceFormControl.value;
+    const quantity = quantityFormControl.value;
+    if (!quantity || quantity <= 0) {
       this.snackBar.open('Quantity must be greater than zero', 'Close', {
         duration: 2000,
       });
       return false;
     }
-    if (!this.price || this.price <= 0) {
+    if (!price || price <= 0) {
       this.snackBar.open('Price must be greater than zero', 'Close', {
         duration: 2000,
       });
@@ -84,8 +115,8 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     this.client = USERNAMES.CLIENT1;
     this.buySell = 'Buy';
     this.product = 'DH0371475458';
-    this.quantity = null;
-    this.price = null;
+    this.quantityFormControl.setValue('');
+    this.priceFormControl.setValue('');
     this.tradeDate.setValue(moment().toDate());
     this.eventDate.setValue(
       moment()
@@ -95,11 +126,20 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const { buySell, client, product, price, quantity } = this;
+    const {
+      buySell,
+      client,
+      product,
+      priceFormControl,
+      quantityFormControl,
+    } = this;
     const tradeDate = moment(this.tradeDate.value).format('YYYY/MM/DD');
     const eventDate = moment(this.eventDate.value).format('YYYY/MM/DD');
     const executingParty = this.helperService.getCurrentUserId();
     const counterParty = this.counterparty;
+
+    const price = priceFormControl.value;
+    const quantity = quantityFormControl.value;
 
     if (this.validate()) {
       this.httpClient

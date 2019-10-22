@@ -64,19 +64,25 @@
             <input
               matInput
               placeholder="Quantity"
-              [value]="quantity"
               type="number"
-              (change)="onValueChange('quantity', $event)"
+              [formControl]="quantityFormControl"
+              [errorStateMatcher]="matcher"
             />
+            <mat-error *ngIf="quantityFormControl.hasError('required')"
+              >Quantity is <strong>required</strong></mat-error
+            >
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <input
               matInput
               placeholder="Price"
-              [value]="price"
               type="number"
-              (change)="onValueChange('price', $event)"
+              [formControl]="priceFormControl"
+              [errorStateMatcher]="matcher"
             />
+            <mat-error *ngIf="priceFormControl.hasError('required')"
+              >Price is <strong>required</strong></mat-error
+            >
           </mat-form-field>
           <mat-form-field>
             <input
@@ -84,10 +90,13 @@
               [matDatepicker]="tradeDatePicker"
               placeholder="Trade Date"
               [formControl]="tradeDate"
+              [readonly]="true"
+              style="color: gray;"
             />
             <mat-datepicker-toggle
               matSuffix
               [for]="tradeDatePicker"
+              [disabled]="true"
             ></mat-datepicker-toggle>
             <mat-datepicker #tradeDatePicker></mat-datepicker>
           </mat-form-field>

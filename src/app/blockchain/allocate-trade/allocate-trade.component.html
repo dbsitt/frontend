@@ -119,7 +119,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </mat-card-content>
-  <mat-card class="allocation-card">
+  <mat-card class="allocation-card mat-elevation-z2">
     <div class="input-values">
       <mat-form-field class="example-full-width" class="allocation">
         <input
@@ -136,14 +136,12 @@
           placeholder="Allocation 2"
           [value]="allocation2"
           type="number"
+          class="cancel"
           (input)="onValueChange('allocation2', $event)"
         />
       </mat-form-field>
     </div>
     <div class="actions">
-      <button mat-raised-button class="cancel" (click)="onCancel()">
-        Cancel
-      </button>
       <button
         mat-raised-button
         color="primary"
@@ -151,6 +149,9 @@
         (click)="onSubmit()"
       >
         Submit
+      </button>
+      <button mat-raised-button class="cancel" (click)="onCancel()">
+        Cancel
       </button>
     </div>
   </mat-card>

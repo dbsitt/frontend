@@ -1,6 +1,10 @@
 .form {
   display: flex;
   flex-direction: column;
+
+  .mat-form-field {
+    margin-bottom: 0.5rem;
+  }
 }
 
 .input-values {
@@ -18,7 +22,7 @@
 
 .left-section,
 .right-section {
-  width: 15rem;
+  width: 18rem;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
