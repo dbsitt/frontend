@@ -41,7 +41,11 @@ export class APIInterceptor implements HttpInterceptor {
             message = err;
           }
         } else if (err.status === 404) {
-          message = err.error;
+          if (typeof err.error === 'string') {
+            message = err.error;
+          } else {
+            message = `Endpoint '${req.url}' not found`;
+          }
         } else if (err.status === 500) {
           message = '500 Server Error';
         }
