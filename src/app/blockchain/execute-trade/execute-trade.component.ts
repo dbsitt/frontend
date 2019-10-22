@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import moment from 'moment';
 import { MyErrorStateMatcher } from '../ErrorStateMatcher';
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
 
 @Component({
   selector: 'app-execute-trade',
@@ -142,5 +143,9 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
           });
         });
     }
+  }
+
+  formSubmit(event) {
+    event.preventDefault();
   }
 }

@@ -1,7 +1,7 @@
 <mat-card class="execute-card">
   <mat-card-title>Execute Trade</mat-card-title>
   <mat-card-content>
-    <form class="form">
+    <form class="form" (submit)="formSubmit($event)">
       <div class="input-values">
         <div class="left-section">
           <mat-form-field class="example-full-width">

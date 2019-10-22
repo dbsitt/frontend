@@ -120,7 +120,7 @@
     </table>
   </mat-card-content>
   <mat-card class="allocation-card mat-elevation-z2">
-    <form>
+    <form (submit)="formSubmit($event)">
       <div class="input-values">
         <mat-form-field class="example-full-width" class="allocation">
           <input

@@ -133,4 +133,8 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
         this.onCancel();
       });
   }
+
+  formSubmit(event) {
+    event.preventDefault();
+  }
 }
