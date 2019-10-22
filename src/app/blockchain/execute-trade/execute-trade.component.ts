@@ -118,7 +118,7 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     } = this;
     const tradeDate = moment(this.tradeDate.value).format('YYYY/MM/DD');
     const eventDate = moment(this.eventDate.value).format('YYYY/MM/DD');
-    const executingParty = this.helperService.getCurrentUserId();
+    const executingEntity = this.helperService.getCurrentUserId();
     const counterParty = this.counterparty;
 
     const price = priceFormControl.value;
@@ -126,11 +126,11 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
 
     if (this.validate()) {
       this.httpClient
-        .post(this.helperService.getBaseUrl() + '/book/blockTrade', {
+        .post(this.helperService.getBaseUrl() + '/book/blocktrade', {
           client,
-          executingParty,
+          executingEntity,
           counterParty,
-          buySell,
+          buySell: buySell.toLocaleLowerCase(),
           product,
           price,
           quantity,
