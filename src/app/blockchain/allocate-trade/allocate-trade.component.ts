@@ -12,6 +12,8 @@ import { MatSnackBar } from '@angular/material';
 import { HelperService } from '../helperService';
 import { ROLES } from '../blockchain.constants';
 import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
+import { MyErrorStateMatcher } from '../ErrorStateMatcher';
 
 @Component({
   selector: 'app-allocate-trade',
@@ -20,13 +22,22 @@ import { Router } from '@angular/router';
 })
 export class AllocateTradeComponent implements OnInit, OnDestroy {
   columns = ['tradeAndClient', 'productRelated', 'valueRelated'];
+  matcher = new MyErrorStateMatcher();
 
   @Input() data = null;
   @Output() cancel = new EventEmitter();
+
+  allocation1FormControl = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+  ]);
+  allocation2FormControl = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+  ]);
+
   tableData = [];
 
-  allocation1 = 0;
-  allocation2 = 0;
   currentUserSubscription$: any;
 
   constructor(
@@ -35,17 +46,6 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
     private helperService: HelperService,
     private router: Router
   ) {}
-
-  onValueChange(type, event) {
-    const { value } = event.target;
-    if (type === 'allocation1') {
-      this.allocation1 = value;
-      this.allocation2 = this.data.quantity - value;
-    } else if (type === 'allocation2') {
-      this.allocation2 = value;
-      this.allocation1 = this.data.quantity - value;
-    }
-  }
 
   ngOnInit() {
     if (this.data) {
@@ -58,6 +58,16 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.allocation1FormControl.valueChanges.subscribe(value => {
+      this.allocation2FormControl.setValue(this.data.quantity - value, {
+        emitEvent: false,
+      });
+    });
+    this.allocation2FormControl.valueChanges.subscribe(value => {
+      this.allocation1FormControl.setValue(this.data.quantity - value, {
+        emitEvent: false,
+      });
+    });
   }
 
   ngOnDestroy(): void {
@@ -66,16 +76,18 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
 
   validate(): boolean {
     const { quantity } = this.data;
+
     if (
-      !this.isValidNumber(this.allocation1) ||
-      !this.isValidNumber(this.allocation2)
+      !this.isValidNumber(this.allocation1FormControl.value) ||
+      !this.isValidNumber(this.allocation2FormControl.value)
     ) {
       this.snackBar.open('Should be a positive integer', 'Close', {
         duration: 2000,
       });
       return false;
     }
-    const total: number = +this.allocation1 + +this.allocation2;
+    const total: number =
+      +this.allocation1FormControl.value + +this.allocation2FormControl.value;
     if (total !== +quantity) {
       this.snackBar.open(
         'Allocated total should be equal to transaction quantity',
@@ -107,11 +119,12 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
     }
 
     const { tradeNumber } = this.data;
+
     this.httpClient
       .post(this.helperService.getBaseUrl() + '/allocateTrade', {
         executionRef: tradeNumber,
-        amount1: this.allocation1,
-        amount2: this.allocation2,
+        amount1: this.allocation1FormControl.value,
+        amount2: this.allocation2FormControl.value,
       })
       .subscribe(() => {
         this.snackBar.open('Successfully allocated', 'Close', {

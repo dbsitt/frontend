@@ -120,39 +120,53 @@
     </table>
   </mat-card-content>
   <mat-card class="allocation-card mat-elevation-z2">
-    <div class="input-values">
-      <mat-form-field class="example-full-width" class="allocation">
-        <input
-          matInput
-          placeholder="Allocation 1"
-          [value]="allocation1"
-          type="number"
-          (input)="onValueChange('allocation1', $event)"
-        />
-      </mat-form-field>
-      <mat-form-field class="example-full-width" class="allocation">
-        <input
-          matInput
-          placeholder="Allocation 2"
-          [value]="allocation2"
-          type="number"
-          class="cancel"
-          (input)="onValueChange('allocation2', $event)"
-        />
-      </mat-form-field>
-    </div>
-    <div class="actions">
-      <button
-        mat-raised-button
-        color="primary"
-        class="submit"
-        (click)="onSubmit()"
-      >
-        Submit
-      </button>
-      <button mat-raised-button class="cancel" (click)="onCancel()">
-        Cancel
-      </button>
-    </div>
+    <form>
+      <div class="input-values">
+        <mat-form-field class="example-full-width" class="allocation">
+          <input
+            matInput
+            placeholder="Allocation 1"
+            type="number"
+            [errorStateMatcher]="matcher"
+            [formControl]="allocation1FormControl"
+          />
+          <mat-error *ngIf="allocation1FormControl.hasError('required')"
+            >Field is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="allocation1FormControl.hasError('min')"
+            >Must be a positive number</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="example-full-width" class="allocation">
+          <input
+            matInput
+            placeholder="Allocation 2"
+            type="number"
+            class="cancel"
+            [errorStateMatcher]="matcher"
+            [formControl]="allocation2FormControl"
+          />
+          <mat-error *ngIf="allocation2FormControl.hasError('required')"
+            >Field is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="allocation2FormControl.hasError('min')"
+            >Must be a positive number</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="submit"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
+        <button mat-raised-button class="cancel" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
   </mat-card>
 </mat-card>
