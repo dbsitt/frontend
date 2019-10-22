@@ -14,6 +14,10 @@ import { ROLES } from '../blockchain.constants';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../ErrorStateMatcher';
+import { Store } from '@ngrx/store';
+import { UiState } from 'src/app/store/ui.reducer';
+import { setLoading } from 'src/app/store/ui.actions';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-allocate-trade',
@@ -43,6 +47,7 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
   constructor(
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
+    private uiStore: Store<UiState>,
     private helperService: HelperService,
     private router: Router
   ) {}
@@ -119,6 +124,7 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
     }
 
     const { tradeNumber } = this.data;
+    this.uiStore.dispatch(setLoading({ value: true }));
 
     this.httpClient
       .post(this.helperService.getBaseUrl() + '/allocateTrade', {
@@ -126,6 +132,11 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
         amount1: this.allocation1FormControl.value,
         amount2: this.allocation2FormControl.value,
       })
+      .pipe(
+        finalize(() => {
+          this.uiStore.dispatch(setLoading({ value: false }));
+        })
+      )
       .subscribe(() => {
         this.snackBar.open('Successfully allocated', 'Close', {
           duration: 2000,

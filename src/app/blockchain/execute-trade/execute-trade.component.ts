@@ -8,6 +8,10 @@ import { FormControl, Validators } from '@angular/forms';
 import moment from 'moment';
 import { MyErrorStateMatcher } from '../ErrorStateMatcher';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
+import { Store } from '@ngrx/store';
+import { UiState } from 'src/app/store/ui.reducer';
+import { setLoading } from 'src/app/store/ui.actions';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-execute-trade',
@@ -40,6 +44,7 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     private httpClient: HttpClient,
     private helperService: HelperService,
     private snackBar: MatSnackBar,
+    private uiStore: Store<UiState>,
     private router: Router
   ) {}
 
@@ -125,6 +130,7 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     const quantity = quantityFormControl.value;
 
     if (this.validate()) {
+      this.uiStore.dispatch(setLoading({ value: true }));
       this.httpClient
         .post(this.helperService.getBaseUrl() + '/book/blocktrade', {
           client,
@@ -137,6 +143,11 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
           tradeDate,
           eventDate,
         })
+        .pipe(
+          finalize(() => {
+            this.uiStore.dispatch(setLoading({ value: false }));
+          })
+        )
         .subscribe(() => {
           this.snackBar.open('Successfully allocated', 'Close', {
             duration: 2000,
