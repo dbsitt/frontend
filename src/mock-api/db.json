@@ -1293,5 +1293,883 @@
       "eventId": "eventId",
       "executionId": "executionId"
     }
+  ],
+  "blocktrades": [
+    {
+      "linearId": "f90049e6-aece-4e09-9215-415e81f9e2ac",
+      "parties": [
+        "O=SettlementAgent, L=New York, C=US",
+        "O=Broker1, L=New York, C=US",
+        "O=Broker2, L=New York, C=US"
+      ],
+      "execution": {
+        "closedState": null,
+        "executionQuantity": null,
+        "executionType": null,
+        "executionVenue": null,
+        "identifier": [
+          {
+            "assignedIdentifier": [
+              {
+                "identifier": {
+                  "value": "W3S0XZGEM4S82",
+                  "meta": null
+                },
+                "version": 1
+              }
+            ],
+            "issuer": null,
+            "issuerReference": {
+              "globalReference": "O2Pa0JpKhzF/pk9DOpFz0na4pvUwoXNLqEjSVCv4X3I=",
+              "externalReference": null,
+              "value": null
+            },
+            "meta": {
+              "scheme": null,
+              "globalKey": "x5QfTf8vtuaR7bZNcDCr/RdFAmVLCK4+209XMFWTfPY=",
+              "externalKey": null
+            }
+          }
+        ],
+        "meta": {
+          "scheme": null,
+          "globalKey": "yAJ1rJsqqIpEqZqTqNytB87uMvrELqjbtg3jqRDaAyY=",
+          "externalKey": "yAJ1rJsqqIpEqZqTqNytB87uMvrELqjbtg3jqRDaAyY="
+        },
+        "party": [
+          {
+            "globalReference": "O2Pa0JpKhzF/pk9DOpFz0na4pvUwoXNLqEjSVCv4X3I=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker1",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker1#AccNumber",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "QvRHstFcCxbXOumAnqY4YsFL1dGFDFxCt84vpBr1M5Y=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "O2Pa0JpKhzF/pk9DOpFz0na4pvUwoXNLqEjSVCv4X3I=",
+                "externalKey": "Broker1_ID#0_VI3MITIFTS1Z7"
+              },
+              "name": {
+                "value": "Broker1",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker1_ID#0_VI3MITIFTS1Z7",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          },
+          {
+            "globalReference": "f4eMdR+jI2j2j3qsI0MJxNHJwDg7l8vbCTmoFw51msI=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker2",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker2#AccNumber",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "FU+0e1mohhwqK6jtgziWOxVwNplAWOsaJc2XFBXB1Bo=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "f4eMdR+jI2j2j3qsI0MJxNHJwDg7l8vbCTmoFw51msI=",
+                "externalKey": "Broker2_ID#0_DIBLNS8C5EB5A"
+              },
+              "name": {
+                "value": "Broker2",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker2_ID#0_DIBLNS8C5EB5A",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          }
+        ],
+        "partyRole": [
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "O2Pa0JpKhzF/pk9DOpFz0na4pvUwoXNLqEjSVCv4X3I=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "EXECUTING_ENTITY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "f4eMdR+jI2j2j3qsI0MJxNHJwDg7l8vbCTmoFw51msI=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "COUNTERPARTY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "O2Pa0JpKhzF/pk9DOpFz0na4pvUwoXNLqEjSVCv4X3I=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "BUYER"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "f4eMdR+jI2j2j3qsI0MJxNHJwDg7l8vbCTmoFw51msI=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "SELLER"
+          }
+        ],
+        "price": {
+          "accruedInterest": null,
+          "cleanNetPrice": null,
+          "grossPrice": null,
+          "netPrice": {
+            "amount": "98.12",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "priceExpression": null
+          }
+        },
+        "product": {
+          "contractualProduct": null,
+          "foreignExchange": null,
+          "index": null,
+          "loan": null,
+          "meta": null,
+          "security": {
+            "bond": {
+              "productIdentifier": {
+                "identifier": [
+                  {
+                    "value": "DH0371475458",
+                    "meta": null
+                  }
+                ],
+                "meta": null,
+                "productTaxonomy": null,
+                "source": "CUSIP"
+              }
+            },
+            "convertibleBond": null,
+            "equity": null,
+            "exchangeTradedFund": null,
+            "mortgageBackedSecurity": null,
+            "mutualFund": null,
+            "warrant": null
+          }
+        },
+        "quantity": {
+          "amount": "200000",
+          "currency": null,
+          "unit": null
+        },
+        "settlementTerms": {
+          "meta": {
+            "scheme": null,
+            "globalKey": "jenFWzOlVgX3I6/YqtFmoNoxZIcb9GdCUvMtEoLmFtg=",
+            "externalKey": null
+          },
+          "settlementCurrency": null,
+          "settlementAmount": {
+            "amount": "196240.00",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "meta": null
+          },
+          "settlementDate": {
+            "adjustableDate": {
+              "adjustedDate": null,
+              "dateAdjustments": null,
+              "dateAdjustmentsReference": null,
+              "meta": null,
+              "unadjustedDate": {
+                "day": 23,
+                "month": 10,
+                "year": 2019
+              }
+            },
+            "meta": null,
+            "relativeDate": null
+          },
+          "settlementType": null,
+          "transferSettlementType": null,
+          "valueDate": null
+        },
+        "tradeDate": {
+          "value": {
+            "day": 22,
+            "month": 10,
+            "year": 2019
+          },
+          "meta": null
+        }
+      },
+      "eventRef": "vQ/vwDR2C82sRJIDZiUc9AlGXcqr79pDBkN9xhP7pxA=",
+      "status": "ALLOCATED",
+      "data": {
+        "blockTradeNum": "yAJ1rJsqqIpEqZqTqNytB87uMvrELqjbtg3jqRDaAyY=",
+        "cash": "196240.00",
+        "currency": "USD",
+        "price": "98.12",
+        "quantity": "200000",
+        "status": "",
+        "valueDate": "2019-10-23"
+      }
+    },
+    {
+      "linearId": "81bbb976-ddd5-4615-9e5d-19cc8e753623",
+      "parties": [
+        "O=SettlementAgent, L=New York, C=US",
+        "O=Broker1, L=New York, C=US",
+        "O=Broker2, L=New York, C=US"
+      ],
+      "execution": {
+        "closedState": {
+          "activityDate": {
+            "day": 16,
+            "month": 10,
+            "year": 2019
+          },
+          "effectiveDate": null,
+          "lastPaymentDate": null,
+          "state": "ALLOCATED"
+        },
+        "executionQuantity": null,
+        "executionType": "ELECTRONIC",
+        "executionVenue": {
+          "entityId": null,
+          "meta": null,
+          "name": {
+            "value": "Execution Venue",
+            "meta": null
+          }
+        },
+        "identifier": [
+          {
+            "assignedIdentifier": [
+              {
+                "identifier": {
+                  "value": "W3S0XZGEM4S82",
+                  "meta": null
+                },
+                "version": 1
+              }
+            ],
+            "issuer": null,
+            "issuerReference": {
+              "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+              "externalReference": null,
+              "value": null
+            },
+            "meta": {
+              "scheme": null,
+              "globalKey": "568EPdYtUvpI+Qm08z1yOHoaXH8eCwU/7IP/bDoq0MY=",
+              "externalKey": null
+            }
+          }
+        ],
+        "meta": {
+          "scheme": null,
+          "globalKey": "xxdy/Zsa8dH/GeGisnjJhdqR8cGAuJEU2idvHFlCsuo=",
+          "externalKey": "xxdy/Zsa8dH/GeGisnjJhdqR8cGAuJEU2idvHFlCsuo="
+        },
+        "party": [
+          {
+            "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker1_ACT#0",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker1_ACT#0_WWVA12ZJ21IW2",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "xvRB/LCSyPGS736BhYfTkW1AH56H1bzHHXbqZJepZ0w=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+                "externalKey": "Broker1_ID#0_4NGIDYZJ4ZBDX"
+              },
+              "name": {
+                "value": "Broker1",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker1_ID#0_4NGIDYZJ4ZBDX",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          },
+          {
+            "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker2_ACT#0",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker2_ACT#0_TTJE0NQUTRIFB",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "GyBU5vHoyL4BM7ctxcCsNp3VXMlELtkERhGao8KbExY=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+                "externalKey": "Broker2_ID#0_AN93QUDTMRPAB"
+              },
+              "name": {
+                "value": "Broker2",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker2_ID#0_AN93QUDTMRPAB",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          }
+        ],
+        "partyRole": [
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "EXECUTING_ENTITY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "COUNTERPARTY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "BUYER"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "SELLER"
+          }
+        ],
+        "price": {
+          "accruedInterest": "1.37",
+          "cleanNetPrice": null,
+          "grossPrice": {
+            "amount": "96.97",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "priceExpression": "ABSOLUTE_TERMS"
+          },
+          "netPrice": {
+            "amount": "98.34",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "priceExpression": "ABSOLUTE_TERMS"
+          }
+        },
+        "product": {
+          "contractualProduct": null,
+          "foreignExchange": null,
+          "index": null,
+          "loan": null,
+          "meta": null,
+          "security": {
+            "bond": {
+              "productIdentifier": {
+                "identifier": [
+                  {
+                    "value": "DH0371475458",
+                    "meta": null
+                  }
+                ],
+                "meta": null,
+                "productTaxonomy": null,
+                "source": "CUSIP"
+              }
+            },
+            "convertibleBond": null,
+            "equity": null,
+            "exchangeTradedFund": null,
+            "mortgageBackedSecurity": null,
+            "mutualFund": null,
+            "warrant": null
+          }
+        },
+        "quantity": {
+          "amount": "800000",
+          "currency": null,
+          "unit": null
+        },
+        "settlementTerms": {
+          "meta": {
+            "scheme": null,
+            "globalKey": "p1eGl5ynXewqo7nJZOkAFD/py16o+PPpybNbwa/Y7mo=",
+            "externalKey": null
+          },
+          "settlementCurrency": null,
+          "settlementAmount": {
+            "amount": "786720",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "meta": null
+          },
+          "settlementDate": {
+            "adjustableDate": {
+              "adjustedDate": null,
+              "dateAdjustments": null,
+              "dateAdjustmentsReference": null,
+              "meta": null,
+              "unadjustedDate": {
+                "day": 17,
+                "month": 10,
+                "year": 2019
+              }
+            },
+            "meta": null,
+            "relativeDate": null
+          },
+          "settlementType": null,
+          "transferSettlementType": null,
+          "valueDate": null
+        },
+        "tradeDate": {
+          "value": {
+            "day": 16,
+            "month": 10,
+            "year": 2019
+          },
+          "meta": null
+        }
+      },
+      "eventRef": "SYJ6xcbx8D64EAKqQFkH+uoQJ3QdXjrTUrq8tLP0yyE=",
+      "status": "ALLOCATED",
+      "data": {
+        "blockTradeNum": "xxdy/Zsa8dH/GeGisnjJhdqR8cGAuJEU2idvHFlCsuo=",
+        "cash": "786720",
+        "currency": "USD",
+        "price": "98.34",
+        "quantity": "800000",
+        "status": "ALLOCATED",
+        "valueDate": "2019-10-17"
+      }
+    },
+    {
+      "linearId": "8cdbf7eb-1ef6-475a-986c-5859f14a27d2",
+      "parties": ["O=Broker2, L=New York, C=US", "O=Broker1, L=New York, C=US"],
+      "execution": {
+        "closedState": null,
+        "executionQuantity": null,
+        "executionType": "ELECTRONIC",
+        "executionVenue": {
+          "entityId": null,
+          "meta": null,
+          "name": {
+            "value": "Execution Venue",
+            "meta": null
+          }
+        },
+        "identifier": [
+          {
+            "assignedIdentifier": [
+              {
+                "identifier": {
+                  "value": "F2V365VGAD5XT",
+                  "meta": null
+                },
+                "version": 1
+              }
+            ],
+            "issuer": null,
+            "issuerReference": {
+              "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+              "externalReference": null,
+              "value": null
+            },
+            "meta": {
+              "scheme": null,
+              "globalKey": "ogneOkyfnYrZeFuHUH6g4whiHLoJGgTF55T3z5KeQ+c=",
+              "externalKey": null
+            }
+          }
+        ],
+        "meta": {
+          "scheme": null,
+          "globalKey": "EWW0IfpIbTNIwVA4f+3iRBu+T8g+7kM7OnRRaVCm3XI=",
+          "externalKey": "EWW0IfpIbTNIwVA4f+3iRBu+T8g+7kM7OnRRaVCm3XI="
+        },
+        "party": [
+          {
+            "globalReference": "xIBwSYskqfYuo71OylXWHFH1u5lbAcAdAnM4LcNheBg=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Client1_ACT#2",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Client1_ACT#2_BJKXFTGW4BFPY",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "cHT7pO5Q+p3hO3sxjl+ACvyGkYYWIBaA2PpVaRO/dvs=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "xIBwSYskqfYuo71OylXWHFH1u5lbAcAdAnM4LcNheBg=",
+                "externalKey": "Client1_ID#2_CAOIBGBYU6QPR"
+              },
+              "name": {
+                "value": "Client1",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Client1_ID#2_CAOIBGBYU6QPR",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          },
+          {
+            "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker2_ACT#0",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker2_ACT#0_TTJE0NQUTRIFB",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "GyBU5vHoyL4BM7ctxcCsNp3VXMlELtkERhGao8KbExY=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+                "externalKey": "Broker2_ID#0_AN93QUDTMRPAB"
+              },
+              "name": {
+                "value": "Broker2",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker2_ID#0_AN93QUDTMRPAB",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          },
+          {
+            "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+            "externalReference": null,
+            "value": {
+              "account": {
+                "accountBeneficiary": null,
+                "accountName": {
+                  "value": "Broker1_ACT#0",
+                  "meta": null
+                },
+                "accountNumber": {
+                  "value": "Broker1_ACT#0_WWVA12ZJ21IW2",
+                  "meta": null
+                },
+                "accountType": null,
+                "meta": {
+                  "scheme": null,
+                  "globalKey": "xvRB/LCSyPGS736BhYfTkW1AH56H1bzHHXbqZJepZ0w=",
+                  "externalKey": null
+                },
+                "servicingParty": null
+              },
+              "meta": {
+                "scheme": null,
+                "globalKey": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+                "externalKey": "Broker1_ID#0_4NGIDYZJ4ZBDX"
+              },
+              "name": {
+                "value": "Broker1",
+                "meta": null
+              },
+              "partyId": [
+                {
+                  "value": "Broker1_ID#0_4NGIDYZJ4ZBDX",
+                  "meta": null
+                }
+              ],
+              "person": null
+            }
+          }
+        ],
+        "partyRole": [
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "xIBwSYskqfYuo71OylXWHFH1u5lbAcAdAnM4LcNheBg=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "CLIENT"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "EXECUTING_ENTITY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "COUNTERPARTY"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "xIBwSYskqfYuo71OylXWHFH1u5lbAcAdAnM4LcNheBg=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "BUYER"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "NKbmTRySI+MwEy+qqV0+romOrBu0GsWdqogMXGtzSVM=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "BUYER"
+          },
+          {
+            "ownershipPartyReference": null,
+            "partyReference": {
+              "globalReference": "3vqQOOnXah+v+Cwkdh/hSyDP7iD6lLGqRDW/500GvjU=",
+              "externalReference": null,
+              "value": null
+            },
+            "role": "SELLER"
+          }
+        ],
+        "price": {
+          "accruedInterest": "1.37",
+          "cleanNetPrice": null,
+          "grossPrice": {
+            "amount": "96.97",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "priceExpression": "ABSOLUTE_TERMS"
+          },
+          "netPrice": {
+            "amount": "98.34",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "priceExpression": "ABSOLUTE_TERMS"
+          }
+        },
+        "product": {
+          "contractualProduct": null,
+          "foreignExchange": null,
+          "index": null,
+          "loan": null,
+          "meta": null,
+          "security": {
+            "bond": {
+              "productIdentifier": {
+                "identifier": [
+                  {
+                    "value": "DH0371475458",
+                    "meta": null
+                  }
+                ],
+                "meta": null,
+                "productTaxonomy": null,
+                "source": "CUSIP"
+              }
+            },
+            "convertibleBond": null,
+            "equity": null,
+            "exchangeTradedFund": null,
+            "mortgageBackedSecurity": null,
+            "mutualFund": null,
+            "warrant": null
+          }
+        },
+        "quantity": {
+          "amount": "800000",
+          "currency": null,
+          "unit": null
+        },
+        "settlementTerms": {
+          "meta": null,
+          "settlementCurrency": null,
+          "settlementAmount": {
+            "amount": "786720",
+            "currency": {
+              "value": "USD",
+              "meta": null
+            },
+            "meta": null
+          },
+          "settlementDate": {
+            "adjustableDate": {
+              "adjustedDate": null,
+              "dateAdjustments": null,
+              "dateAdjustmentsReference": null,
+              "meta": null,
+              "unadjustedDate": {
+                "day": 17,
+                "month": 10,
+                "year": 2019
+              }
+            },
+            "meta": null,
+            "relativeDate": null
+          },
+          "settlementType": null,
+          "transferSettlementType": null,
+          "valueDate": null
+        },
+        "tradeDate": {
+          "value": {
+            "day": 16,
+            "month": 10,
+            "year": 2019
+          },
+          "meta": null
+        }
+      },
+      "eventRef": "5fWkPuM+gv9zrWD+nXmNKvJN7T+QxA4dHKGazt8ELMI=",
+      "status": "EXECUTED",
+      "data": {
+        "blockTradeNum": "EWW0IfpIbTNIwVA4f+3iRBu+T8g+7kM7OnRRaVCm3XI=",
+        "cash": "786720",
+        "client": "Client1",
+        "currency": "USD",
+        "price": "98.34",
+        "product": "DH0371475458",
+        "productType": "Bond",
+        "quantity": "800000",
+        "status": "",
+        "valueDate": "2019-10-17"
+      }
+    }
   ]
 }

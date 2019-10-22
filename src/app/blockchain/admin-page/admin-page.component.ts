@@ -67,14 +67,11 @@ export class AdminPageComponent implements OnInit {
   }
 
   onSubmit(url) {
-    const callback = () => {
-      this.resetData();
-    };
     this.helperService.postJson(
       this.content,
       [this.currentUserId],
       `/${url}`,
-      callback.bind(this)
+      this.resetData.bind(this)
     );
   }
 }

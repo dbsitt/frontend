@@ -156,6 +156,7 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
           duration: 2000,
         });
         this.onCancel();
+        this.router.navigateByUrl('transactions/allocate');
       });
   }
 

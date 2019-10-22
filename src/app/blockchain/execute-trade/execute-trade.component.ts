@@ -157,6 +157,7 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
           this.snackBar.open('Successfully allocated', 'Close', {
             duration: 2000,
           });
+          this.router.navigateByUrl('transactions');
         });
     }
   }
