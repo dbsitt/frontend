@@ -26,6 +26,7 @@ import {
   MatCardModule,
 } from '@angular/material';
 import { SharedModule } from './shared/SharedModule';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SharedModule } from './shared/SharedModule';
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },
+    { provide: LocationStrategy, useClass: HashLocationStrategy},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: APIInterceptor,
