@@ -139,24 +139,29 @@ export class AllocateTradeComponent implements OnInit, OnDestroy {
     const { subAccount1, subAccount2 } = generateAccountData(client);
 
     this.httpClient
-      .post(this.helperService.getBaseUrl() + '/allocateTrade', {
-        executionRef: tradeNumber,
-        amount1: this.allocation1FormControl.value,
-        amount2: this.allocation2FormControl.value,
-        subAccount1,
-        subAccount2,
-      })
+      .post(
+        this.helperService.getBaseUrl() + '/allocateTrade',
+        {
+          executionRef: tradeNumber,
+          amount1: this.allocation1FormControl.value,
+          amount2: this.allocation2FormControl.value,
+          subAccount1,
+          subAccount2,
+        },
+        { responseType: 'text' }
+      )
       .pipe(
         finalize(() => {
           this.uiStore.dispatch(setLoading({ value: false }));
         })
       )
-      .subscribe(() => {
-        this.snackBar.open('Successfully allocated', 'Close', {
+      .subscribe(res => {
+        this.snackBar.open(res, 'Close', {
           duration: 2000,
         });
         this.onCancel();
         this.router.navigateByUrl('transactions/allocate');
+        console.log('gino');
       });
   }
 

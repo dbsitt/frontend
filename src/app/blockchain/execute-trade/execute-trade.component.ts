@@ -137,17 +137,21 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
     if (this.validate()) {
       this.uiStore.dispatch(setLoading({ value: true }));
       this.httpClient
-        .post(this.helperService.getBaseUrl() + '/book/blocktrade', {
-          client: clientAccount,
-          executingEntity: executingEntityAccount,
-          counterParty: counterPartyAccount,
-          buySell: buySell.toLocaleLowerCase(),
-          product,
-          price,
-          quantity,
-          tradeDate,
-          eventDate,
-        })
+        .post(
+          this.helperService.getBaseUrl() + '/book/blocktrade',
+          {
+            client: clientAccount,
+            executingEntity: executingEntityAccount,
+            counterParty: counterPartyAccount,
+            buySell: buySell.toLocaleLowerCase(),
+            product,
+            price,
+            quantity,
+            tradeDate,
+            eventDate,
+          },
+          { responseType: 'text' }
+        )
         .pipe(
           finalize(() => {
             this.uiStore.dispatch(setLoading({ value: false }));

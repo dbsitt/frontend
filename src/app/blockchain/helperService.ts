@@ -83,7 +83,7 @@ export class HelperService {
       if (hasActionAccess.includes(this.getCurrentUserId())) {
         this.uiStore.dispatch(setLoading({ value: true }));
         this.httpClient
-          .post(this.getBaseUrl() + endpoint, content)
+          .post(this.getBaseUrl() + endpoint, content, { responseType: 'text' })
           .pipe(
             finalize(() => {
               this.uiStore.dispatch(setLoading({ value: false }));
@@ -93,7 +93,7 @@ export class HelperService {
             if (callback) {
               callback(res);
             }
-            this.snackBar.open('Succesfully uploaded', 'Close', {
+            this.snackBar.open(res, 'Close', {
               duration: 2000,
             });
           });
