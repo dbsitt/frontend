@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 import { setUser } from './user.actions';
 import { Account } from './user';
 
@@ -10,10 +10,15 @@ const initialState: UserState = {
   currentUser: null,
 };
 
-export const userReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(setUser, (state, props) => ({
     ...state,
     currentUser: props.user,
   }))
 );
+
+export function userReducer(state: UserState | undefined, action: Action) {
+  return reducer(state, action);
+}
+

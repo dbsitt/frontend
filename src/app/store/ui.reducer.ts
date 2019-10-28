@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 import { setLoading } from './ui.actions';
 
 export interface UiState {
@@ -9,10 +9,14 @@ const initialState: UiState = {
   isLoading: false,
 };
 
-export const uiReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(setLoading, (state, props) => ({
     ...state,
     isLoading: props.value,
   }))
 );
+
+export function uiReducer(state: UiState | undefined, action: Action) {
+  return reducer(state, action);
+}

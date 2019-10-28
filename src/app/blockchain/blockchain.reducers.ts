@@ -1,5 +1,5 @@
 import { Transaction } from './blockchain';
-import { createReducer, on, MetaReducer } from '@ngrx/store';
+import { createReducer, on, MetaReducer, Action } from '@ngrx/store';
 import { fetchAllSuccessful, setSelected } from './blockchain.actions';
 import { environment } from 'src/environments/environment';
 
@@ -19,7 +19,7 @@ const initialBlockchainState: BlockchainState = {
   selected: null,
 };
 
-export const blockchainReducer = createReducer(
+const reducer = createReducer(
   initialBlockchainState,
   on(fetchAllSuccessful, (state, props) => ({
     ...state,
@@ -34,3 +34,8 @@ export const blockchainReducer = createReducer(
 export const metaReducers: MetaReducer<
   BlockchainState
 >[] = !environment.production ? [] : [];
+
+
+export function blockchainReducer(state: | undefined, action: Action) {
+  return reducer(state, action);
+}
