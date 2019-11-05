@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlockchainState } from '../blockchain.reducers';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
@@ -7,19 +7,16 @@ import { Account } from 'src/app/store/user';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { UiState } from '../../store/ui.reducer';
-import { UserState } from '../../store/user.reducers';
 import { HelperService } from '../helperService';
-import { finalize, filter } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { setLoading } from 'src/app/store/ui.actions';
-import { interval } from 'rxjs/internal/observable/interval';
-import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-summary',
   templateUrl: './account-summary.component.html',
   styleUrls: ['./account-summary.component.scss'],
 })
-export class AccountSummaryComponent implements OnInit {
+export class AccountSummaryComponent implements OnInit, OnDestroy {
   data: any = null;
   account$: Observable<Account>;
   tableData = [];
@@ -32,12 +29,14 @@ export class AccountSummaryComponent implements OnInit {
     'holder',
   ];
 
+  accountSummarySubscription$: any;
+  currentUserSubscription$: any;
+
   constructor(
     private store: Store<BlockchainState>,
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
     private uiStore: Store<UiState>,
-    private userStore: Store<UserState>,
     private helperService: HelperService
   ) {}
 
@@ -58,6 +57,7 @@ export class AccountSummaryComponent implements OnInit {
   get currentUserRole() {
     return this.helperService.getCurrentUserRole();
   }
+
   fetchAccountSummary() {
     this.columns = [
       'holder',
@@ -71,7 +71,8 @@ export class AccountSummaryComponent implements OnInit {
       'positionStatus',
     ];
     this.uiStore.dispatch(setLoading({ value: true }));
-    this.httpClient
+
+    this.accountSummarySubscription$ = this.httpClient
       .get(this.helperService.getBaseUrl() + '/portfolio')
       .pipe(
         finalize(() => {
@@ -152,44 +153,18 @@ export class AccountSummaryComponent implements OnInit {
         }
       );
   }
+
+  ngOnDestroy(): void {
+    this.accountSummarySubscription$.unsubscribe();
+    this.currentUserSubscription$.unsubscribe();
+  }
+
   ngOnInit() {
     this.account$ = this.store.pipe(select(getCurrentUser));
-    this.helperService.currentUser$.subscribe(e => {
-      this.fetchAccountSummary();
-    });
-
-    // interval(4000)
-    // .pipe(
-    //   startWith(0),
-    //   switchMap(() => this.httpClient.get('http://3.1.246.227:10050/api/getAccounts'))
-    // )
-    // .subscribe(
-    //   (response: any) => {
-    //     if (response !== null) {
-    //       this.tableData = response;
-    //     }
-    //   },
-    //   () => {
-    //     this.data = null;
-    //     this.snackBar.open(
-    //       'Error occur when fetching execution-states',
-    //       'Close',
-    //       {
-    //         duration: 2000,
-    //       }
-    //     );
-    //   }
-    // );
+    this.currentUserSubscription$ = this.helperService.currentUser$.subscribe(
+      e => {
+        this.fetchAccountSummary();
+      }
+    );
   }
 }
-// interface AccountDetail {
-//   accountHolder: string;
-//   accountName: string;
-//   accountNumber: string;
-//   product: string;
-//   source: string;
-//   quantity: string;
-//   currency: string;
-//   amount: string;
-//   positionStatus: string;
-// }
