@@ -55,7 +55,7 @@ export class ExcutionReportComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
     this.autoNavigateSubscription$ = this.helperService.currentUser$.subscribe(
       e => {
-        if (e.role !== ROLES.BROKER) {
+        if (e && e.role !== ROLES.BROKER) {
           this.router.navigateByUrl('transactions/account');
         }
       }

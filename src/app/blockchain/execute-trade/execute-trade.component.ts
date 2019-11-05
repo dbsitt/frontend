@@ -51,7 +51,7 @@ export class ExecuteTradeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUserSubscription$ = this.helperService.currentUser$.subscribe(
       e => {
-        if (e.role !== ROLES.BROKER) {
+        if (e && e.role !== ROLES.BROKER) {
           this.router.navigateByUrl('transactions/account');
         }
       }

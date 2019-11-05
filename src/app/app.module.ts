@@ -24,6 +24,9 @@ import {
   MatSnackBarModule,
   MatSelectModule,
   MatCardModule,
+  MatButtonModule,
+  MatInputModule,
+  MatTooltipModule,
 } from '@angular/material';
 import { SharedModule } from './shared/SharedModule';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
@@ -47,11 +50,14 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     FormsModule,
     MatSelectModule,
     MatCardModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatInputModule,
     SharedModule,
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },
-    { provide: LocationStrategy, useClass: HashLocationStrategy},
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: APIInterceptor,

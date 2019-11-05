@@ -87,9 +87,15 @@
   margin-right: 1rem;
 }
 
-#active-user {
-  padding-left: 0.5rem;
-  width: 7rem;
+.active-user {
+  margin-right: 1rem;
+  color: black;
+  font-weight: bold;
+}
+
+.logout {
+  color: darkred;
+  cursor: pointer;
 }
 
 .routes {

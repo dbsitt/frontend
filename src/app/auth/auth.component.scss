@@ -1,0 +1,53 @@
+@import '../shared/styles/variables.scss';
+
+:host {
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url(/assets/images/Night.jpg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 800px;
+}
+
+.login-form {
+  width: 25rem;
+  height: 16.5rem;
+  padding-top: 0.5rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  position: absolute;
+  top: 25%;
+  box-shadow: $color-primary 0px 0px 5px 1px;
+}
+
+.user-select {
+  margin-bottom: 2rem;
+}
+
+.login-button {
+  width: 10rem;
+}
+
+.dbs-logo {
+  width: 90px;
+  height: 42px;
+  margin-right: 11px;
+}
+
+.form-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5rem;
+  margin-bottom: 1rem;
+}

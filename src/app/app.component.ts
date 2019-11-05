@@ -14,7 +14,7 @@ import { UiState } from './store/ui.reducer';
 import { getIsLoading } from './store/ui.selector';
 import { MatSnackBar } from '@angular/material';
 import { HelperService } from './blockchain/helperService';
-import { ROLES, USERNAMES } from './blockchain/blockchain.constants';
+import { USERNAMES } from './blockchain/blockchain.constants';
 
 @Component({
   selector: 'app-root',
@@ -30,13 +30,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private changeDetector: ChangeDetectorRef
   ) {}
 
-  userIdChanged$: Subject<string> = new Subject<string>();
-
   isLoading$: Observable<boolean>;
 
   USERNAMES = USERNAMES;
-
-  userId = 'Broker1';
 
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
@@ -46,88 +42,15 @@ export class AppComponent implements OnInit, AfterContentChecked {
     return this.helperService.getCurrentUserRole();
   }
 
+  get userId() {
+    return this.helperService.getCurrentUserId();
+  }
+
   ngOnInit(): void {
     this.isLoading$ = this.uiStore.pipe(select(getIsLoading));
-    this.userIdChanged$
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      )
-      .subscribe(value => {
-        this.userId = value;
-        this.setUser();
-      });
-
-    // Default
-    this.setUser();
   }
 
-  onUserChange(event) {
-    const { value } = event.target;
-    this.userIdChanged$.next(value);
-  }
-
-  setUser() {
-    const username = this.userId;
-    if (username === USERNAMES.BROKER1 || username === USERNAMES.BROKER2) {
-      // TODO change to api call
-      const user: Account = {
-        id: username,
-        cashAccount: 123,
-        securityHolding: '12345',
-        role: ROLES.BROKER,
-      };
-      this.userStore.dispatch(setUser({ user }));
-      this.userId = username;
-    } else if (
-      username === USERNAMES.CLIENT1 ||
-      username === USERNAMES.CLIENT2 ||
-      username === USERNAMES.CLIENT3
-    ) {
-      const user: Account = {
-        id: username,
-        cashAccount: 123,
-        securityHolding: '12345',
-        role: ROLES.CLIENT,
-      };
-
-      this.userStore.dispatch(setUser({ user }));
-      this.userId = username;
-    } else if (username === USERNAMES.SETTLEMENT_AGENT1) {
-      const user: Account = {
-        id: username,
-        cashAccount: 456,
-        securityHolding: '12345',
-        role: ROLES.SETTLEMENT_AGENT,
-      };
-
-      this.userStore.dispatch(setUser({ user }));
-      this.userId = username;
-    } else if (username === USERNAMES.OBSERVER1) {
-      const user: Account = {
-        id: username,
-        cashAccount: 456,
-        securityHolding: '12345',
-        role: ROLES.OBSERVER,
-      };
-
-      this.userStore.dispatch(setUser({ user }));
-      this.userId = username;
-    } else if (username === USERNAMES.COLLATERAL_AGENT1) {
-      const user: Account = {
-        id: username,
-        cashAccount: 456,
-        securityHolding: '12345',
-        role: ROLES.COLLATERAL_AGENT,
-      };
-
-      this.userStore.dispatch(setUser({ user }));
-      this.userId = username;
-    } else {
-      this.userStore.dispatch(setUser({ user: null }));
-      this.snackBar.open('User not found', 'Close', {
-        duration: 2000,
-      });
-    }
+  logout() {
+    this.helperService.setUser(null);
   }
 }

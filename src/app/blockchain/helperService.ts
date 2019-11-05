@@ -10,7 +10,8 @@ import { UiState } from '../store/ui.reducer';
 import { HttpClient } from '@angular/common/http';
 import { setLoading } from '../store/ui.actions';
 import { MatSnackBar } from '@angular/material';
-import { USERNAMES } from './blockchain.constants';
+import { USERNAMES, ROLES } from './blockchain.constants';
+import { setUser } from '../store/user.actions';
 
 @Injectable()
 export class HelperService {
@@ -60,7 +61,11 @@ export class HelperService {
   getCurrentUserId(): string {
     let user: string = null;
     this.currentUser$.subscribe(res => {
-      user = res.id;
+      if (res) {
+        user = res.id;
+      } else {
+        user = null;
+      }
     });
     return user;
   }
@@ -68,7 +73,11 @@ export class HelperService {
   getCurrentUserRole(): string {
     let role: string = null;
     this.currentUser$.subscribe(res => {
-      role = res.role;
+      if (res) {
+        role = res.role;
+      } else {
+        role = null;
+      }
     });
     return role;
   }
@@ -106,6 +115,76 @@ export class HelperService {
       this.snackBar.open('Please select a file first', 'Close', {
         duration: 2000,
       });
+    }
+  }
+
+  setUser(username: string): Account {
+    if (username === USERNAMES.BROKER1 || username === USERNAMES.BROKER2) {
+      // TODO change to api call
+      const user: Account = {
+        id: username,
+        cashAccount: 123,
+        securityHolding: '12345',
+        role: ROLES.BROKER,
+      };
+      this.userStore.dispatch(setUser({ user }));
+      return user;
+    } else if (
+      username === USERNAMES.CLIENT1 ||
+      username === USERNAMES.CLIENT2 ||
+      username === USERNAMES.CLIENT3
+    ) {
+      const user: Account = {
+        id: username,
+        cashAccount: 123,
+        securityHolding: '12345',
+        role: ROLES.CLIENT,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      return user;
+    } else if (username === USERNAMES.SETTLEMENT_AGENT1) {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: ROLES.SETTLEMENT_AGENT,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      return user;
+    } else if (username === USERNAMES.OBSERVER1) {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: ROLES.OBSERVER,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      return user;
+    } else if (username === USERNAMES.COLLATERAL_AGENT1) {
+      const user: Account = {
+        id: username,
+        cashAccount: 456,
+        securityHolding: '12345',
+        role: ROLES.COLLATERAL_AGENT,
+      };
+
+      this.userStore.dispatch(setUser({ user }));
+      return user;
+    } else {
+      this.userStore.dispatch(setUser({ user: null }));
+      if (!username) {
+        this.snackBar.open('Successfully Logout', 'Close', {
+          duration: 1000,
+        });
+      } else {
+        this.snackBar.open('User not found', 'Close', {
+          duration: 2000,
+        });
+      }
+      return null;
     }
   }
 }

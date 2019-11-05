@@ -19,7 +19,7 @@ export class BlockTradeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUserSubscription$ = this.helperService.currentUser$.subscribe(
       e => {
-        if (e.role === ROLES.COLLATERAL_AGENT) {
+        if (e && e.role === ROLES.COLLATERAL_AGENT) {
           this.router.navigateByUrl('transactions/allocate');
         }
       }

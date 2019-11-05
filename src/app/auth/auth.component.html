@@ -1,8 +1,44 @@
 <div class="login-form">
-  <label for="singleSelect">Select Client Type</label><br />
-  <select name="singleSelect" ng-model="data.singleSelect">
-    <option value="option-1">Broker1</option>
-    <option value="option-2">Client1</option>
-    <option value="option-2">SA1</option> </select
-  ><br />
+  <div class="form-title">
+    <span>
+      <img src="assets/images/logo.png" class="dbs-logo" />
+    </span>
+    <span>
+      <h1>NorthStar</h1>
+    </span>
+  </div>
+  <mat-form-field class="user-select">
+    <mat-label>User</mat-label>
+    <mat-select [value]="userId" (change)="onUserChange($event)">
+      <mat-option [value]="USERNAMES.BROKER1">{{
+        USERNAMES.BROKER1
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.BROKER2">{{
+        USERNAMES.BROKER2
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.CLIENT1">{{
+        USERNAMES.CLIENT1
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.CLIENT2">{{
+        USERNAMES.CLIENT2
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.CLIENT3">{{
+        USERNAMES.CLIENT3
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.SETTLEMENT_AGENT1">{{
+        USERNAMES.SETTLEMENT_AGENT1
+      }}</mat-option>
+      <mat-option [value]="USERNAMES.COLLATERAL_AGENT1">{{
+        USERNAMES.COLLATERAL_AGENT1
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    (click)="login()"
+    color="primary"
+    class="login-button"
+  >
+    Login
+  </button>
 </div>

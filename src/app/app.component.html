@@ -1,4 +1,4 @@
-<div id="app-container">
+<div id="app-container" *ngIf="userId; else authComponent">
   <div class="header">
     <nav class="routes">
       <a [routerLink]="['/']">
@@ -90,26 +90,11 @@
     </nav>
     <div class="user-wrapper">
       <i class="material-icons logo">account_box</i>
-      <label for="active-user" class="user-label">Active User: &nbsp;</label>
-      <select
-        required
-        [value]="userId"
-        class="user-select"
-        (change)="onUserChange($event)"
-      >
-        <option [value]="USERNAMES.BROKER1">{{ USERNAMES.BROKER1 }}</option>
-        <option [value]="USERNAMES.BROKER2">{{ USERNAMES.BROKER2 }}</option>
-        <option [value]="USERNAMES.CLIENT1">{{ USERNAMES.CLIENT1 }}</option>
-        <option [value]="USERNAMES.CLIENT2">{{ USERNAMES.CLIENT2 }}</option>
-        <option [value]="USERNAMES.CLIENT3">{{ USERNAMES.CLIENT3 }}</option>
-        <!-- <option [value]="USERNAMES.OBSERVER1">{{ USERNAMES.OBSERVER1 }}</option> -->
-        <option [value]="USERNAMES.SETTLEMENT_AGENT1">{{
-          USERNAMES.SETTLEMENT_AGENT1
-        }}</option>
-        <option [value]="USERNAMES.COLLATERAL_AGENT1">{{
-          USERNAMES.COLLATERAL_AGENT1
-        }}</option>
-      </select>
+      <label for="active-user" class="user-label">Active User:&nbsp;</label>
+      <span class="active-user">{{ userId }}</span>
+      <div class="material-icons logout" (click)="logout()" matTooltip="Logout">
+        exit_to_app
+      </div>
     </div>
   </div>
   <div class="router-outlet">
@@ -121,3 +106,7 @@
   </div>
   <app-loading-mask *ngIf="isLoading$ | async"></app-loading-mask>
 </div>
+
+<ng-template #authComponent>
+  <app-auth></app-auth>
+</ng-template>

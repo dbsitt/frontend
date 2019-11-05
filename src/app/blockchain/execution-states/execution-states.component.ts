@@ -160,7 +160,9 @@ export class ExecutionStatesComponent implements OnInit, OnDestroy {
 
     const buyOrSell = partyRole.find(
       o =>
-        o.partyReference.globalReference === partyReferenceId && o.role !== role
+        o &&
+        o.partyReference.globalReference === partyReferenceId &&
+        o.role !== role
     ).role;
 
     return {
